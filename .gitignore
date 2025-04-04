@@ -1,0 +1,84 @@
+# === Java / Spring ===
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+hs_err_pid*
+replay_pid*
+target/
+build/
+.gradle/
+.out/
+
+# === Spring Boot Secret Config ===
+application-*.yml
+application-*.yaml
+application-*.properties
+.env
+
+# === JPA / Hibernate ===
+*.h2.db
+*.mv.db
+*.db
+
+# === Test / Coverage ===
+test-output/
+coverage/
+jacoco.exec
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# === VS Code  ===
+.vscode/
+
+# === macOS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+.apdisk
+
+# === Windows  ===
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# === Node / 프론트 사용 시 (Bootstrap 커스터마이징 등 가능성 대비) ===
+node_modules/
+dist/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# === HTML/CSS/JS 관련 편집기 캐시 ===
+*.swp
+*.swo
+*.bak
+
+# === log / DB export 등 실시간 생기는 파일 ===
+logs/
+*.csv
+*.xlsx
+*.xls
+*.sql
+*.dump
+
+# === Docker ===
+docker-compose.override.yml
+*.pid
