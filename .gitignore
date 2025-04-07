@@ -16,7 +16,10 @@ build/
 application-*.yml
 application-*.yaml
 application-*.properties
+application-secret.properties
 .env
+.yml
+application.yml
 
 # === JPA / Hibernate ===
 *.h2.db
