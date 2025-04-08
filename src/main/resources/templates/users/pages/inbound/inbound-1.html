@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{users/common/layouts/defaultLayout}">
+<head></head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid p-0">
+
+        <h1 class="h3 mb-3">회원 입고 메뉴 1</h1>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">회원 입고 메뉴 1</h5>
+                        <h4>📌 아이콘 넣는 방법 (feather icons)</h4>
+                        <code>&lt;i class="align-middle" data-feather="circle"&gt;&lt;/i&gt;</code><br>
+                        <span style="font-size: 14px; color: #888;">※ <code>circle</code> = 아이콘 이름 (예: user, home, settings 등)</span>
+
+                        <hr>
+
+                        <h4>📁 templates 디렉토리 구조 예시</h4>
+                        <pre>
+📁 templates
+└── 📁 admin
+    ├── index.html
+    ├── sub.html
+    └── 📁 inbound
+        └── page-1.html
+</pre>
+
+                        <hr>
+
+                        <h4>📎 페이지 이동 방법</h4>
+
+                        <p><strong>1. 같은 디렉토리 내 파일 이동 (예: admin/index → admin/sub)</strong></p>
+                        <code>&lt;a th:href="@{/sub}"&gt;이동&lt;/a&gt;</code>
+
+                        <br>
+
+                        <p><strong>2. 하위 디렉토리 이동 (예: admin/index → admin/inbound/page-1)</strong></p>
+                        <code>&lt;a th:href="@{/inbound/page-1}"&gt;입고 페이지&lt;/a&gt;</code>
+
+                        <br><br>
+
+                        <h4>✅ 추가 참고</h4>
+                        <ul>
+                            <li><code>@{}</code>는 Spring에서 URL 자동 맵핑을 지원</li>
+                            <li>경로 기준은 <strong>컨트롤러 매핑 + templates 경로</strong> 기준임</li>
+                            <li>서버 재시작 없이도 feather 아이콘은 <code>feather.replace()</code> 한 번 실행되면 적용됨</li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

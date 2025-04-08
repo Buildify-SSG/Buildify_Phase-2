@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{users/common/layouts/defaultLayout}">
+<head></head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid p-0">
+
+        <h1 class="h3 mb-3">회원 입고 메뉴 2</h1>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">회원 입고 메뉴2</h5>
+                        <h3>📘 Thymeleaf 문법 정리</h3>
+
+                        <hr>
+
+                        <h4>✅ 변수 출력</h4>
+                        <code>&lt;span th:text="${user.name}"&gt;홍길동&lt;/span&gt;</code><br>
+                        <span style="color: #888;">→ 모델에 담긴 user.name 값을 출력</span>
+
+                        <hr>
+
+                        <h4>✅ 조건문</h4>
+                        <code>&lt;div th:if="${user.admin}"&gt;관리자입니다&lt;/div&gt;</code><br>
+                        <code>&lt;div th:unless="${user.admin}"&gt;일반 사용자입니다&lt;/div&gt;</code><br>
+                        <span style="color: #888;">→ if: 조건 true일 때 / unless: 조건 false일 때</span>
+
+                        <hr>
+
+                        <h4>✅ 반복문 (for-each)</h4>
+                        <code>
+                            &lt;tr th:each="item : ${itemList}"&gt;<br>
+                            &nbsp;&nbsp;&lt;td th:text="${item.name}"&gt;&lt;/td&gt;<br>
+                            &nbsp;&nbsp;&lt;td th:text="${item.qty}"&gt;&lt;/td&gt;<br>
+                            &lt;/tr&gt;
+                        </code><br>
+                        <span style="color: #888;">→ itemList를 반복해서 출력</span>
+
+                        <hr>
+
+                        <h4>✅ 반복문 + 인덱스</h4>
+                        <code>
+                            &lt;tr th:each="item, stat : ${itemList}"&gt;<br>
+                            &nbsp;&nbsp;&lt;td th:text="${stat.index}"&gt;&lt;/td&gt;<br>
+                            &lt;/tr&gt;
+                        </code><br>
+                        <span style="color: #888;">→ stat.index로 인덱스(0부터)를 가져올 수 있음</span>
+
+                        <hr>
+
+                        <h4>✅ 링크(URL) 설정</h4>
+                        <code>&lt;a th:href="@{/product/detail(id=${product.id})}"&gt;상세보기&lt;/a&gt;</code><br>
+                        <code>&lt;img th:src="@{/images/logo.png}" /&gt;</code><br>
+                        <span style="color: #888;">→ @{} 사용 시 URL 경로 자동 완성됨</span>
+
+                        <hr>
+
+                        <h4>✅ 폼 요소 값 설정</h4>
+                        <code>&lt;input type="text" th:value="${user.name}" /&gt;</code><br>
+                        <code>
+                            &lt;option th:each="c : ${countries}"<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;th:value="${c.code}"<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;th:text="${c.name}"<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;th:selected="${c.code == user.country}"&gt;<br>
+                            &lt;/option&gt;
+                        </code><br>
+                        <code>&lt;input type="checkbox" th:checked="${user.admin}" /&gt;</code>
+
+                        <hr>
+
+                        <h4>✅ fragment (공통 템플릿)</h4>
+                        <code>
+                            &lt;div th:fragment="header"&gt;헤더 내용&lt;/div&gt;<br><br>
+                            &lt;div th:insert="~{fragments :: header}"&gt;&lt;/div&gt;
+                        </code><br>
+                        <span style="color: #888;">→ 공통 레이아웃을 분리하고 포함시킬 때 사용</span>
+
+                        <hr>
+
+                        <h4>✅ JS에서 변수 사용</h4>
+
+                        <code>&lt;script&gt;<br>
+                            &nbsp;&nbsp;let userId = '예시유저ID';<br>
+                            &lt;/script&gt;
+                        </code>
+
+                        <hr>
+
+                        <h4>✅ 클래스/속성 조건부 출력</h4>
+                        <code>&lt;li th:class="\${menu} == 'stock' ? 'active' : ''"&gt;재고&lt;/li&gt;</code><br>
+                        <code>&lt;input type="checkbox" th:checked="\${user.active}" /&gt;</code>
+
+                        <hr>
+
+                        <h4>📎 팁 정리</h4>
+                        <ul>
+                            <li><code>\${}</code>: 자바 모델에서 값 꺼낼 때 사용</li>
+                            <li><code>\@{}</code>: URL 매핑 자동 처리</li>
+                            <li><code>\[\[ \]\]</code>: JS, 속성 안에서 값 바인딩</li>
+                            <li><code>th:*</code>: HTML 태그 안에서 속성 치환</li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        드디어됫나?햇냐?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
