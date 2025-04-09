@@ -15,17 +15,17 @@ public class AdminTempController {
     }
 
     // employee
-    @GetMapping("/pages/employee/employee-1")
-    public String employee1() { return "admin/pages/employee/employee-1"; }
+    @GetMapping("/pages/userManagement/userManagement-1")
+    public String userManagement1() { return "admin/pages/userManagement/userManagement-1"; }
 
-    @GetMapping("/pages/employee/employee-2")
-    public String employee2() { return "admin/pages/employee/employee-2"; }
+    @GetMapping("/pages/userManagement/userManagement-2")
+    public String userManagement2() { return "admin/pages/userManagement/userManagement-2"; }
 
-    @GetMapping("/pages/employee/employee-3")
-    public String employee3() { return "admin/pages/employee/employee-3"; }
+    @GetMapping("/pages/userManagement/userManagement-3")
+    public String userManagement3() { return "admin/pages/userManagement/userManagement-3"; }
 
-    @GetMapping("/pages/employee/employee-4")
-    public String employee4() { return "admin/pages/employee/employee-4"; }
+    @GetMapping("/pages/userManagement/userManagement-4")
+    public String userManagement4() { return "admin/pages/userManagement/userManagement-4"; }
 
     // inbound
     @GetMapping("/pages/inbound/inbound-1")

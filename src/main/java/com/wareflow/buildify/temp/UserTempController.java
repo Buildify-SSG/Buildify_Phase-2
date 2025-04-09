@@ -94,4 +94,25 @@ public class UserTempController {
         return "users/pages/product/product-4";
     }
 
+
+    @GetMapping("/pages/userWarehouse/userWarehouse-1")
+    public String userWarehouse1() {
+        return "users/pages/userWarehouse/userWarehouse-1";
+    }
+
+    @GetMapping("/pages/userWarehouse/userWarehouse-2")
+    public String userWarehouse2() {
+        return "users/pages/userWarehouse/userWarehouse-2";
+    }
+
+    @GetMapping("/pages/userWarehouse/userWarehouse-3")
+    public String userWarehouse3() {
+        return "users/pages/userWarehouse/userWarehouse-3";
+    }
+
+    @GetMapping("/pages/userWarehouse/userWarehouse-4")
+    public String userWarehouse4() {
+        return "users/pages/userWarehouse/userWarehouse-4";
+    }
+
 }
