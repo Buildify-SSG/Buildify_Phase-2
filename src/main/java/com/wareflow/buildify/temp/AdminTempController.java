@@ -14,7 +14,7 @@ public class AdminTempController {
         return "admin/pages/index";
     }
 
-    // employee
+    // userManagement
     @GetMapping("/pages/userManagement/userManagement-1")
     public String userManagement1() { return "admin/pages/userManagement/userManagement-1"; }
 
