@@ -196,3 +196,24 @@
 .dark-mode .navbar.navbar-expand.navbar-light.navbar-bg {
     background-color: slategrey !important;
 }
+
+.wrapper {
+    display: flex !important;
+}
+
+.sidebar {
+    width: 250px !important;
+}
+
+.main {
+    flex-grow: 1 !important;
+}
+
+/*main.content {*/
+/*    background: red !important;*/
+/*    min-height: 300px !important;*/
+/*    padding: 3rem !important;*/
+/*    display: block !important;*/
+/*    color: black !important;*/
+/*    font-size: 20px !important;*/
+/*}*/

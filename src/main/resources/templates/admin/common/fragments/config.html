@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http:www.thymeleaf.org"
-      th:fragment="ConfigFragment">
-<head>
+
+<th:block th:fragment="ConfigFragment">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,7 +12,7 @@
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/pages-blank.html" />
 
-    <title>Blank Page | AdminKit Demo</title>
+    <title>Buildify</title>
     <script>
         window.addEventListener("DOMContentLoaded", function() {
             if (localStorage.getItem("darkMode") === "enabled") {
@@ -27,5 +24,4 @@
     <link th:href="@{/css/app.css}" rel="stylesheet">
     <link th:href="@{/css/custom.css}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-</head>
-</html>
+</th:block>
