@@ -1,7 +1,8 @@
 plugins {
 	id 'java'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'war'
 }
+
 
 group = 'com.buildify'
 version = '0.0.1-SNAPSHOT'
@@ -22,25 +23,52 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	junitVersion = '5.9.2'
+}
+
 dependencies {
-	implementation 'org.springframework:spring-context:6.1.4'
-	implementation 'org.springframework:spring-webmvc:6.1.4'
-	implementation 'org.springframework:spring-jdbc:6.1.4'
-	implementation 'org.springframework:spring-orm:6.1.4'
-	implementation 'org.springframework:spring-tx:6.1.4'
-	implementation 'org.springframework:spring-test:6.1.4'
-	implementation 'org.springframework:spring-web:6.1.4'
-	implementation 'org.springframework:spring-beans:6.1.4'
-	implementation 'org.springframework:spring-core:6.1.4'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'org.mybatis:mybatis:3.5.15'
-	implementation 'org.mybatis:mybatis-spring:3.0.3'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
-	implementation 'javax.servlet:jstl:1.2'
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.87'
+	compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+	implementation group: 'org.springframework', name: 'spring-core', version: '5.3.27'
+	implementation group: 'org.springframework', name: 'spring-context', version: '5.3.27'
+
+	// https://mvnrepository.com/artifact/org.springframework/spring-webmvc
+	implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.27'
+	implementation group: 'org.springframework', name: 'spring-test', version: '5.3.27'
+	implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.27'
+	implementation group: 'org.springframework', name: 'spring-tx', version: '5.3.27'
+
+	//mybatis 라이브러리
+	implementation 'org.mybatis:mybatis:3.5.9'
+	implementation 'org.mybatis:mybatis-spring:2.0.7'
+
+
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	testCompileOnly 'org.projectlombok:lombok:1.18.30'
+
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
+	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+	implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
+
+
+	//테스트 환경에서 @Log4j2 기능을 활용시 필요한 라이브러리
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+	testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+	implementation 'org.apache.logging.log4j:log4j-api:2.22.1'
+	implementation 'org.apache.logging.log4j:log4j-core:2.22.1'
+	implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.22.1'
+
+	implementation 'jstl:jstl:1.2'
+
+	// https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator 파라미터 유효성 검사
+	implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.0.Final'
+
+
+
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1'
+
 }
