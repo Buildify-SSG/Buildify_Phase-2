@@ -196,7 +196,12 @@
                 <ul style="display: inline-flex; list-style: none; padding: 0;">
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li style="margin: 0 5px;">
-                            <a href="?page=${i}"
+                            <c:url var="pageUrl" value="">
+                                <c:param name="page" value="${i}" />
+                                <c:param name="searchType" value="${param.searchType}" />
+                                <c:param name="keyword" value="${param.keyword}" />
+                            </c:url>
+                            <a href="${pageUrl}"
                                style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
                                       background-color: ${i == currentPage ? '#333' : '#fff'};
                                       color: ${i == currentPage ? '#fff' : '#000'};">
