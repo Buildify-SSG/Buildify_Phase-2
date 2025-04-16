@@ -121,3 +121,19 @@ src/main/resources
 ### 💬 참고
 예상되는 영향이나 고민
 ```
+
+📌 메서드명 네이밍 규칙 (Spring Project)
+- 조회: get / find / fetch
+- 등록: create / save / register / add
+- 수정: update / modify
+- 삭제: delete / remove
+- 검증: check / validate / exists
+- 처리: process / handle
+→ 반환되는 타입과 목적에 따라 일관성 있게 작성
+
+📌 예시
+- UserService
+  - getUserById(Long id)
+  - createUser(UserDTO dto)
+  - updateUser(UserDTO dto)
+  - deleteUser(Long id)

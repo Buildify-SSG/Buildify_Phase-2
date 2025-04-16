@@ -1,76 +1,124 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-	<meta name="author" content="AdminKit">
-	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="shortcut icon" href="../../static/img/icons/icon-48x48.png" />
-
-	<link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-up.html" />
-
-	<title>Sign Up | AdminKit Demo</title>
-
+	<meta charset="UTF-8">
+	<title>회원가입</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="../../static/css/app.css" rel="stylesheet">
 	<link href="../../static/css/custom.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<style>
+		.signup-container {
+			width: 100%;
+			max-width: 720px;
+			margin: 0 auto;
+			padding: 40px 30px;
+			background: #fff;
+			border-radius: 10px;
+			box-shadow: 0 0 20px rgba(0,0,0,0.1);
+		}
+		.signup-container h2 {
+			font-size: 24px;
+			font-weight: 600;
+			text-align: center;
+			margin-bottom: 30px;
+		}
+		.signup-container .form-label {
+			font-weight: 500;
+		}
+		.form-control {
+			height: 45px;
+			font-size: 14px;
+		}
+		.form-text {
+			font-size: 12px;
+			color: #777;
+		}
+		.btn-submit {
+			height: 50px;
+			font-size: 16px;
+		}
+		@media (max-width: 768px) {
+			.signup-container {
+				padding: 30px 20px;
+			}
+			.btn-submit {
+				font-size: 15px;
+				height: 45px;
+			}
+		}
+	</style>
 </head>
+<body class="bg-light">
 
-<body>
-	<main class="d-flex w-100">
-		<div class="container d-flex flex-column">
-			<div class="row vh-100">
-				<div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
-					<div class="d-table-cell align-middle">
-
-						<div class="text-center mt-4">
-							<h1 class="h2">Get started</h1>
-							<p class="lead">
-								Start creating the best possible user experience for you customers.
-							</p>
-						</div>
-
-						<div class="card">
-							<div class="card-body">
-								<div class="m-sm-3">
-									<form>
-										<div class="mb-3">
-											<label class="form-label">Full name</label>
-											<input class="form-control form-control-lg" type="text" name="name" placeholder="Enter your name" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Email</label>
-											<input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Password</label>
-											<input class="form-control form-control-lg" type="password" name="password" placeholder="Enter password" />
-										</div>
-										<div class="d-grid gap-2 mt-3">
-											<a href="../adminpractice/index.html" class="btn btn-lg btn-primary">Sign up</a>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-						<div class="text-center mb-3">
-							Already have account? <a href="pages-sign-in.jsp">Log In</a>
-						</div>
-					</div>
-				</div>
+<main class="d-flex w-100 justify-content-center align-items-center" style="min-height: 100vh;">
+	<div class="signup-container">
+		<h2>회원가입</h2>
+		<form method="post" action="/components/pages-sign-up">
+			<div class="mb-3">
+				<label class="form-label">ID</label>
+				<input type="text" class="form-control" name="userId"
+					   placeholder="아이디를 입력하세요" maxlength="12"
+					   pattern="[a-zA-Z0-9]{4,12}" required>
+				<div class="form-text">(영문과 숫자 조합, 4~12자)</div>
 			</div>
-		</div>
-	</main>
+			<div class="mb-3">
+				<label class="form-label">이메일</label>
+				<input type="email" class="form-control" name="userEmail"
+					   placeholder="example@email.com"
+					   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+					   required>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">비밀번호</label>
+				<input type="password" class="form-control" name="userPw"
+					   placeholder="비밀번호를 입력하세요"
+					   pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,15}"
+					   required>
+				<div class="form-text">(영문, 숫자, 특수문자 포함 8~15자)</div>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">이름</label>
+				<input type="text" class="form-control" name="userName"
+					   placeholder="이름을 입력하세요" required>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">연락처</label>
+				<input type="text" class="form-control" name="userPhone"
+					   placeholder="010-0000-0000"
+					   pattern="^01[0-9]-\d{3,4}-\d{4}$" required>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">주소</label>
+				<input type="text" class="form-control" id="address" name="userAddress"
+					   placeholder="주소를 입력하세요" required>
+				<button type="button" id="btn-search-address" class="btn btn-sm btn-secondary mt-2">주소 검색</button>
+			</div>
+			<div class="mb-4">
+				<label class="form-label">사업자등록번호</label>
+				<input type="text" class="form-control" name="businessNumber"
+					   placeholder="000-00-00000"
+					   pattern="^\d{3}-\d{2}-\d{5}$" required>
+			</div>
+			<div class="d-grid">
+				<button type="submit" class="btn btn-primary btn-submit">회원가입</button>
+			</div>
+		</form>
+	</div>
+</main>
 
-	<script src="../../static/js/app.js"></script>
+<script>
+	document.getElementById("btn-search-address").addEventListener("click", function () {
+		new daum.Postcode({
+			oncomplete: function (data) {
+				document.getElementById("address").value = data.address;
+			}
+		}).open();
+	});
+</script>
 
+<script src="../../static/js/app.js"></script>
 </body>
-
 </html>
