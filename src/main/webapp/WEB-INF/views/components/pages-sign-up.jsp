@@ -60,47 +60,57 @@
 			<div class="mb-3">
 				<label class="form-label">ID</label>
 				<input type="text" class="form-control" name="userId"
-					   placeholder="아이디를 입력하세요" maxlength="12"
+					   value="${user.userId}" placeholder="아이디를 입력하세요" maxlength="12"
 					   pattern="[a-zA-Z0-9]{4,12}" required>
 				<div class="form-text">(영문과 숫자 조합, 4~12자)</div>
+				<c:if test="${not empty msg}">
+					<div class="form-text text-danger">${msg}</div>
+				</c:if>
 			</div>
 			<div class="mb-3">
 				<label class="form-label">이메일</label>
 				<input type="email" class="form-control" name="userEmail"
-					   placeholder="example@email.com"
-					   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+					   value="${user.userEmail}" placeholder="example@email.com"
 					   required>
 			</div>
 			<div class="mb-3">
 				<label class="form-label">비밀번호</label>
 				<input type="password" class="form-control" name="userPw"
-					   placeholder="비밀번호를 입력하세요"
-					   pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,15}"
-					   required>
+					   id="userPw" placeholder="비밀번호를 입력하세요"
+					   pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{8,15}" required>
 				<div class="form-text">(영문, 숫자, 특수문자 포함 8~15자)</div>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">비밀번호 확인</label>
+				<input type="password" class="form-control" name="userPwConfirm"
+					   id="userPwConfirm" placeholder="비밀번호를 다시 입력하세요" required>
+				<div id="pwCheckMsg" class="form-text text-danger" style="display:none;">
+					❗ 비밀번호가 일치하지 않습니다.
+				</div>
 			</div>
 			<div class="mb-3">
 				<label class="form-label">이름</label>
 				<input type="text" class="form-control" name="userName"
-					   placeholder="이름을 입력하세요" required>
+					   value="${user.userName}" placeholder="이름을 입력하세요" required>
 			</div>
 			<div class="mb-3">
 				<label class="form-label">연락처</label>
 				<input type="text" class="form-control" name="userPhone"
-					   placeholder="010-0000-0000"
+					   value="${user.userPhone}" placeholder="010-0000-0000"
 					   pattern="^01[0-9]-\d{3,4}-\d{4}$" required>
 			</div>
 			<div class="mb-3">
 				<label class="form-label">주소</label>
 				<input type="text" class="form-control" id="address" name="userAddress"
-					   placeholder="주소를 입력하세요" required>
+					   value="${user.userAddress}" placeholder="주소를 입력하세요" required>
 				<button type="button" id="btn-search-address" class="btn btn-sm btn-secondary mt-2">주소 검색</button>
 			</div>
 			<div class="mb-4">
 				<label class="form-label">사업자등록번호</label>
 				<input type="text" class="form-control" name="businessNumber"
-					   placeholder="000-00-00000"
+					   value="${user.businessNumber}" placeholder="000-00-00000"
 					   pattern="^\d{3}-\d{2}-\d{5}$" required>
+				<div class="form-text">000-00-00000 형식</div>
 			</div>
 			<div class="d-grid">
 				<button type="submit" class="btn btn-primary btn-submit">회원가입</button>
@@ -116,6 +126,19 @@
 				document.getElementById("address").value = data.address;
 			}
 		}).open();
+	});
+
+	document.querySelector("form").addEventListener("submit", function (e) {
+		const pw = document.getElementById("userPw").value;
+		const pwConfirm = document.getElementById("userPwConfirm").value;
+		const pwCheckMsg = document.getElementById("pwCheckMsg");
+
+		if (pw !== pwConfirm) {
+			pwCheckMsg.style.display = "block";
+			e.preventDefault();
+		} else {
+			pwCheckMsg.style.display = "none";
+		}
 	});
 </script>
 

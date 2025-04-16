@@ -13,7 +13,7 @@
     </select>
 
     <!-- 2. 회원가입 -->
-    <insert id="insert" parameterType="com.wareflow.buildify.vo.UserVO">
+    <insert id="signUp" parameterType="com.wareflow.buildify.vo.UserVO">
         INSERT INTO user (
             client_id,
             user_name,
