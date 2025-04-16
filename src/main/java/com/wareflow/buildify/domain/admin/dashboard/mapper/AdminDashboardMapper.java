@@ -1,8 +1,5 @@
-package com.wareflow.buildify.domain.admin.dashboard.repository;
+package com.wareflow.buildify.domain.admin.dashboard.mapper;
 
-import com.wareflow.buildify.dto.InboundDTO;
-import com.wareflow.buildify.dto.OutboundDTO;
-import com.wareflow.buildify.dto.UserDTO;
 import com.wareflow.buildify.vo.InboundVO;
 import com.wareflow.buildify.vo.OutboundVO;
 import com.wareflow.buildify.vo.UserVO;
