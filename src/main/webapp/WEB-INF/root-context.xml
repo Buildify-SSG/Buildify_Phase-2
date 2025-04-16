@@ -7,7 +7,21 @@
 
     <context:component-scan base-package="com.wareflow.buildify">
     </context:component-scan>
-    <mybatis:scan base-package="com.wareflow.buildify.domain"></mybatis:scan>
+
+    <mybatis:scan base-package="
+    com.wareflow.buildify.domain.auth.signup.mapper,
+    com.wareflow.buildify.domain.auth.login.mapper,
+    com.wareflow.buildify.domain.admin.inbound.mapper,
+    com.wareflow.buildify.domain.admin.inventory.mapper,
+    com.wareflow.buildify.domain.admin.outbound.mapper,
+    com.wareflow.buildify.domain.admin.product.mapper,
+    com.wareflow.buildify.domain.admin.systemOperation.mapper,
+    com.wareflow.buildify.domain.admin.userManagement.mapper,
+    com.wareflow.buildify.domain.user.product.mapper,
+    com.wareflow.buildify.domain.user.outbound.mapper,
+    com.wareflow.buildify.domain.user.inbound.mapper,
+    com.wareflow.buildify.domain.user.inventory.mapper
+    "/>
 
     <!-- properties 불러오기 -->
     <context:property-placeholder location="classpath:application-secret.properties"/>
