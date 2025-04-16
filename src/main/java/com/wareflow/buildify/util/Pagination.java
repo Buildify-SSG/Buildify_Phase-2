@@ -1,0 +1,34 @@
+package com.wareflow.buildify.util;
+
+import com.wareflow.buildify.dto.PageDTO;
+import org.springframework.ui.Model;
+
+import java.util.List;
+
+public class Pagination {
+    public static <T> void paginate(Model model, List<T> fullList, int page, String bodyPath) {
+        int pageSize = 10;
+        int totalItems = fullList.size();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        int start = (page - 1) * pageSize;
+        int end = Math.min(start + pageSize, totalItems);
+
+        List<T> pagedList = fullList.subList(start, end);
+
+        model.addAttribute("productList", pagedList); // 필요 시 변경 가능
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("body", bodyPath);
+    }
+
+    public static <T> PageDTO<T> getPaginationDTO(List<T> fullList, int page) {
+        int pageSize = 10;
+        int totalItems = fullList.size();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        int start = (page - 1) * pageSize;
+        int end = Math.min(start + pageSize, totalItems);
+
+        List<T> pagedList = fullList.subList(start, end);
+        return new PageDTO<>(page, totalPages, pagedList);
+    }
+}
