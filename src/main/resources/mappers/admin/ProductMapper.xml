@@ -3,6 +3,41 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.ProductMapper">
-    <!-- 여기에 SQL 정의 들어감 -->
+<mapper namespace="com.wareflow.buildify.domain.admin.product.mapper.AdminProductMapper">
+    <select id="adminProductView" resultType="com.wareflow.buildify.vo.ProductVO">
+        SELECT
+            prod_id AS prodId,
+            brand,
+            prod_name AS prodName,
+            prod_price AS prodPrice,
+            prod_code AS prodCode,
+            prod_size AS prodSize,
+            prod_categoryid AS prodCategoryid,
+            client_id AS clientId
+        FROM product
+    </select>
+
+    <select id="search" resultType="com.wareflow.buildify.vo.ProductVO">
+        SELECT
+            prod_id AS prodId,
+            brand,
+            prod_name AS prodName,
+            prod_price AS prodPrice,
+            prod_code AS prodCode,
+            prod_size AS prodSize,
+            prod_categoryid AS prodCategoryid,
+            client_id AS clientId
+        FROM product
+        <where>
+        <choose>
+            <when test="type == 'prodId'">prod_id = #{keyword} </when>
+            <when test="type == 'brand'">brand LIKE CONCAT('%', #{keyword}, '%')</when>
+            <when test="type == 'prodName'">prod_name LIKE CONCAT('%', #{keyword}, '%')</when>
+            <when test="type == 'prodCategoryId'">prod_categoryid LIKE CONCAT('%', #{keyword}, '%')</when>
+        </choose>
+        </where>
+    </select>
+
+
+
 </mapper>
