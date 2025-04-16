@@ -3,6 +3,54 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.InventoryMapper">
+<mapper namespace="com.wareflow.buildify.domain.user.inventory.mapper.InventoryUserMapper">
     <!-- 여기에 SQL 정의 들어감 -->
+    <select id="getFilteredInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+        SELECT
+        i.*,
+        p.prod_name,
+        c.category_level1,
+        c.category_level2,
+        c.category_level3
+        FROM inventory i
+        JOIN product p ON i.prod_id = p.prod_id
+        JOIN category c ON p.prod_categoryid = c.prod_categoryid
+        WHERE 1=1
+        <if test="clientId != null and clientId != ''">
+            AND i.client_id = #{clientId}
+        </if>
+        <if test="prodName != null and prodName != ''">
+            AND p.prod_name LIKE CONCAT('%', #{prodName}, '%')
+        </if>
+        <if test="wareId != null and wareId != ''">
+            AND i.ware_id = #{wareId}
+        </if>
+        <if test="categoryLevel1 != null and categoryLevel1 != ''">
+            AND c.category_level1 = #{categoryLevel1}
+        </if>
+        <if test="categoryLevel2 != null and categoryLevel2 != ''">
+            AND c.category_level2 = #{categoryLevel2}
+        </if>
+        <if test="categoryLevel3 != null and categoryLevel3 != ''">
+            AND c.category_level3 = #{categoryLevel3}
+        </if>
+        <choose>
+            <when test="sortBy == 'asc'">
+                ORDER BY i.quantity ASC
+            </when>
+            <when test="sortBy == 'desc'">
+                ORDER BY i.quantity DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prod_name ASC
+            </otherwise>
+        </choose>
+        LIMIT #{skip}, #{amount}
+    </select>
+
+
+
+
+
+
 </mapper>
