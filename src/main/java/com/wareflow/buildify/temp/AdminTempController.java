@@ -115,11 +115,11 @@ public class AdminTempController {
     }
 
     // product
-    @GetMapping("/pages/product/product-1")
-    public String product1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/product/product-1.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/product/product-1")
+//    public String product1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/product/product-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/product/product-2")
     public String product2(Model model) {

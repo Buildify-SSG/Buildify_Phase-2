@@ -1,7 +1,7 @@
 package com.wareflow.buildify.domain.admin.product.service;
 
 import com.wareflow.buildify.dto.ProductDTO;
-
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -9,11 +9,14 @@ import java.util.List;
 public interface AdminProductService {
 
     // 관리자 상품 전체 조회
-    List<ProductDTO> adminProductSearch();
+    List<ProductDTO> adminProductView();
+
+    // 검색
+    List<ProductDTO> search(String searchType,String keyword);
 
     // 관리자 상품 수정
-    List<ProductDTO> adminProductModify();
+    int adminProductModify(List<ProductDTO> productDTOList);
 
     // 관리자 상품 삭제
-    List<ProductDTO> adminProductRemove();
+    int adminProductRemove(List<ProductDTO> productDTOList);
 }
