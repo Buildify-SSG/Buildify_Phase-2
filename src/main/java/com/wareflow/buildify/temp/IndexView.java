@@ -25,8 +25,8 @@ public class IndexView {
     @GetMapping("/components/pages-sign-in")
     public String pagesSignIn() { return "components/pages-sign-in"; }
 
-    @GetMapping("/components/pages-sign-up")
-    public String pagesSignUp() { return "components/pages-sign-up"; }
+//    @GetMapping("/components/pages-sign-up")
+//    public String pagesSignUp() { return "components/pages-sign-up"; }
 
     @GetMapping("/components/ui-buttons")
     public String uiButtons() { return "components/ui-buttons"; }

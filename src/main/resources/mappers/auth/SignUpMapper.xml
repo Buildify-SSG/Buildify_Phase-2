@@ -3,6 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.SignUpMapper">
+<mapper namespace="com.wareflow.buildify.domain.auth.signup.mapper.SignupMapper">
     <!-- 여기에 SQL 정의 들어감 -->
+    <!-- 1. 아이디 중복 체크 -->
+    <select id="existCheckId" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE user_id = #{user_id}
+    </select>
+
+    <!-- 2. 회원가입 -->
+    <insert id="insert" parameterType="com.wareflow.buildify.vo.UserVO">
+        INSERT INTO user (
+            client_id,
+            user_name,
+            user_phone,
+            user_email,
+            user_address,
+            business_number,
+            user_enterdate,
+            user_id,
+            user_pw,
+            user_status
+        )
+        VALUES (
+                   #{clientId},
+                   #{userName},
+                   #{userPhone},
+                   #{userEmail},
+                   #{userAddress},
+                   #{businessNumber},
+                   #{userEnterdate},
+                   #{userId},
+                   #{userPw},
+                   #{userStatus}
+               )
+    </insert>
 </mapper>
