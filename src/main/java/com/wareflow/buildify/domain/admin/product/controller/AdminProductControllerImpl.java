@@ -31,7 +31,7 @@ public class AdminProductControllerImpl implements AdminProductController {
 
         List<ProductDTO> productDTOList = adminProductService.adminProductView();
 
-        model.addAttribute("productList",productDTOList);
+//        model.addAttribute("productList",productDTOList);
 
         Pagination.paginate(model, productDTOList, page,"/WEB-INF/views/admin/pages/product/product-1.jsp");
         return "admin/layouts/adminlayout";
