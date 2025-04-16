@@ -79,7 +79,6 @@ logs/
 *.csv
 *.xlsx
 *.xls
-*.sql
 *.dump
 
 # === Docker ===
