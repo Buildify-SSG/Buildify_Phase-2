@@ -2,6 +2,8 @@ package com.wareflow.buildify.domain.admin.product.controller;
 
 import com.wareflow.buildify.dto.ProductDTO;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -9,11 +11,14 @@ import java.util.List;
 public interface AdminProductController {
 
     // 관리자 상품 전체 조회
-    List<ProductDTO> adminProductSearch(Model model);
+    String adminProductView(int page,Model model);
+
+    //  관리자 상품 검색
+    String searchProduct(int page,String searchType,String keyword,Model model);
 
     // 관리자 상품 수정
-    List<ProductDTO> adminProductModify(Model model);
+    String adminProductModify(List<ProductDTO> productList,List<Integer> selectedIndexes,Model model);
 
     // 관리자 상품 삭제
-    List<ProductDTO> adminProductRemove(Model model);
+    String adminProductRemove(List<Long> ids,Model model);
 }

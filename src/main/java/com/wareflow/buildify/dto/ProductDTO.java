@@ -1,4 +1,22 @@
 package com.wareflow.buildify.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDTO {
+    private String prodId;         // [접두어]-[날짜]-[랜덤문자열]
+    private String brand;
+    private String prodName;
+    private Integer prodPrice;
+    private Integer prodCode;      // 중복 x
+    private BigDecimal prodSize;   // cm^3.3 단위
+    private String prodCategoryid;
+    private String clientId;
 }
