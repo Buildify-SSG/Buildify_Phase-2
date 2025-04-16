@@ -17,7 +17,7 @@ public class SignupServiceImpl implements SignupService {
     private final ModelMapper modelMapper;
 
     @Override
-    public boolean register(UserDTO userDTO) {
+    public boolean signUp(UserDTO userDTO) {
         // 아이디 중복 검사
         if (signupMapper.existCheckId(userDTO.getUserId()) > 0) {
             return false;
@@ -40,7 +40,12 @@ public class SignupServiceImpl implements SignupService {
                 .userStatus(0) // 미승인 상태
                 .build();
 
-        return signupMapper.insert(userVO) == 1;
+        return signupMapper.signUp(userVO) == 1;
+    }
+
+    @Override
+    public boolean isUserIdExist(String userId) {
+        return signupMapper.existCheckId(userId) > 0;
     }
 
 

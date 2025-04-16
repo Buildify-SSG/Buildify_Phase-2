@@ -25,13 +25,21 @@ public class SignupController {
 
     @PostMapping("/pages-sign-up")
     public String processSignup(@ModelAttribute UserDTO userDTO, RedirectAttributes rttr) {
-        boolean result = signupService.register(userDTO);
+
+        if(signupService.isUserIdExist(userDTO.getUserId())) {
+            rttr.addFlashAttribute("msg", "이미 사용 중인 아이디입니다.");
+            rttr.addFlashAttribute("user", userDTO);
+            return "redirect:/components/pages-sign-up";
+        }
+
+        boolean result = signupService.signUp(userDTO);
 
         if (result) {
             rttr.addFlashAttribute("msg", "회원가입 성공!");
             return "redirect:/login";
         } else {
             rttr.addFlashAttribute("msg", "회원가입 실패");
+            rttr.addFlashAttribute("user", userDTO);
             return "redirect:/signup";
         }
     }
