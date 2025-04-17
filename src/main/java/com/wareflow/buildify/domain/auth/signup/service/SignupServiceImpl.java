@@ -8,6 +8,7 @@ import com.wareflow.buildify.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class SignupServiceImpl implements SignupService {
     private final SignupMapper signupMapper;
     private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public boolean signUp(UserDTO userDTO) {
@@ -22,6 +24,9 @@ public class SignupServiceImpl implements SignupService {
         if (signupMapper.existCheckId(userDTO.getUserId()) > 0) {
             return false;
         }
+
+        String encodePw = passwordEncoder.encode(userDTO.getUserPw());
+        userDTO.setUserPw(encodePw);
 
         // 기본값 세팅: client_id, 가입일자, 상태값
         UserVO userVO = modelMapper.map(userDTO, UserVO.class);
