@@ -31,6 +31,7 @@ CREATE TABLE `warehouse_area` (
                                   `ware_id` VARCHAR(10) NOT NULL,
                                   `ware_name` VARCHAR(20) NOT NULL,
                                   `ware_address` VARCHAR(50) NOT NULL,
+                                  `ware_admin_number` VARCHAR(255) NOT NULL,
                                   `ware_total_size` DECIMAL(10,2) NOT NULL DEFAULT 0,
                                   `available_space` DECIMAL(10,2) NULL COMMENT '창고별 가용량 (available_space = contract_area - warehouse_usage)',
                                   PRIMARY KEY (`ware_id`)
