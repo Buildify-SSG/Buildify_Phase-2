@@ -17,9 +17,6 @@ public interface AdminProductMapper {
     List<ProductVO> search(@Param("type") String searchType,
                            @Param("keyword") String keyword);
 
-    // 관리자 상품 수정
-    int adminProductModify(List<ProductVO> voList);
-
     // 관리자 상품 삭제
     int adminProductRemove (List<ProductVO> voList);
 

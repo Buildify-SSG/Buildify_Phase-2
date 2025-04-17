@@ -4,6 +4,7 @@ import com.wareflow.buildify.domain.admin.product.mapper.AdminProductMapper;
 import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.vo.ProductVO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 // 관리자 - 상품조회 서비스 구현체
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class AdminProductServiceImpl implements AdminProductService{
 
@@ -43,6 +45,8 @@ public class AdminProductServiceImpl implements AdminProductService{
     @Override
     public List<ProductDTO> search(String searchType,String keyword) {
 
+        keyword = keyword.trim();
+
         List<ProductVO> searchVOList = new ArrayList<>();
 
         if (keyword.isEmpty()){
@@ -69,18 +73,21 @@ public class AdminProductServiceImpl implements AdminProductService{
         return searchlist;
     }
 
-
-    // 관리자 상품 수정
-    @Override
-    public int adminProductModify(List<ProductDTO> productDTOList) {
-        return 0;
-    }
-
     // 관리자 상품 삭제
     @Override
-    public int adminProductRemove(List<ProductDTO> productDTOList) {
-        return 0;
+    public int adminProductRemove(List<String > productDTOList) {
+
+        log.info("서비스 : dto 수량"+productDTOList.size());
+
+        List<ProductVO> productVOList = new ArrayList<>();
+        for(String productDTO : productDTOList){
+        ProductVO productVO = ProductVO.builder()
+                .prodId(productDTO)
+                .build();
+            productVOList.add(productVO);
+        }
+        int rows = adminProductMapper.adminProductRemove(productVOList);
+
+        return rows;
     }
-
-
 }
