@@ -173,7 +173,7 @@
             </tr>
             </thead>
             <tbody>
-<c:forEach var="product" items="${productList}" varStatus="status">
+<c:forEach var="product" items="${List}" varStatus="status">
     <tr>
         <td>
             <input type="checkbox" name="selectedIndexes" value="${product.prodId}" />
@@ -193,7 +193,7 @@
         <td>${product.prodSize}</td>
     </tr>
 </c:forEach>
-<c:if test="${empty productList}">
+<c:if test="${empty List}">
     <tr>
         <td colspan="7">검색 결과가 없습니다.</td>
     </tr>

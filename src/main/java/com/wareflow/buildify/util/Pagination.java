@@ -15,7 +15,7 @@ public class Pagination {
 
         List<T> pagedList = fullList.subList(start, end);
 
-        model.addAttribute("productList", pagedList); // 필요 시 변경 가능
+        model.addAttribute("List", pagedList); // 필요 시 변경 가능
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("body", bodyPath);
