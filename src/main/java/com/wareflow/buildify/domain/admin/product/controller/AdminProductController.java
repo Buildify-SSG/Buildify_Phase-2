@@ -2,7 +2,6 @@ package com.wareflow.buildify.domain.admin.product.controller;
 
 import com.wareflow.buildify.domain.admin.product.service.AdminProductService;
 import com.wareflow.buildify.dto.ProductDTO;
-import com.wareflow.buildify.util.ListWrapper;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 // 관리자-상품조회 컨트롤러 구현체
@@ -42,7 +41,10 @@ public class AdminProductController {
                                 @RequestParam("keyword") String keyword,
                                 Model model) {
 
+        log.debug("🔍 검색조건 - type: {}, keyword: {}", searchType, keyword);
+
         List<ProductDTO> productDTOList = adminProductService.search(searchType,keyword);
+        log.debug("🔍 검색결과 수: {}", productDTOList.size());
 
         model.addAttribute("productList",productDTOList);
 
@@ -58,11 +60,6 @@ public class AdminProductController {
                                      Model model) {
         log.warn("🔥🔥🔥 adminProductRemove");
         log.info("컨트롤러 인덱스 : "+selectedIndexes.size());
-        // 체크한 상품만 뽑아냄
-//        List<ProductDTO> selectedProducts = selectedIndexes.stream()
-//                .map(productList.getList()::get)
-//                .collect(Collectors.toList());
-        log.info(selectedIndexes.size());
 
         int rows = adminProductService.adminProductRemove(selectedIndexes);
         log.info(rows);
@@ -72,9 +69,6 @@ public class AdminProductController {
         redirect.addFlashAttribute("msg", msg);
         model.addAttribute("body","/admin/pages/product/product-1");
         return "redirect:/admin/pages/product/product-1?page=1";
-//        return "admin/pages/product/product-1";
-//        Pagination.paginate(model, productDTOList, page,"/WEB-INF/views/admin/pages/product/product-1.jsp");
-//        return "admin/layouts/adminlayout";
     }
 
 
