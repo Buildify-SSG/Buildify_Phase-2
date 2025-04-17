@@ -9,7 +9,7 @@
 <details>
 <summary>👈 클릭해서 열기</summary>
 
--  🧩 `feature`: 새로운 기능 추가
+-  ✨ `feature`: 새로운 기능 추가
 -  🐛 `fix`: 버그 수정
 -  ♻️ `refactor`: 코드 리팩토링
 -  📝 `docs`: 문서 수정
@@ -19,7 +19,7 @@
 -  🚀 `perf`: 성능 개선
 -  🔥 `remove`: 코드 삭제
 -  🚧 `wip`: 작업 중 (Work in progress)
--  🛢 `db`: DB 관련 작업
+-  🗃️ `db`: DB 관련 작업
 -  🔀 `merge`: 브랜치 병합
 -  🐳 `docker`: 도커 관련 작업
 -  🔒 `security`: 보안 관련 수정
