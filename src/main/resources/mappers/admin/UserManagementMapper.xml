@@ -3,6 +3,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.UserManagementMapper">
-    <!-- 여기에 SQL 정의 들어감 -->
+<mapper namespace="com.wareflow.buildify.domain.admin.userManagement.mapper.AdminUserManagementMapper">
+    <select id="getUserInfo" resultType="com.wareflow.buildify.vo.UserVO">
+        SELECT
+            client_id AS clientId,
+            user_name AS userName,
+            user_phone AS userPhone,
+            user_email AS userEmail,
+            user_address AS userAddress,
+            business_number AS businessNumber,
+            user_enterdate AS userEnterdate,
+            user_id AS userId,
+            user_pw AS userPw,
+            user_status AS userStatus
+        FROM user
+    </select>
+
+    <select id="search" resultType="com.wareflow.buildify.vo.UserVO">
+        SELECT
+        client_id AS clientId,
+        user_name AS userName,
+        user_phone AS userPhone,
+        user_email AS userEmail,
+        user_address AS userAddress,
+        business_number AS businessNumber,
+        user_enterdate AS userEnterdate,
+        user_id AS userId,
+        user_pw AS userPw,
+        user_status AS userStatus
+        FROM user
+        <where>
+            <choose>
+                <when test="type == 'clientId'">
+                    REPLACE(client_id, '-', '') = #{keyword}
+                </when>
+                <when test="type == 'userName'">user_name = #{keyword} </when>
+                <when test="type == 'userPhone'">
+                    REPLACE(user_phone, '-', '') = #{keyword}
+                </when>
+                <when test="type == 'businessNumber'">
+                    REPLACE(business_number, '-', '') = #{keyword}
+                </when>
+            </choose>
+        </where>
+    </select>
+
 </mapper>
+

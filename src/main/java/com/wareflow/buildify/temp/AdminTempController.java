@@ -16,11 +16,11 @@ public class AdminTempController {
     }
 
     // userManagement
-    @GetMapping("/pages/userManagement/userManagement-1")
-    public String userManagement1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/userManagement/userManagement-1.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/userManagement/userManagement-1")
+//    public String userManagement1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/userManagement/userManagement-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/userManagement/userManagement-2")
     public String userManagement2(Model model) {
