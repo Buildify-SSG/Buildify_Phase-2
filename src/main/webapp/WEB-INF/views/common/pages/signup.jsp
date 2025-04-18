@@ -40,6 +40,12 @@
 			height: 50px;
 			font-size: 16px;
 		}
+		.phone-input-group input,
+		.phone-input-group select {
+			display: inline-block;
+			width: 30%;
+			text-align: center;
+		}
 		@media (max-width: 768px) {
 			.signup-container {
 				padding: 30px 20px;
@@ -56,7 +62,7 @@
 <main class="d-flex w-100 justify-content-center align-items-center" style="min-height: 100vh;">
 	<div class="signup-container">
 		<h2>회원가입</h2>
-		<form method="post" action="<c:url value="/common/pages/signup"/>">
+		<form method="post" action="<c:url value='/common/pages/signup'/>">
 			<div class="mb-3">
 				<label class="form-label">ID</label>
 				<input type="text" class="form-control" name="userId"
@@ -95,16 +101,41 @@
 			</div>
 			<div class="mb-3">
 				<label class="form-label">연락처</label>
-				<input type="text" class="form-control" name="userPhone"
-					   value="${user.userPhone}" placeholder="010-0000-0000"
-					   pattern="^01[0-9]-\d{3,4}-\d{4}$" required>
+				<div class="phone-input-group">
+					<select name="userPhone1" class="form-control d-inline-block" required>
+						<option value="010" ${userPhone1 == '010' ? 'selected' : ''}>010 (휴대폰)</option>
+						<option value="070" ${userPhone1 == '070' ? 'selected' : ''}>070 (인터넷전화)</option>
+						<option value="050" ${userPhone1 == '050' ? 'selected' : ''}>050 (안심번호)</option>
+						<option value="051" ${userPhone1 == '051' ? 'selected' : ''}>051 (부산)</option>
+						<option value="052" ${userPhone1 == '052' ? 'selected' : ''}>052 (울산)</option>
+						<option value="053" ${userPhone1 == '053' ? 'selected' : ''}>053 (대구)</option>
+						<option value="054" ${userPhone1 == '054' ? 'selected' : ''}>054 (경북)</option>
+						<option value="055" ${userPhone1 == '055' ? 'selected' : ''}>055 (경남)</option>
+						<option value="061" ${userPhone1 == '061' ? 'selected' : ''}>061 (전남)</option>
+						<option value="062" ${userPhone1 == '062' ? 'selected' : ''}>062 (광주)</option>
+						<option value="063" ${userPhone1 == '063' ? 'selected' : ''}>063 (전북)</option>
+						<option value="064" ${userPhone1 == '064' ? 'selected' : ''}>064 (제주)</option>
+					</select>
+					<input type="text" class="form-control d-inline-block" name="userPhone2" maxlength="4"
+						   placeholder="0000" pattern="\d{3,4}" required value="${userPhone2}">
+					<input type="text" class="form-control d-inline-block" name="userPhone3" maxlength="4"
+						   placeholder="0000" pattern="\d{4}" required value="${userPhone3}">
+				</div>
+				<input type="hidden" name="userPhone" id="userPhone" value="${user.userPhone}">
 			</div>
 			<div class="mb-3">
 				<label class="form-label">주소</label>
-				<input type="text" class="form-control" id="address" name="userAddress"
-					   value="${user.userAddress}" placeholder="주소를 입력하세요" required>
+				<input type="text" class="form-control" id="userAddressSearch"
+					   placeholder="주소 검색 버튼을 눌러주세요" readonly required
+					   value="${userAddressSearch}">
 				<button type="button" id="btn-search-address" class="btn btn-sm btn-secondary mt-2">주소 검색</button>
 			</div>
+			<div class="mb-3">
+				<label class="form-label">상세 주소</label>
+				<input type="text" class="form-control" id="userAddressDetail"
+					   placeholder="상세 주소를 입력하세요" required value="${userAddressDetail}">
+			</div>
+			<input type="hidden" name="userAddress" id="userAddress" value="${user.userAddress}">
 			<div class="mb-4">
 				<label class="form-label">사업자등록번호</label>
 				<input type="text" class="form-control" name="businessNumber"
@@ -123,7 +154,7 @@
 	document.getElementById("btn-search-address").addEventListener("click", function () {
 		new daum.Postcode({
 			oncomplete: function (data) {
-				document.getElementById("address").value = data.address;
+				document.getElementById("userAddressSearch").value = data.address;
 			}
 		}).open();
 	});
@@ -136,9 +167,21 @@
 		if (pw !== pwConfirm) {
 			pwCheckMsg.style.display = "block";
 			e.preventDefault();
+			return;
 		} else {
 			pwCheckMsg.style.display = "none";
 		}
+
+		// 주소 조합
+		const searchAddr = document.getElementById("userAddressSearch").value;
+		const detailAddr = document.getElementById("userAddressDetail").value;
+		document.getElementById("userAddress").value = searchAddr + " " + detailAddr;
+
+		// 전화번호 조합
+		const phone1 = document.querySelector('select[name="userPhone1"]').value;
+		const phone2 = document.querySelector('input[name="userPhone2"]').value;
+		const phone3 = document.querySelector('input[name="userPhone3"]').value;
+		document.getElementById("userPhone").value = `${phone1}-${phone2}-${phone3}`;
 	});
 </script>
 
