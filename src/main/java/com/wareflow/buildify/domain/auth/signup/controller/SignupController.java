@@ -20,18 +20,18 @@ public class SignupController {
     @Autowired
     private SignupService signupService;
 
-    @GetMapping("/pages-sign-up")
+    @GetMapping("/signup")
     public String signup() {
-        return "components/pages-sign-up";
+        return "common/pages/signup";
     }
 
-    @PostMapping("/pages-sign-up")
+    @PostMapping("/signup")
     public String processSignup(@ModelAttribute UserDTO userDTO, RedirectAttributes rttr) {
 
         if(signupService.isUserIdExist(userDTO.getUserId())) {
             rttr.addFlashAttribute("msg", "이미 사용 중인 아이디입니다.");
             rttr.addFlashAttribute("user", userDTO);
-            return "redirect:/components/pages-sign-up";
+            return "redirect:/common/pages/signup";
         }
 
         boolean result = signupService.signUp(userDTO);
@@ -44,7 +44,7 @@ public class SignupController {
         } else {
             rttr.addFlashAttribute("msg", "회원가입 실패");
             rttr.addFlashAttribute("user", userDTO);
-            return "redirect:/signup";
+            return "redirect:/common/pages/signup";
         }
     }
 }
