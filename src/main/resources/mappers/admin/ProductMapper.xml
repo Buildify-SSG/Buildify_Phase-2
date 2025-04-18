@@ -38,6 +38,13 @@
         </where>
     </select>
 
-
+<delete id="adminProductRemove">
+    delete
+    from product
+    where prod_id IN
+        <foreach collection="list" item="vo" open="(" separator="," close=")">
+          #{vo.prodId}
+        </foreach>
+</delete>
 
 </mapper>

@@ -1,0 +1,42 @@
+name: PR Checklist Labeler
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  check-checklist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v3
+
+      - name: Check checklist in PR body
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const hasUnchecked = body.includes('- [ ]');
+            const label = 'tasks-pending';
+            const prNumber = context.payload.pull_request.number;
+
+            if (hasUnchecked) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [label]
+              });
+            } else {
+              // 체크리스트 다 했으면 라벨 제거
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: label
+                });
+              } catch (error) {
+                // 라벨 없으면 무시
+              }
+            }

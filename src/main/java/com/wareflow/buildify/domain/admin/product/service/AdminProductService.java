@@ -14,9 +14,6 @@ public interface AdminProductService {
     // 검색
     List<ProductDTO> search(String searchType,String keyword);
 
-    // 관리자 상품 수정
-    int adminProductModify(List<ProductDTO> productDTOList);
-
     // 관리자 상품 삭제
-    int adminProductRemove(List<ProductDTO> productDTOList);
+    int adminProductRemove(List<String> productDTOList);
 }
