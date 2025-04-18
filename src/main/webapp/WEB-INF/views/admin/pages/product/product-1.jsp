@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
     body {
         font-family: 'Noto Sans KR', sans-serif;
@@ -114,10 +115,10 @@
 
 <div style="padding: 20px;">
 
-    <h1>회원 조회</h1>
+    <h1>상품 조회</h1>
     <h4><br></h4>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <!-- 검색 영역 -->
         <form method="get" action="/admin/pages/product/product-1/search">
         <div class="search-bar">
@@ -134,6 +135,10 @@
 
         <!-- export 버튼 -->
         <div class="export-buttons">
+
+
+
+
             <button style="margin-right: 5px;">exportExcel</button>
             <button>exportPDF</button>
         </div>
@@ -143,6 +148,10 @@
 
     <!-- 표 -->
     <div class="table-wrapper">
+        <form method="post" action="/admin/pages/product/product-1/api/productRemove">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+            <button type="button" style="background-color: crimson; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="confirmDelete()">Delete</button>
+        </div>
         <table id="contractTable">
             <thead>
             <tr>
@@ -164,32 +173,34 @@
             </tr>
             </thead>
             <tbody>
-<c:forEach var="product" items="${productList}" varStatus="status">
+<c:forEach var="product" items="${List}" varStatus="status">
     <tr>
         <td>
-            <input type="checkbox" name="selectedIndexes" value="${status.index}" />
-            <input type="hidden" name="productList[${status.index}].productId" value="${product.prodId}" />
-            <input type="hidden" name="productList[${status.index}].brand" value="${product.brand}" />
-            <input type="hidden" name="productList[${status.index}].productName" value="${product.prodName}" />
-            <input type="hidden" name="productList[${status.index}].price" value="${product.prodPrice}" />
-            <input type="hidden" name="productList[${status.index}].categoryId" value="${product.prodCategoryid}" />
-            <input type="hidden" name="productList[${status.index}].size" value="${product.prodSize}" />
+            <input type="checkbox" name="selectedIndexes" value="${product.prodId}" />
+<%--            <input type="checkbox" name="selectedIndexes" value="${status.index}" />--%>
+<%--            <input type="hidden" name="productList[${status.index}].productId" value="${product.prodId}" />--%>
+<%--            <input type="hidden" name="productList[${status.index}].brand" value="${product.brand}" />--%>
+<%--            <input type="hidden" name="productList[${status.index}].productName" value="${product.prodName}" />--%>
+<%--            <input type="hidden" name="productList[${status.index}].price" value="${product.prodPrice}" />--%>
+<%--            <input type="hidden" name="productList[${status.index}].categoryId" value="${product.prodCategoryid}" />--%>
+<%--            <input type="hidden" name="productList[${status.index}].size" value="${product.prodSize}" />--%>
         </td>
         <td>${product.prodId}</td>
         <td>${product.brand}</td>
         <td>${product.prodName}</td>
-        <td>${product.prodPrice}</td>
+        <td><fmt:formatNumber value="${product.prodPrice}" type="number" groupingUsed="true"/></td>
         <td>${product.prodCategoryid}</td>
         <td>${product.prodSize}</td>
     </tr>
 </c:forEach>
-<c:if test="${empty productList}">
+<c:if test="${empty List}">
     <tr>
         <td colspan="7">검색 결과가 없습니다.</td>
     </tr>
 </c:if>
             </tbody>
         </table>
+        </form>
         <!-- Pagination Block -->
         <c:if test="${totalPages > 1}">
             <div class="pagination" style="margin-top: 20px; text-align: center;">
@@ -214,6 +225,12 @@
         </c:if>
     </div>
 </div>
+
+<c:if test="${not empty msg}">
+    <script>
+        alert("${msg}");
+    </script>
+</c:if>
 
 <script>
     function sortTable(field, direction) {
@@ -248,7 +265,14 @@
         rows.forEach(row => tbody.appendChild(row)); // 재배치
     }
 </script>
-
+<script>
+    function confirmDelete() {
+        const confirmed = confirm('정말 삭제하시겠습니까?');
+        if (confirmed) {
+            document.querySelector('form[action="/admin/pages/product/product-1/api/productRemove"]').submit();
+        }
+    }
+</script>
 
 
 </body>
