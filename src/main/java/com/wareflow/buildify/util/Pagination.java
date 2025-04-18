@@ -14,8 +14,9 @@ public class Pagination {
         int end = Math.min(start + pageSize, totalItems);
 
         List<T> pagedList = fullList.subList(start, end);
+        System.out.println("▶ 잘린 리스트 크기: " + pagedList.size());
 
-        model.addAttribute("productList", pagedList); // 필요 시 변경 가능
+        model.addAttribute("inventoryList", pagedList); // 필요 시 변경 가능
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("body", bodyPath);

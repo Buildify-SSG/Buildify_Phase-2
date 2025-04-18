@@ -4,53 +4,76 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.wareflow.buildify.domain.user.inventory.mapper.InventoryUserMapper">
-    <!-- 여기에 SQL 정의 들어감 -->
-    <select id="getFilteredInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+
+<!--    <resultMap id="InventoryResultMap" type="com.wareflow.buildify.dto.InventoryDTO">-->
+<!--        <result property="prodId" column="prod_id"/>-->
+<!--        <result property="prodName" column="prod_name"/>-->
+<!--        <result property="brand" column="brand"/>-->
+<!--        <result property="clientId" column="client_id"/>-->
+<!--        <result property="prodPrice" column="prod_price"/>-->
+<!--        <result property="wareId" column="ware_id"/>-->
+<!--        <result property="quantity" column="quantity"/>-->
+<!--        <result property="last_inbound_date" column="last_inbound_date"/>-->
+<!--        <result property="last_outbound_date" column="last_outbound_date"/>-->
+<!--        <result property="categoryLevel1" column="category_level1"/>-->
+<!--        <result property="categoryLevel2" column="category_level2"/>-->
+<!--        <result property="categoryLevel3" column="category_level3"/>-->
+<!--    </resultMap>-->
+
+    <select id="getUserInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
         SELECT
-        i.*,
-        p.prod_name,
-        c.category_level1,
-        c.category_level2,
-        c.category_level3
+        p.prod_id as prodId,
+        p.prod_name as prodName,
+        p.prod_price as prodPrice,
+        p.brand,
+        p.client_id as clientId,
+        i.ware_id as wareId,
+        i.quantity,
+        i.last_inbound_date,
+        i.last_outbound_date
         FROM inventory i
         JOIN product p ON i.prod_id = p.prod_id
         JOIN category c ON p.prod_categoryid = c.prod_categoryid
-        WHERE 1=1
-        <if test="clientId != null and clientId != ''">
-            AND i.client_id = #{clientId}
-        </if>
-        <if test="prodName != null and prodName != ''">
-            AND p.prod_name LIKE CONCAT('%', #{prodName}, '%')
-        </if>
-        <if test="wareId != null and wareId != ''">
-            AND i.ware_id = #{wareId}
-        </if>
-        <if test="categoryLevel1 != null and categoryLevel1 != ''">
-            AND c.category_level1 = #{categoryLevel1}
-        </if>
-        <if test="categoryLevel2 != null and categoryLevel2 != ''">
-            AND c.category_level2 = #{categoryLevel2}
-        </if>
-        <if test="categoryLevel3 != null and categoryLevel3 != ''">
-            AND c.category_level3 = #{categoryLevel3}
-        </if>
-        <choose>
-            <when test="sortBy == 'asc'">
-                ORDER BY i.quantity ASC
-            </when>
-            <when test="sortBy == 'desc'">
-                ORDER BY i.quantity DESC
-            </when>
-            <otherwise>
-                ORDER BY p.prod_name ASC
-            </otherwise>
-        </choose>
-        LIMIT #{skip}, #{amount}
+
+<!--        <where>-->
+<!--            <if test="clientId != null and clientId != ''">-->
+<!--                AND p.client_id = #{clientId}-->
+<!--            </if>-->
+<!--            <if test="prodName != null and prodName != ''">-->
+<!--                AND p.prod_name LIKE CONCAT('%', #{prodName}, '%')-->
+<!--            </if>-->
+<!--            <if test="wareId != null and wareId != ''">-->
+<!--                AND i.ware_id = #{wareId}-->
+<!--            </if>-->
+<!--            <if test="categoryLevel1 != null and categoryLevel1 != ''">-->
+<!--                AND c.category_level1 = #{categoryLevel1}-->
+<!--            </if>-->
+<!--            <if test="categoryLevel2 != null and categoryLevel2 != ''">-->
+<!--                AND c.category_level2 = #{categoryLevel2}-->
+<!--            </if>-->
+<!--            <if test="categoryLevel3 != null and categoryLevel3 != ''">-->
+<!--                AND c.category_level3 = #{categoryLevel3}-->
+<!--            </if>-->
+<!--&lt;!&ndash;            <if test="startDate != null and endDate != null">&ndash;&gt;-->
+<!--&lt;!&ndash;                AND i.last_inbound_date BETWEEN #{startDate} AND #{endDate}&ndash;&gt;-->
+<!--&lt;!&ndash;            </if>&ndash;&gt;-->
+<!--        </where>-->
+
+<!--        <choose>-->
+<!--            <when test="sortBy == 'asc'">-->
+<!--                ORDER BY i.quantity ASC-->
+<!--            </when>-->
+<!--            <when test="sortBy == 'desc'">-->
+<!--                ORDER BY i.quantity DESC-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                ORDER BY p.prod_name ASC-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+
+
     </select>
 
-
-
-
-
-
 </mapper>
+
+
