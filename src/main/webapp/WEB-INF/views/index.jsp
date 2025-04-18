@@ -54,7 +54,7 @@
     <div style="margin-top: 40px; padding: 20px; background-color: #f0f0f0; border-radius: 10px;">
         <p style="font-weight: bold; margin-bottom: 10px;">📦 컴포넌트 페이지</p><br>
         <a href="<c:url value='/components/pages-sign-in' />" style="margin-right: 15px;">🔐 로그인</a>
-        <a href="<c:url value='/components/pages-sign-up' />" style="margin-right: 15px;">📝 회원가입</a>
+        <a href="<c:url value='/common/pages/signup' />" style="margin-right: 15px;">📝 회원가입</a>
         <a href="<c:url value='/components/ui-buttons' />" style="margin-right: 15px;">🔲 버튼</a>
         <a href="<c:url value='/components/ui-forms' />" style="margin-right: 15px;">🧾 입력폼</a>
         <a href="<c:url value='/components/ui-cards' />" style="margin-right: 15px;">📇 카드</a>
