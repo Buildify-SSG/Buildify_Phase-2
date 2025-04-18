@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -17,30 +18,29 @@ import java.util.List;
 @Log4j2
 
 
-public class InventoryTests {
+public class InventoryMapperTests {
 
     @Autowired(required = false)
     InventoryUserMapper inventoryUserMapper;
 
     @Test
-    public void testInventoryList(){
+    public void testInventoryList() {
         InventoryFilterDTO filter = InventoryFilterDTO.builder()
-                .clientId("C003")
-                .prodName("CPU")
-                .categoryLevel1("컴퓨터")
-                .categoryLevel2("그래픽카드")
-                .categoryLevel3("NVIDIA")
-                .sortBy("asc")
-                .pageNum(1)
-                .amount(10)
+                .clientId("CLT-001-AAA")
                 .build();
 
-        List<InventoryDTO> list = inventoryUserMapper.getFilteredInventory(filter);
+        List<InventoryDTO> list = inventoryUserMapper.getUserInventory();
 
-        for (InventoryDTO dto : list) {
-            log.info(dto.toString());
-        }
+       log.info(list.size());
+
+
+        assertThat(list).isNotEmpty();
+
+        InventoryDTO first = list.get(0);
+        assertThat(first.getClientId()).isEqualTo("CLT-001-AAA");
+        assertThat(first.getProdName()).isNotEmpty(); // or .contains("ROG")
+    }
 
 
     }
-}
+

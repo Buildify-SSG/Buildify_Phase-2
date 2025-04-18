@@ -6,7 +6,7 @@ import com.wareflow.buildify.dto.InventoryFilterDTO;
 import java.util.List;
 
 public interface InventoryUserService {
-    List<InventoryDTO> getFilteredInventory(InventoryFilterDTO filter);
+    public List<InventoryDTO> getUserInventory();
 
 
 }
