@@ -5,7 +5,6 @@ import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.dto.InventoryFilterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,5 +23,10 @@ public class InventoryUserServiceImpl implements InventoryUserService {
         log.info("▶ 매퍼가 꺼내온 리스트: {}", list.size());
         return list;
 
+    }
+
+    @Override
+    public List<InventoryDTO> searchUserInventory(InventoryFilterDTO filter) {
+        return inventoryUserMapper.searchUserInventory(filter);
     }
 }

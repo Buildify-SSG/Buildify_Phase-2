@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,6 +35,16 @@ public class InventoryUserController {
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
 
         return "users/layouts/userlayout";
+    }
+
+    @GetMapping("/inventory-1/search")
+    public String searchUserInventory(InventoryFilterDTO filter,Model model, @RequestParam(defaultValue = "1") int page) {
+        List<InventoryDTO> inventoryList = inventoryUserService.searchUserInventory(filter);
+        log.info(inventoryList.size());
+
+        Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
+        return "users/layouts/userlayout";
+
     }
 
 

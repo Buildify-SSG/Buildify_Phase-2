@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class InventoryVO {
+    private String inventoryId;
     private String prodId;               // 상품 ID
     private String clientId;             // 입점사 ID
     private int quantity;                // 수량

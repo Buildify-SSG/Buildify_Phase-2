@@ -9,10 +9,12 @@ import java.util.List;
 @Mapper
 public interface InventoryUserMapper {
     /**
-     * 회원 재고 통합 필터 조회
-     * 필터: 카테고리, 상품명, 창고, 정렬, 페이징 등
+     * 회원 재고 전체 조회
+     *
      */
     public List<InventoryDTO> getUserInventory();
+
+    public List<InventoryDTO> searchUserInventory(InventoryFilterDTO filter);
 
 
 

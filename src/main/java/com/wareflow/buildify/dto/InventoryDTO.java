@@ -20,7 +20,8 @@ public class InventoryDTO {
     private String clientId;
     private String prodPrice;
     private String inventoryId;
-
+    private String wareName;
+    private String wareAddress;
 
     private String wareId;
 
@@ -32,17 +33,5 @@ public class InventoryDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date last_outbound_date;
 
-    // 날짜 범위 검색
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    private Date startDate;
-//
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    private Date endDate;
 
-
-    private String categoryLevel1;
-    private String categoryLevel2;
-    private String categoryLevel3;
-
-    private String sortBy; // asc / desc
 }
