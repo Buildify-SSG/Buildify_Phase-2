@@ -4,15 +4,40 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--
+      Spring의 루트 컨텍스트 설정 파일 위치 지정
+      Specifies the location of the Spring root application context configuration file.
+    -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/root-context.xml</param-value>
     </context-param>
 
+    <!--
+      Spring ContextLoaderListener 설정
+      Loads the root application context when the web application starts.
+    -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <listener>
+        <!--
+          Loads API keys and other secrets from application-secret.properties
+          and injects them into the ServletContext as attributes (e.g., kakaoRestKey, kakaoJavascriptKey).
+          Required for dynamic API key injection into JSP pages and server utilities.
+
+          application-secret.properties 파일에서 API 키 및 보안 설정을 읽어와
+          ServletContext에 속성으로 주입해주는 리스너입니다.
+          JSP 페이지나 서버 유틸에서 API 키를 동적으로 불러올 때 필요합니다.
+        -->
+        <listener-class>com.wareflow.buildify.config.SecretPropertiesLoader</listener-class>
+    </listener>
+
+    <!--
+      Spring DispatcherServlet 등록
+      Registers the central Spring MVC servlet responsible for handling requests.
+    -->
     <servlet>
         <servlet-name>appServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -33,6 +58,10 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!--
+      한글 깨짐 방지를 위한 인코딩 필터 설정
+      Sets character encoding filter to UTF-8 for handling Korean characters correctly.
+    -->
     <filter>
         <filter-name>encoding</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -52,6 +81,10 @@
         <servlet-name>appServlet</servlet-name>
     </filter-mapping>
 
+    <!--
+      정적 자원 매핑 설정 (CSS, JS 등)
+      Maps static resources like CSS, JavaScript, and images.
+    -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>

@@ -11,11 +11,10 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WareHouseVO {
+public class WarehouseAreaVO {
     private String wareId;
-    private String wareName;
-    private String wareAddress;
-    private String wareAdminNumber;
-    private BigDecimal wareTotalSize;
-    private BigDecimal wareAvailSpace;
+    private String warehousePosX;
+    private int warehousePosY;
+    private BigDecimal areaSize;
+    private int rentalFee;
 }

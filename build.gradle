@@ -3,7 +3,6 @@ plugins {
 	id 'war'
 }
 
-
 group = 'com.buildify'
 version = '0.0.1-SNAPSHOT'
 
@@ -28,6 +27,8 @@ ext {
 }
 
 dependencies {
+	// 🌱 Spring 핵심 라이브러리 설정
+	// Spring core framework dependencies
 	compileOnly('javax.servlet:javax.servlet-api:4.0.1')
 	implementation group: 'org.springframework', name: 'spring-core', version: '5.3.27'
 	implementation group: 'org.springframework', name: 'spring-context', version: '5.3.27'
@@ -38,44 +39,61 @@ dependencies {
 	implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.27'
 	implementation group: 'org.springframework', name: 'spring-tx', version: '5.3.27'
 
+	// 🧩 MyBatis 설정
+	// MyBatis ORM dependencies for DB integration
 	//mybatis 라이브러리
 	implementation 'org.mybatis:mybatis:3.5.9'
 	implementation 'org.mybatis:mybatis-spring:2.0.7'
 
-
+	// ✍️ Lombok 설정
+	// Lombok for reducing boilerplate code
 	compileOnly 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 	testCompileOnly 'org.projectlombok:lombok:1.18.30'
 
+	// 🛠️ JDBC 및 커넥션 풀 설정
+	// JDBC driver and connection pool settings
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
 	implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.1'
 
-
-	//테스트 환경에서 @Log4j2 기능을 활용시 필요한 라이브러리
+	// 🧪 테스트 관련 라이브러리
+	// JUnit and test utility dependencies
+	// 테스트 환경에서 @Log4j2 기능을 활용시 필요한 라이브러리
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 	testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
+	// 📝 로깅 설정
+	// Logging dependencies using Log4j2
 	implementation 'org.apache.logging.log4j:log4j-api:2.22.1'
 	implementation 'org.apache.logging.log4j:log4j-core:2.22.1'
 	implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.22.1'
 
+	// 🌐 JSTL for JSP
 	implementation 'jstl:jstl:1.2'
 
-	// https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator 파라미터 유효성 검사
+	// ✅ 유효성 검사 설정
+	// Hibernate Validator for parameter validation
+	// https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
 	implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.0.Final'
 
-
+	// 🔐 스프링 보안 암호화
+	// Spring Security crypto dependency
 	// 순수 Spring 보안 관련 의존성 직접 추가
 	implementation 'org.springframework.security:spring-security-crypto:5.8.5' // Spring 5.3.27에 맞는 버전
 
-
+	// 🔄 객체 매핑 도구
+	// ModelMapper for DTO <-> Entity mapping
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1'
 
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 
+	// 📦 JSON 파싱 라이브러리
+	// JSON processing libraries (Jackson, org.json)
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2' // 또는 비슷한 버전
+	implementation 'org.json:json:20231013'
 }
 
 test {

@@ -140,11 +140,11 @@ public class AdminTempController {
     }
 
     // systemOperation
-    @GetMapping("/pages/systemOperation/systemOperation-1")
-    public String systemOperation1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-1.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/systemOperation/systemOperation-1")
+//    public String systemOperation1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/systemOperation/systemOperation-2")
     public String systemOperation2(Model model) {
