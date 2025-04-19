@@ -9,4 +9,6 @@ public interface AdminUserManagementService {
 
     // 회원 조회
     List<UserDTO> getUserInfo();
+
+    List<UserDTO> search(String searchType, String keyword);
 }
