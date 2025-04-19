@@ -4,25 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WareHouseDTO {
+public class WarehouseViewDTO {
     private String wareId;
-    private String wareName;
+    private String wareCoord;
     private String wareAddress;
-    private Double lat;
-    private Double lng;
-    private String wareAdminName;
-    private BigDecimal wareTotalSize;
-    private BigDecimal wareAvailSpace;
-    private BigDecimal usageRate; // 창고 사용률
+    private String adminNumber;
+    private String clientID;
+    private String clientName;
+    private String clientBusinessNumber;
+    private Date startDate;
+    private Date endDate;
     private Date lastInboundDate;
     private Date lastOutboundDate;
-
 }

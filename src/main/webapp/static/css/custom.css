@@ -9,6 +9,10 @@
     color: #eeeeee !important;
 }
 
+.dark-mode table {
+    color: black !important;
+}
+
 /* 레이아웃 기본 배경 */
 .dark-mode .wrapper,
 .dark-mode .main,
@@ -208,6 +212,8 @@
 .main {
     flex-grow: 1 !important;
 }
+
+
 
 /*main.content {*/
 /*    background: red !important;*/

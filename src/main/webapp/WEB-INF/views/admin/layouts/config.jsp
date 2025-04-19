@@ -6,6 +6,7 @@
 <meta name="author" content="AdminKit">
 <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
+<script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=g87awropm1"></script>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="shortcut icon" href="<c:url value='/static/img/icons/icon-48x48.png' />" />
 
@@ -13,6 +14,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 
 <title>Buildify</title>
 <script>
