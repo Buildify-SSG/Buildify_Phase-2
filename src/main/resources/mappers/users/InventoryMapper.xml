@@ -5,73 +5,88 @@
 
 <mapper namespace="com.wareflow.buildify.domain.user.inventory.mapper.InventoryUserMapper">
 
-<!--    <resultMap id="InventoryResultMap" type="com.wareflow.buildify.dto.InventoryDTO">-->
-<!--        <result property="prodId" column="prod_id"/>-->
-<!--        <result property="prodName" column="prod_name"/>-->
-<!--        <result property="brand" column="brand"/>-->
-<!--        <result property="clientId" column="client_id"/>-->
-<!--        <result property="prodPrice" column="prod_price"/>-->
-<!--        <result property="wareId" column="ware_id"/>-->
-<!--        <result property="quantity" column="quantity"/>-->
-<!--        <result property="last_inbound_date" column="last_inbound_date"/>-->
-<!--        <result property="last_outbound_date" column="last_outbound_date"/>-->
-<!--        <result property="categoryLevel1" column="category_level1"/>-->
-<!--        <result property="categoryLevel2" column="category_level2"/>-->
-<!--        <result property="categoryLevel3" column="category_level3"/>-->
-<!--    </resultMap>-->
-
     <select id="getUserInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
         SELECT
-        p.prod_id as prodId,
-        p.prod_name as prodName,
-        p.prod_price as prodPrice,
+        p.prod_id AS prodId,
+        p.prod_name AS prodName,
         p.brand,
-        p.client_id as clientId,
-        i.ware_id as wareId,
+        p.client_id AS clientId,
+        p.prod_price AS prodPrice,
+        i.inventory_id AS inventoryId,
+        i.ware_id AS wareId,
         i.quantity,
         i.last_inbound_date,
-        i.last_outbound_date
+        i.last_outbound_date,
+        wa.ware_name AS wareName,
+        wa.ware_address AS wareAddress
         FROM inventory i
         JOIN product p ON i.prod_id = p.prod_id
         JOIN category c ON p.prod_categoryid = c.prod_categoryid
+        JOIN warehouse_area wa on i.ware_id = wa.ware_id
 
-<!--        <where>-->
-<!--            <if test="clientId != null and clientId != ''">-->
-<!--                AND p.client_id = #{clientId}-->
-<!--            </if>-->
-<!--            <if test="prodName != null and prodName != ''">-->
-<!--                AND p.prod_name LIKE CONCAT('%', #{prodName}, '%')-->
-<!--            </if>-->
-<!--            <if test="wareId != null and wareId != ''">-->
-<!--                AND i.ware_id = #{wareId}-->
-<!--            </if>-->
-<!--            <if test="categoryLevel1 != null and categoryLevel1 != ''">-->
-<!--                AND c.category_level1 = #{categoryLevel1}-->
-<!--            </if>-->
-<!--            <if test="categoryLevel2 != null and categoryLevel2 != ''">-->
-<!--                AND c.category_level2 = #{categoryLevel2}-->
-<!--            </if>-->
-<!--            <if test="categoryLevel3 != null and categoryLevel3 != ''">-->
-<!--                AND c.category_level3 = #{categoryLevel3}-->
-<!--            </if>-->
-<!--&lt;!&ndash;            <if test="startDate != null and endDate != null">&ndash;&gt;-->
-<!--&lt;!&ndash;                AND i.last_inbound_date BETWEEN #{startDate} AND #{endDate}&ndash;&gt;-->
-<!--&lt;!&ndash;            </if>&ndash;&gt;-->
-<!--        </where>-->
-
-<!--        <choose>-->
-<!--            <when test="sortBy == 'asc'">-->
-<!--                ORDER BY i.quantity ASC-->
-<!--            </when>-->
-<!--            <when test="sortBy == 'desc'">-->
-<!--                ORDER BY i.quantity DESC-->
-<!--            </when>-->
-<!--            <otherwise>-->
-<!--                ORDER BY p.prod_name ASC-->
-<!--            </otherwise>-->
-<!--        </choose>-->
+    </select>
 
 
+    <!-- 🔍 필터 검색 조회 -->
+    <select id="searchUserInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+        SELECT
+        p.prod_id AS prodId,
+        p.prod_name AS prodName,
+        p.brand,
+        p.client_id AS clientId,
+        p.prod_price AS prodPrice,
+        i.inventory_id AS inventoryId,
+        i.ware_id AS wareId,
+        i.quantity,
+        i.last_inbound_date,
+        i.last_outbound_date,
+        wa.ware_name AS wareName,
+        wa.ware_address AS wareAddress
+        FROM inventory i
+        JOIN product p ON i.prod_id = p.prod_id
+        JOIN category c ON p.prod_categoryid = c.prod_categoryid
+        JOIN warehouse_area wa on i.ware_id = wa.ware_id
+
+        <where>
+            <!-- 🔵 카테고리 필터 조건 -->
+            <if test="category1 != null and category1 != ''">
+                AND c.category_level1 = #{category1}
+            </if>
+            <if test="category2 != null and category2 != ''">
+                AND c.category_level2 = #{category2}
+            </if>
+            <if test="category3 != null and category3 != ''">
+                AND c.category_level3 = #{category3}
+            </if>
+
+            <!-- 🔵 검색어 필터 조건 -->
+            <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'prodName'">
+                        AND p.prod_name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'brand'">
+                        AND p.brand LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'wareName'">
+                        AND wa.ware_name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+
+        <!-- 🔵 정렬 조건 -->
+        <choose>
+            <when test="sortBy != null and sortBy == 'asc'">
+                ORDER BY i.quantity ASC
+            </when>
+            <when test="sortBy != null and sortBy == 'desc'">
+                ORDER BY i.quantity DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prod_name ASC
+            </otherwise>
+        </choose>
     </select>
 
 </mapper>

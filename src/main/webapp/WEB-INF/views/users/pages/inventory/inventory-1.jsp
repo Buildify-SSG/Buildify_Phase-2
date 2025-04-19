@@ -114,18 +114,46 @@
 
 <div style="padding: 20px;">
 
-    <h1>회원 조회</h1>
+    <h1>나의 재고 조회</h1>
     <h4><br></h4>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <!-- 검색 영역 -->
-        <form method="get" action="/admin/pages/product/product-1/search">
+        <form method="get" action="/users/pages/inventory/inventory-1/search">
             <div class="search-bar">
+
+                <!-- 대분류 선택 -->
+                <select name="category1">
+                    <option value="">대분류 선택</option>
+                    <option value="PC" <c:if test="${param.category1 eq 'PC'}">selected</c:if>>PC</option>
+                    <option value="주변기기" <c:if test="${param.category1 eq '주변기기'}">selected</c:if>>주변기기</option>
+
+                    <!-- 필요하면 데이터베이스에서 불러오게 나중에 개선 가능 -->
+                </select>
+
+                <!-- 중분류 선택 -->
+                <select name="category2">
+                    <option value="">중분류 선택</option>
+                    <option value="CPU" <c:if test="${param.category2 eq 'CPU'}">selected</c:if>>CPU</option>
+                    <option value="RAM" <c:if test="${param.category2 eq 'RAM'}">selected</c:if>>RAM</option>
+                    <option value="GPU" <c:if test="${param.category2 eq 'GPU'}">selected</c:if>>GPU</option>
+<%--                    <option value="Mainboard">Mainboard</option>--%>
+                </select>
+
+                <!-- 소분류 선택 -->
+                <select name="category3">
+                    <option value="">소분류 선택</option>
+                    <option value="Intel" <c:if test="${param.category3 eq 'Intel'}">selected</c:if>>Intel</option>
+                    <option value="Nvidia" <c:if test="${param.category3 eq 'Nvidia'}">selected</c:if>>Nvidia</option>
+                    <option value="ATX" <c:if test="${param.category3 eq 'ATX'}">selected</c:if>>ATX</option>
+                </select>
+
+
                 <select name="searchType">
-                    <option value="prodId">상품 ID</option>
+                    <option value="prodName">상품명</option>
                     <option value="brand">브랜드</option>
-                    <option value="prodName">상품이름</option>
-                    <option value="prodCategoryId">카테고리 ID</option>
+                    <option value="wareName">창고명</option>
+
                 </select>
                 <input type="text" name="keyword" placeholder="검색" />
                 <button type="submit">🔍</button>
@@ -147,44 +175,41 @@
 
     <!-- 표 -->
     <div class="table-wrapper">
-        <form method="post" action="/admin/pages/product/product-1/api/productRemove">
+        <form method="GET" action="/users/pages/inventory/inventory-1">
             <table id="contractTable">
-                <button type="button" style="margin-right: 15px; background: crimson" onclick="confirmDelete()">Delete</button>
+<%--                <button type="button" style="margin-right: 15px; background: crimson" onclick="confirmDelete()">Delete</button>--%>
                 <thead>
                 <tr>
-                    <th>선택</th>
+<%--                    <th>선택</th>--%>
                     <th>브랜드</th>
                     <th>상품명</th>
                     <th>가격</th>
                     <th>
                         수량
-                        <a class="sort" href="#" onclick="sortTable('prodPrice', 'asc'); return false;">▲</a>
-                        <a class="sort" href="#" onclick="sortTable('prodPrice', 'desc'); return false;">▼</a>
+                        <a class="sort" href="?category1=${param.category1}&category2=${param.category2}&category3=${param.category3}&searchType=${param.searchType}&keyword=${param.keyword}&sortBy=asc">▲</a>
+                        <a class="sort" href="?category1=${param.category1}&category2=${param.category2}&category3=${param.category3}&searchType=${param.searchType}&keyword=${param.keyword}&sortBy=desc">▼</a>
+
                     </th>
-                    <th>창고 ID</th>
+                    <th>창고명</th>
+                    <th>창고 주소</th>
                     <th>최종입고일</th>
                     <th>최종출고일</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="inventory" items="${inventoryList}" varStatus="status">
+                <c:forEach var="inventory" items="${List}" varStatus="status">
                     <tr>
-                        <td>
-                            <input type="checkbox" name="selectedIndexes" value="${inventory.inventoryId}" />
-                                <%--            <input type="checkbox" name="selectedIndexes" value="${status.index}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].productId" value="${product.prodId}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].brand" value="${product.brand}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].productName" value="${product.prodName}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].price" value="${product.prodPrice}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].categoryId" value="${product.prodCategoryid}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].size" value="${product.prodSize}" />--%>
+<%--                        <td>--%>
+<%--                            <input type="checkbox" name="selectedIndexes" value="${inventory.inventoryId}" />--%>
+                                <%--
                         </td>
 <%--                        <td>${product.prodId}</td>--%>
                         <td>${inventory.brand}</td>
                         <td>${inventory.prodName}</td>
                         <td>${inventory.prodPrice}</td>
                         <td>${inventory.quantity}</td>
-                        <td>${inventory.wareId}</td>
+                        <td>${inventory.wareName}</td>
+                        <td>${inventory.wareAddress}</td>
                         <td>${inventory.last_inbound_date}</td>
                         <td>${inventory.last_outbound_date}</td>
 
@@ -194,7 +219,7 @@
 <%--                        <td>${product.prodSize}</td>--%>
                     </tr>
                 </c:forEach>
-                <c:if test="${empty inventoryList}">
+                <c:if test="${empty List}">
                     <tr>
                         <td colspan="7">검색 결과가 없습니다.</td>
                     </tr>

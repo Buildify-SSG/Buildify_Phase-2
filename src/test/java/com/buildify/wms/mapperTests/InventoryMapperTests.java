@@ -25,13 +25,11 @@ public class InventoryMapperTests {
 
     @Test
     public void testInventoryList() {
-        InventoryFilterDTO filter = InventoryFilterDTO.builder()
-                .clientId("CLT-001-AAA")
-                .build();
 
         List<InventoryDTO> list = inventoryUserMapper.getUserInventory();
 
        log.info(list.size());
+       log.info(list);
 
 
         assertThat(list).isNotEmpty();
@@ -39,6 +37,26 @@ public class InventoryMapperTests {
         InventoryDTO first = list.get(0);
         assertThat(first.getClientId()).isEqualTo("CLT-001-AAA");
         assertThat(first.getProdName()).isNotEmpty(); // or .contains("ROG")
+    }
+
+    @Test
+    public void testInventorySearch(){
+
+        InventoryFilterDTO filter = new InventoryFilterDTO();
+        filter.setCategory1("컴퓨터");
+        filter.setSearchType("prodName");
+        filter.setKeyword("i7-12700K");
+
+        List<InventoryDTO> result = inventoryUserMapper.searchUserInventory(filter);
+
+        assertThat(result).isNotNull();
+        log.info("전체 조회 결과 수: {}" , result.size());
+        for (InventoryDTO dto : result) {
+            log.info("▶ 전체 조회 상품: {}", dto);
+        }
+
+
+
     }
 
 
