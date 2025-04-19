@@ -7,4 +7,6 @@ public interface SignupService {
 
     boolean isUserIdExist(String userId);
 
+    boolean addAuth(String userId, int role);
+
 }

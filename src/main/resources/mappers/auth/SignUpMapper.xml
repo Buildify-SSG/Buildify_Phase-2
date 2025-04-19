@@ -6,14 +6,14 @@
 <mapper namespace="com.wareflow.buildify.domain.auth.signup.mapper.SignupMapper">
     <!-- 여기에 SQL 정의 들어감 -->
     <!-- 1. 아이디 중복 체크 -->
-    <select id="existCheckId" resultType="int">
+    <select id="existCheckByUserId" resultType="int">
         SELECT COUNT(*)
         FROM user
         WHERE user_id = #{user_id}
     </select>
 
     <!-- 2. 회원가입 -->
-    <insert id="signUp" parameterType="com.wareflow.buildify.vo.UserVO">
+    <insert id="insertUser" parameterType="com.wareflow.buildify.vo.UserVO">
         INSERT INTO user (
             client_id,
             user_name,
@@ -38,5 +38,10 @@
                    #{userPw},
                    #{userStatus}
                )
+    </insert>
+
+    <insert id="insertAuth" parameterType="map">
+        INSERT INTO auth (id, role)
+        values ( #{userId}, #{role})
     </insert>
 </mapper>

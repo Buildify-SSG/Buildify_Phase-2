@@ -10,6 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class SignupServiceImpl implements SignupService {
     @Override
     public boolean signUp(UserDTO userDTO) {
         // 아이디 중복 검사
-        if (signupMapper.existCheckId(userDTO.getUserId()) > 0) {
+        if (signupMapper.existCheckByUserId(userDTO.getUserId()) > 0) {
             return false;
         }
 
@@ -45,12 +48,20 @@ public class SignupServiceImpl implements SignupService {
                 .userStatus(0) // 미승인 상태
                 .build();
 
-        return signupMapper.signUp(userVO) == 1;
+        return signupMapper.insertUser(userVO) == 1;
     }
 
     @Override
     public boolean isUserIdExist(String userId) {
-        return signupMapper.existCheckId(userId) > 0;
+        return signupMapper.existCheckByUserId(userId) > 0;
+    }
+
+    @Override
+    public boolean addAuth(String userId, int role) {
+        Map<String, Object> authMap = new HashMap<>();
+        authMap.put("userId", userId);
+        authMap.put("role", role);
+        return signupMapper.insertAuth(authMap) > 0;
     }
 
 
