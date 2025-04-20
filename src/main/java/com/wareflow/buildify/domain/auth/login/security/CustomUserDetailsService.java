@@ -41,14 +41,25 @@ public class CustomUserDetailsService implements UserDetailsService {
                 throw new UsernameNotFoundException("사용자 정보가 존재하지 않습니다.");
             }
 
-            return new CustomUserDetails(user.getUserId(), user.getUserPw(), "ROLE_USER");
+            return CustomUserDetails.builder()
+                    .id(user.getUserId())
+                    .password(user.getUserPw())
+                    .role("ROLE_USER")
+                    .clientId(user.getClientId())
+                    .build();
         } else {
             // 관리자
             AdminVO admin = adminLoginMapper.findById(id);
             if (admin == null) {
                 throw new UsernameNotFoundException("관리자 정보가 존재하지 않습니다.");
             }
-            return new CustomUserDetails(admin.getAdminId(), admin.getAdminPassword(), "ROLE_ADMIN");
+
+            return CustomUserDetails.builder()
+                    .id(admin.getAdminId())
+                    .password(admin.getAdminPassword())
+                    .role("ROLE_ADMIN")
+                    .adminNumber(admin.getAdminNumber())
+                    .build();
         }
 
     }
