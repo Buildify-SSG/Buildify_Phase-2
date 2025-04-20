@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wareflow.buildify.domain.auth.login.mapper.UserLoginMapper">
+    <select id="findById" resultType="com.wareflow.buildify.vo.UserVO">
+        SELECT
+            client_id,
+            user_name,
+            user_phone,
+            user_email,
+            user_address,
+            business_number,
+            user_enterdate,
+            user_id,
+            user_pw,
+            user_status
+        FROM user
+        WHERE user_id = #{userId}
+
+    </select>
+</mapper>
