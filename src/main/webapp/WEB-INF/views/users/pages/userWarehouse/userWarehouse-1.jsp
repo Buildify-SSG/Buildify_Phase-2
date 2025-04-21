@@ -8,10 +8,7 @@
     <meta charset="UTF-8">
     <title>창고 신청</title>
     <style>
-        .warehouse-select {
-            margin: 20px 0;
-        }
-
+        .warehouse-select { margin: 20px 0; }
         .grid-container {
             display: grid;
             grid-template-columns: repeat(5, 60px);
@@ -19,46 +16,29 @@
             width: max-content;
             margin-top: 30px;
         }
-
         .grid-item {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             background-color: #fff;
             border: 1px solid #ccc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; cursor: pointer;
             transition: background-color 0.3s ease;
-            text-align: center;
-            white-space: pre-line;
+            text-align: center; white-space: pre-line;
         }
-
-        .grid-item:hover {
-            background-color: #f2f2f2;
-        }
-
+        .grid-item:hover { background-color: #f2f2f2; }
         .grid-item.disabled {
             background-color: orange;
             pointer-events: none;
             color: white;
             font-size: 0.85em;
         }
-
-        .grid-item.selected {
-            background-color: #f9cc00;
-        }
-
-        .submit-button {
-            margin-top: 30px;
-        }
+        .grid-item.selected { background-color: #f9cc00; }
+        .submit-button { margin-top: 30px; }
     </style>
 </head>
 <body>
 
 <form id="warehouseForm" method="post" action="/users/pages/userWarehouse/userWarehouse-1">
-    <!-- ✅ 드롭다운 영역 -->
     <div class="warehouse-select">
         <label for="warehouseCode">창고 선택:</label>
         <select id="warehouseCode" name="wareId" class="form-select" style="width: 250px; padding: 8px;">
@@ -70,26 +50,27 @@
         </select>
     </div>
 
-    <!-- ✅ 격자형 창고 구조 -->
     <div class="grid-container">
         <c:forEach var="row" items="${['A','B','C','D','E']}">
             <c:forEach var="col" begin="1" end="5">
-                <div class="grid-item" data-coord="${row}${col}" data-x="${row}" data-y="${col}">${row}${col}</div>
+                <div class="grid-item" data-coord="${row}${col}" data-x="${row}" data-y="${col}">
+                        ${row}${col}
+                </div>
             </c:forEach>
         </c:forEach>
     </div>
 
-    <!-- ✅ 선택 좌표를 담을 hidden input들 -->
     <div id="hiddenFields"></div>
 
     <div class="submit-button">
-        <button type="submit" onclick="checkHiddenInputs()">신청하기</button>
+        <button type="submit">신청하기</button>
     </div>
 </form>
 
 <script>
-    const layoutMap = ${mapJson}; // ✅ 안전하게 JSON 삽입
-
+    // layoutMap은 서버에서 전달받은 JSON
+    const layoutMap = ${mapJson};
+    console.log("✅ layoutMap = ", layoutMap);
     const gridItems = document.querySelectorAll(".grid-item");
     const dropdown = document.getElementById("warehouseCode");
 
@@ -109,7 +90,6 @@
             }
         });
 
-        // ✅ hidden 필드 초기화
         document.getElementById('hiddenFields').innerHTML = '';
     }
 
@@ -118,7 +98,6 @@
 
         dropdown.addEventListener("change", (e) => {
             updateGridByWarehouse(e.target.value);
-            gridItems.forEach(cell => cell.classList.remove("selected"));
         });
 
         gridItems.forEach(cell => {
@@ -144,14 +123,6 @@
             });
         });
     });
-
-    // ✅ 디버깅용: 신청 전에 콘솔에서 확인
-    function checkHiddenInputs() {
-        const inputs = document.querySelectorAll('input[name="selectedCoords"]');
-        console.log("📦 선택된 좌표:");
-        inputs.forEach(input => console.log(input.value));
-    }
 </script>
-
 </body>
 </html>
