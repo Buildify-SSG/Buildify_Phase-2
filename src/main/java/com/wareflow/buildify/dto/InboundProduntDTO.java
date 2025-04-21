@@ -3,14 +3,12 @@ package com.wareflow.buildify.dto;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
-
 @Data
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InboundDTO {
+public class InboundProduntDTO {
     private String inboundId;
     private String prodId;
     private String clientId;
@@ -21,5 +19,6 @@ public class InboundDTO {
     private String warehousePosX;
     private String warehousePosY;
     private String inboundProcessDate;
-//    private List<String> prodIds;
+    private String prodName;
+    private int prodPrice;
 }
