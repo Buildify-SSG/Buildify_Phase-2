@@ -65,11 +65,11 @@ public class AdminHomeController {
     }
 
     // inventory
-    @GetMapping("/pages/inventory/inventory-1")
-    public String inventory1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/inventory/inventory-1")
+//    public String inventory1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/inventory/inventory-2")
     public String inventory2(Model model) {
