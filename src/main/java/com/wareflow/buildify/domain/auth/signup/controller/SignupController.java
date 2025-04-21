@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/common/pages")
 @Log4j2
 public class SignupController {
 
@@ -21,7 +20,7 @@ public class SignupController {
 
     @GetMapping("/signup")
     public String signup() {
-        return "common/pages/signup";
+        return "/signup";
     }
 
     @PostMapping("/signup")
@@ -30,7 +29,7 @@ public class SignupController {
         if(signupService.isUserIdExist(userDTO.getUserId())) {
             rttr.addFlashAttribute("msg", "이미 사용 중인 아이디입니다.");
             rttr.addFlashAttribute("user", userDTO);
-            return "redirect:/common/pages/signup";
+            return "redirect:/signup";
         }
 
         boolean result = signupService.signUp(userDTO);
@@ -43,7 +42,7 @@ public class SignupController {
         } else {
             rttr.addFlashAttribute("msg", "회원가입 실패");
             rttr.addFlashAttribute("user", userDTO);
-            return "redirect:/common/pages/signup";
+            return "redirect:/signup";
         }
     }
 }
