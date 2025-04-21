@@ -3,6 +3,85 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.InboundMapper">
+<mapper namespace="com.wareflow.buildify.domain.user.inbound.mapper.UserInboundMapper">
     <!-- 여기에 SQL 정의 들어감 -->
+
+    <select id="inboundList" resultType="com.wareflow.buildify.vo.ProductVO">
+        select             prod_id AS prodId,
+                           brand,
+                           prod_name AS prodName,
+                           prod_price AS prodPrice,
+                           prod_code AS prodCode,
+                           prod_size AS prodSize,
+                           prod_categoryid AS prodCategoryid,
+                           client_id AS clientId
+
+        from product
+    </select>
+
+    <select id="inboundInsertlist" resultType="com.wareflow.buildify.vo.InboundProductVO">
+        select inbound.inbound_id as inboundId,
+               inbound.prod_id as prodId,
+               inbound.client_id as clientId,
+               inbound.quantity as quantity,
+               inbound.inbound_status as inboundStatus,
+               inbound.req_inbound_date as reqInboundDate,
+               inbound.ware_id as wareId,
+               inbound.warehouse_pos_x as warehousePosX,
+               inbound.warehouse_pos_y as warehousePosY,
+               inbound.inbound_process_date as inboundProcessDate,
+               product.prod_name as prodName,
+               product.prod_price as prodPrice
+        from inbound JOIN product ON inbound.client_id = product.client_id
+    </select>
+
+    <select id="searchInboundList" resultType="com.wareflow.buildify.dto.InboundProduntDTO">
+        SELECT i.*, p.prod_name
+        FROM inbound i
+        JOIN product p ON i.prod_id = p.prod_id
+        WHERE
+        <choose>
+            <when test="searchType == 'prodId'">
+                i.prod_id LIKE #{keyword}
+            </when>
+            <when test="searchType == 'brand'">
+                p.brand LIKE #{keyword}
+            </when>
+            <when test="searchType == 'prodName'">
+                p.prod_name LIKE #{keyword}
+            </when>
+            <when test="searchType == 'wareId'">
+                i.ware_id LIKE #{keyword}
+            </when>
+            <otherwise>
+                1 = 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="searchInboundInsertList" resultType="com.wareflow.buildify.dto.ProductDTO">
+        SELECT i.*, p.prod_name
+        FROM inbound i
+        JOIN product p ON i.prod_id = p.prod_id
+        WHERE
+        <choose>
+            <when test="searchType == 'prodId'">
+                i.prod_id LIKE #{keyword}
+            </when>
+            <when test="searchType == 'brand'">
+                p.brand LIKE #{keyword}
+            </when>
+            <when test="searchType == 'prodName'">
+                p.prod_name LIKE #{keyword}
+            </when>
+            <when test="searchType == 'wareId'">
+                i.ware_id LIKE #{keyword}
+            </when>
+            <otherwise>
+                1 = 1
+            </otherwise>
+        </choose>
+    </select>
+<!--selectΩ-->
+
 </mapper>
