@@ -214,8 +214,8 @@
         <h2>로그인</h2>
         <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="input-label-group">
-                <label for="username">이메일</label>
-                <span class="hint-inline">(올바른 이메일 형식을 입력해주세요)</span>
+                <label for="username">아이디</label>
+                <span class="hint-inline">(올바른 아이디 형식을 입력해주세요)</span>
             </div>
             <input type="text" id="username" name="username" placeholder="아이디를 입력하세요." required>
 
