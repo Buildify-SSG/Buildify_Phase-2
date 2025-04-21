@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserWareHouseVO {
     private String wareId;
-    private String clientID;
+    private String clientId;
     private String warehousePosX;
     private int warehousePosY;
     private BigDecimal warehouseUsage;

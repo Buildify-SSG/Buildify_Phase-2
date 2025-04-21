@@ -9,7 +9,7 @@
             ware_id, client_id, warehouse_pos_x, warehouse_pos_y, warehouse_usage,
             contract_area, ware_start_date, ware_end_date
         ) VALUES (
-            #{wareId}, #{clientID}, #{warehousePosX}, #{warehousePosY},
+            #{wareId}, #{clientId}, #{warehousePosX}, #{warehousePosY},
             #{warehouseUsage}, #{contractArea}, #{wareStartDate}, #{wareEndDate}
         )
     </insert>

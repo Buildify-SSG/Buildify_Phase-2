@@ -58,6 +58,7 @@
 <body>
 
 <form id="warehouseForm" method="post" action="/users/pages/userWarehouse/userWarehouse-1">
+    <!-- ✅ 드롭다운 영역 -->
     <div class="warehouse-select">
         <label for="warehouseCode">창고 선택:</label>
         <select id="warehouseCode" name="wareId" class="form-select" style="width: 250px; padding: 8px;">
@@ -70,7 +71,7 @@
     </div>
 
     <!-- ✅ 격자형 창고 구조 -->
-    <div class="grid-container" id="grid">
+    <div class="grid-container">
         <c:forEach var="row" items="${['A','B','C','D','E']}">
             <c:forEach var="col" begin="1" end="5">
                 <div class="grid-item" data-coord="${row}${col}" data-x="${row}" data-y="${col}">${row}${col}</div>
@@ -78,23 +79,24 @@
         </c:forEach>
     </div>
 
-    <!-- ✅ 전송용 hidden 필드 (여러 좌표 선택 가능하게 배열로) -->
-    <div id="hiddenFieldsContainer"></div>
+    <!-- ✅ 선택 좌표를 담을 hidden input들 -->
+    <div id="hiddenFields"></div>
 
     <div class="submit-button">
-        <button type="submit">신청하기</button>
+        <button type="submit" onclick="checkHiddenInputs()">신청하기</button>
     </div>
 </form>
 
 <script>
-    const layoutMap = JSON.parse('${mapJson}');
-    const form = document.getElementById('warehouseForm');
-    const hiddenContainer = document.getElementById('hiddenFieldsContainer');
+    const layoutMap = ${mapJson}; // ✅ 안전하게 JSON 삽입
+
+    const gridItems = document.querySelectorAll(".grid-item");
+    const dropdown = document.getElementById("warehouseCode");
 
     function updateGridByWarehouse(warehouseId) {
         const usedCoords = layoutMap[warehouseId] ? Object.keys(layoutMap[warehouseId]) : [];
 
-        document.querySelectorAll(".grid-item").forEach(cell => {
+        gridItems.forEach(cell => {
             const coord = cell.dataset.coord;
             cell.classList.remove("disabled", "selected");
             cell.innerText = coord;
@@ -107,52 +109,48 @@
             }
         });
 
-        hiddenContainer.innerHTML = ''; // 이전 hidden inputs 제거
+        // ✅ hidden 필드 초기화
+        document.getElementById('hiddenFields').innerHTML = '';
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        const dropdown = document.querySelector("#warehouseCode");
-        const gridItems = document.querySelectorAll(".grid-item");
+        if (dropdown.value) updateGridByWarehouse(dropdown.value);
 
-        dropdown.addEventListener("change", e => {
+        dropdown.addEventListener("change", (e) => {
             updateGridByWarehouse(e.target.value);
+            gridItems.forEach(cell => cell.classList.remove("selected"));
         });
-
-        updateGridByWarehouse(dropdown.value); // 초기 설정
 
         gridItems.forEach(cell => {
             cell.addEventListener("click", () => {
                 if (!cell.classList.contains("disabled")) {
-                    cell.classList.toggle("selected");
-
-                    const x = cell.dataset.x;
-                    const y = cell.dataset.y;
-                    const coordKey = `${x}${y}`;
-                    const inputId = `coord-${coordKey}`;
+                    const coord = cell.dataset.coord;
+                    const hiddenContainer = document.getElementById('hiddenFields');
 
                     if (cell.classList.contains("selected")) {
-                        const inputX = document.createElement("input");
-                        inputX.type = "hidden";
-                        inputX.name = "warehousePosX";
-                        inputX.value = x;
-                        inputX.id = inputId + "-x";
-
-                        const inputY = document.createElement("input");
-                        inputY.type = "hidden";
-                        inputY.name = "warehousePosY";
-                        inputY.value = y;
-                        inputY.id = inputId + "-y";
-
-                        hiddenContainer.appendChild(inputX);
-                        hiddenContainer.appendChild(inputY);
+                        cell.classList.remove("selected");
+                        const existingInput = document.getElementById("coord-" + coord);
+                        if (existingInput) existingInput.remove();
                     } else {
-                        document.getElementById(inputId + "-x")?.remove();
-                        document.getElementById(inputId + "-y")?.remove();
+                        cell.classList.add("selected");
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = "selectedCoords";
+                        input.value = coord;
+                        input.id = "coord-" + coord;
+                        hiddenContainer.appendChild(input);
                     }
                 }
             });
         });
     });
+
+    // ✅ 디버깅용: 신청 전에 콘솔에서 확인
+    function checkHiddenInputs() {
+        const inputs = document.querySelectorAll('input[name="selectedCoords"]');
+        console.log("📦 선택된 좌표:");
+        inputs.forEach(input => console.log(input.value));
+    }
 </script>
 
 </body>
