@@ -62,7 +62,7 @@
 <main class="d-flex w-100 justify-content-center align-items-center" style="min-height: 100vh;">
 	<div class="signup-container">
 		<h2>회원가입</h2>
-		<form method="post" action="<c:url value='/common/pages/signup'/>">
+		<form method="post" action="<c:url value='/signup'/>">
 			<div class="mb-3">
 				<label class="form-label">ID</label>
 				<input type="text" class="form-control" name="userId"
