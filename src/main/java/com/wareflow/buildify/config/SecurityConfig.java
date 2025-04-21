@@ -29,24 +29,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
-                .authorizeHttpRequests()
-//                .requestMatchers("/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
-                // 개발 단계 한정
-                .requestMatchers("/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/user/**").hasRole("USER")
+                .authorizeRequests()  // ✅ 요거 중요!!
+                .antMatchers("/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
-
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .successHandler(customSuccessHandler()) // 로그인 성공 후 분기처리
+                .successHandler(customSuccessHandler())
                 .failureUrl("/login?error=true")
                 .permitAll()
                 .and()
-
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")

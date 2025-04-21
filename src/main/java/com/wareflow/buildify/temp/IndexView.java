@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexView {
 
-    @GetMapping("/login")
-    public String index() { return "login"; }
+//    @GetMapping("/login")
+//    public String index() { return "login"; }
 
     @GetMapping("/components/charts-chartjs")
     public String chartsChartjs() { return "components/charts-chartjs"; }
