@@ -89,6 +89,21 @@
         </choose>
     </select>
 
+    <!-- 대분류(category1)로 중분류(category2) 가져오기 -->
+    <select id="findMidCategoriesByLevel1" resultType="String">
+        SELECT DISTINCT category_level2
+        FROM category
+        WHERE category_level1 = #{category1}
+    </select>
+
+    <!-- 중분류(category2)로 소분류(category3) 가져오기 -->
+    <select id="findSmallCategoriesByLevel2" resultType="String">
+        SELECT DISTINCT category_level3
+        FROM category
+        WHERE category_level2 = #{category2}
+    </select>
+
+
 </mapper>
 
 

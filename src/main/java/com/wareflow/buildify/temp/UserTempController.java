@@ -46,11 +46,11 @@ public class UserTempController {
 //        return "users/layouts/userlayout";
 //    }
 
-    @GetMapping("/pages/inventory/inventory-2")
-    public String inventory2(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/users/pages/inventory/inventory-2.jsp");
-        return "users/layouts/userlayout";
-    }
+//    @GetMapping("/pages/inventory/inventory-2")
+//    public String inventory2(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/users/pages/inventory/inventory-2.jsp");
+//        return "users/layouts/userlayout";
+//    }
 
     @GetMapping("/pages/inventory/inventory-3")
     public String inventory3(Model model) {

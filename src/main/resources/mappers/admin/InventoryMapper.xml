@@ -3,6 +3,107 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.InventoryMapper">
-    <!-- 여기에 SQL 정의 들어감 -->
+<mapper namespace="com.wareflow.buildify.domain.admin.inventory.mapper.InventoryAdminMapper">
+
+    <!-- 1. 📌 기본 전체 재고 조회 -->
+    <select id="getAdminInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+        SELECT
+            p.prod_id AS prodId,
+            p.prod_name AS prodName,
+            p.brand,
+            p.client_id AS clientId,
+            i.inventory_id AS inventoryId,
+            i.ware_id AS wareId,
+            i.quantity,
+            i.last_inbound_date,
+            i.last_outbound_date,
+            wa.ware_name AS wareName,
+            (SELECT CONCAT(w.warehouse_pos_x, w.warehouse_pos_y)
+             FROM wareHouse w
+             WHERE w.ware_id = i.ware_id
+                LIMIT 1) AS warePosition
+        FROM inventory i
+            JOIN product p ON i.prod_id = p.prod_id
+            JOIN category c ON p.prod_categoryid = c.prod_categoryid
+            JOIN warehouse_area wa ON i.ware_id = wa.ware_id
+    </select>
+
+    <!-- 2. 📌 필터 검색 + 정렬 -->
+    <select id="searchAdminInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+        SELECT
+        p.prod_id AS prodId,
+        p.prod_name AS prodName,
+        p.brand,
+        p.client_id AS clientId,
+        i.inventory_id AS inventoryId,
+        i.ware_id AS wareId,
+        i.quantity,
+        i.last_inbound_date,
+        i.last_outbound_date,
+        wa.ware_name AS wareName,
+        (SELECT CONCAT(w.warehouse_pos_x, w.warehouse_pos_y)
+        FROM wareHouse w
+        WHERE w.ware_id = i.ware_id
+        LIMIT 1) AS warePosition
+        FROM inventory i
+        JOIN product p ON i.prod_id = p.prod_id
+        JOIN category c ON p.prod_categoryid = c.prod_categoryid
+        JOIN warehouse_area wa ON i.ware_id = wa.ware_id
+
+        <where>
+            <if test="category1 != null and category1 != ''">
+                AND c.category_level1 = #{category1}
+            </if>
+            <if test="category2 != null and category2 != ''">
+                AND c.category_level2 = #{category2}
+            </if>
+            <if test="category3 != null and category3 != ''">
+                AND c.category_level3 = #{category3}
+            </if>
+
+            <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'prodId'">
+                        AND p.prod_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'clientId'">
+                        AND p.client_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'wareId'">
+                        AND i.ware_id LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+
+        <choose>
+            <when test="sortBy != null and sortBy == 'asc'">
+                ORDER BY i.quantity ASC
+            </when>
+            <when test="sortBy != null and sortBy == 'desc'">
+                ORDER BY i.quantity DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prod_name ASC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <!-- 대분류(category1)로 중분류(category2) 가져오기 -->
+    <select id="findMidCategoriesByLevel1" resultType="String">
+        SELECT DISTINCT category_level2
+        FROM category
+        WHERE category_level1 = #{category1}
+    </select>
+
+    <!-- 중분류(category2)로 소분류(category3) 가져오기 -->
+    <select id="findSmallCategoriesByLevel2" resultType="String">
+        SELECT DISTINCT category_level3
+        FROM category
+        WHERE category_level2 = #{category2}
+    </select>
+
+
+
 </mapper>
