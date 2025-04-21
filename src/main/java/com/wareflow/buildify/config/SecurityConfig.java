@@ -66,10 +66,10 @@ public class SecurityConfig {
                     String role = auth.getAuthority();
 
                     if ("ROLE_ADMIN".equals(role)) {
-                        response.sendRedirect("/admin/home");
+                        response.sendRedirect("/admin/pages/index");
                         return;
                     } else if ("ROLE_USER".equals(role)) {
-                        response.sendRedirect("/user/home");
+                        response.sendRedirect("/users/pages/index");
                         return;
                     }
                 }

@@ -14,7 +14,7 @@
             admin_address,
             admin_phone,
             admin_id,
-            admin_pw
+            admin_pw AS adminPassword
         FROM admin
         WHERE admin_id = #{adminId}
 

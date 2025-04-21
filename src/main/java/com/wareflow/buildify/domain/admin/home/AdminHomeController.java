@@ -1,34 +1,167 @@
-package com.wareflow.buildify.domain.user.home;
+package com.wareflow.buildify.domain.admin.home;
 
-import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequiredArgsConstructor
-@RequestMapping("/admin/home")
+@RequestMapping("/admin")
 public class AdminHomeController {
 
-//    private final InboundService inboundService;
-//    private final OutboundService outboundService;
-//    private final InventoryService inventoryService;
-
-    @GetMapping
-    public String home(@AuthenticationPrincipal CustomUserDetails user, Model model) {
-        // 타 도메인 서비스 계층의 기능을 들여와서 대시보드 보여주면 될듯
-//        int todayInbound = inboundService.countToday(user.getClientId());
-//        int todayOutbound = outboundService.countToday(user.getClientId());
-//        int totalStock = inventoryService.getTotalStock(user.getClientId());
-//
-//        model.addAttribute("inboundCount", todayInbound);
-//        model.addAttribute("outboundCount", todayOutbound);
-//        model.addAttribute("stock", totalStock);
-
-        return "admin/home";
+    @GetMapping("/pages/index")
+    public String adminIndex(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/index.jsp");
+        return "admin/layouts/adminlayout";
     }
+
+    // userManagement
+//    @GetMapping("/pages/userManagement/userManagement-1")
+//    public String userManagement1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/userManagement/userManagement-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
+
+    @GetMapping("/pages/userManagement/userManagement-2")
+    public String userManagement2(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/userManagement/userManagement-2.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/userManagement/userManagement-3")
+    public String userManagement3(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/userManagement/userManagement-3.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/userManagement/userManagement-4")
+    public String userManagement4(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/userManagement/userManagement-4.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inbound/inbound-1")
+    public String inbound1(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-1.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inbound/inbound-2")
+    public String inbound2(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-2.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inbound/inbound-3")
+    public String inbound3(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-3.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inbound/inbound-4")
+    public String inbound4(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-4.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    // inventory
+    @GetMapping("/pages/inventory/inventory-1")
+    public String inventory1(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inventory/inventory-2")
+    public String inventory2(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-2.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inventory/inventory-3")
+    public String inventory3(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-3.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/inventory/inventory-4")
+    public String inventory4(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-4.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    // outbound
+    @GetMapping("/pages/outbound/outbound-1")
+    public String outbound1(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-1.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/outbound/outbound-2")
+    public String outbound2(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-2.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/outbound/outbound-3")
+    public String outbound3(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-3.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/outbound/outbound-4")
+    public String outbound4(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-4.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    // product
+//    @GetMapping("/pages/product/product-1")
+//    public String product1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/product/product-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
+
+    @GetMapping("/pages/product/product-2")
+    public String product2(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/product/product-2.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/product/product-3")
+    public String product3(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/product/product-3.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/product/product-4")
+    public String product4(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/product/product-4.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    // systemOperation
+//    @GetMapping("/pages/systemOperation/systemOperation-1")
+//    public String systemOperation1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
+
+    @GetMapping("/pages/systemOperation/systemOperation-2")
+    public String systemOperation2(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-2.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/systemOperation/systemOperation-3")
+    public String systemOperation3(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-3.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/pages/systemOperation/systemOperation-4")
+    public String systemOperation4(Model model) {
+        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-4.jsp");
+        return "admin/layouts/adminlayout";
+    }
+
 }

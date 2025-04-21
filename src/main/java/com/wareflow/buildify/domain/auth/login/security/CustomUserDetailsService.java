@@ -50,9 +50,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         } else {
             // 관리자
             AdminVO admin = adminLoginMapper.findById(id);
+
+            log.info("🔐 loaded admin pw: {}", admin.getAdminPassword());
+
             if (admin == null) {
                 throw new UsernameNotFoundException("관리자 정보가 존재하지 않습니다.");
             }
+
 
             return CustomUserDetails.builder()
                     .id(admin.getAdminId())
