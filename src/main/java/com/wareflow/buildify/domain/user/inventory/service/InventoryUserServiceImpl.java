@@ -29,4 +29,20 @@ public class InventoryUserServiceImpl implements InventoryUserService {
     public List<InventoryDTO> searchUserInventory(InventoryFilterDTO filter) {
         return inventoryUserMapper.searchUserInventory(filter);
     }
+
+    @Override
+    public List<String> findMidCategoriesByLevel1(String category1) {
+        System.out.println("📢 Service 들어옴, category1 = " + category1);
+
+        List<String> result = inventoryUserMapper.findMidCategoriesByLevel1(category1);
+
+        System.out.println("📢 Service result = " + result);
+
+        return result;
+    }
+
+    @Override
+    public List<String> findSmallCategoriesByLevel2(String category2) {
+        return inventoryUserMapper.findSmallCategoriesByLevel2(category2);
+    }
 }

@@ -1,6 +1,7 @@
 package com.buildify.wms.serviceTests;
 
 
+import com.wareflow.buildify.domain.admin.inventory.service.InventoryAdminService;
 import com.wareflow.buildify.domain.user.inventory.service.InventoryUserService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,18 @@ public class InventoryServiceTests {
     @Autowired(required = false)
     InventoryUserService inventoryUserService;
 
+    @Autowired(required = false)
+    InventoryAdminService inventoryAdminService;
+
     @Test
     public void testInventoryUserService() {
         inventoryUserService.getUserInventory();
+    }
+
+    @Test
+    public void testInventoryAdminService(){
+        inventoryAdminService.getAdminInventory();
+
     }
 
 }

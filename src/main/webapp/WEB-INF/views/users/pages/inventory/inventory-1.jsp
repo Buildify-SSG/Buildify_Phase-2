@@ -123,29 +123,20 @@
             <div class="search-bar">
 
                 <!-- 대분류 선택 -->
-                <select name="category1">
+                <select id="category1" name="category1">
                     <option value="">대분류 선택</option>
-                    <option value="PC" <c:if test="${param.category1 eq 'PC'}">selected</c:if>>PC</option>
-                    <option value="주변기기" <c:if test="${param.category1 eq '주변기기'}">selected</c:if>>주변기기</option>
-
-                    <!-- 필요하면 데이터베이스에서 불러오게 나중에 개선 가능 -->
+                    <option value="PC">PC</option>
+                    <option value="주변기기">주변기기</option>
                 </select>
 
                 <!-- 중분류 선택 -->
-                <select name="category2">
+                <select id="category2" name="category2">
                     <option value="">중분류 선택</option>
-                    <option value="CPU" <c:if test="${param.category2 eq 'CPU'}">selected</c:if>>CPU</option>
-                    <option value="RAM" <c:if test="${param.category2 eq 'RAM'}">selected</c:if>>RAM</option>
-                    <option value="GPU" <c:if test="${param.category2 eq 'GPU'}">selected</c:if>>GPU</option>
-<%--                    <option value="Mainboard">Mainboard</option>--%>
                 </select>
 
                 <!-- 소분류 선택 -->
-                <select name="category3">
+                <select id="category3" name="category3">
                     <option value="">소분류 선택</option>
-                    <option value="Intel" <c:if test="${param.category3 eq 'Intel'}">selected</c:if>>Intel</option>
-                    <option value="Nvidia" <c:if test="${param.category3 eq 'Nvidia'}">selected</c:if>>Nvidia</option>
-                    <option value="ATX" <c:if test="${param.category3 eq 'ATX'}">selected</c:if>>ATX</option>
                 </select>
 
 
@@ -291,11 +282,63 @@
         rows.forEach(row => tbody.appendChild(row)); // 재배치
     }
 </script>
+
 <script>
+    window.onload = function() {
+        document.getElementById("category1").addEventListener("change", function(e) {
+            e.preventDefault();
+            console.log("test");
+            const category1 = this.value;
+            const category2 = document.getElementById("category2");
+            const category3 = document.getElementById("category3");
+
+            // 중분류, 소분류 초기화
+            category2.innerHTML = '<option value="">중분류 선택</option>';
+            category3.innerHTML = '<option value="">소분류 선택</option>';
+
+            if (category1) {
+                fetch(`/users/pages/inventory/inventory-1/getMidCategories?category1=`+ encodeURIComponent(category1))
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(midCategory => {
+                            const option = document.createElement("option");
+                            option.value = midCategory;
+                            option.textContent = midCategory;
+                            category2.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('중분류 불러오기 실패:', error));
+            }
+        });
+
+        document.getElementById("category2").addEventListener("change", function(e) {
+            e.preventDefault();
+            const category2 = this.value;
+            const category3 = document.getElementById("category3");
+
+            // 소분류 초기화
+            category3.innerHTML = '<option value="">소분류 선택</option>';
+
+            if (category2) {
+                fetch(`/users/pages/inventory/inventory-1/getSmallCategories?category2=`+encodeURIComponent(category2))
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(subCategory => {
+                            const option = document.createElement("option");
+                            option.value = subCategory;
+                            option.textContent = subCategory;
+                            category3.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('소분류 불러오기 실패:', error));
+            }
+        });
+    };
+
     function confirmDelete() {
         const confirmed = confirm('정말 삭제하시겠습니까?');
         if (confirmed) {
-            document.querySelector('form[action="/admin/pages/product/product-1/api/productRemove"]').submit();
+            document.querySelector('form[action="/users/pages/product/product-1/api/productRemove"]').submit();
         }
     }
 </script>
