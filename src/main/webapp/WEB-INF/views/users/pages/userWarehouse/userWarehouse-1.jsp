@@ -84,31 +84,44 @@
         document.querySelectorAll(".grid-item").forEach(cell => {
             const coord = cell.dataset.coord;
 
+            // 초기화
+            cell.classList.remove("disabled", "selected");
+            cell.innerText = coord;
+            cell.style.cursor = "pointer";
+
+            // 이미 사용 중인 칸이라면
             if (usedCoords.includes(coord)) {
                 cell.classList.add("disabled");
                 cell.innerText = coord + "\n(사용중)";
                 cell.style.cursor = "not-allowed";
-            } else {
-                cell.classList.remove("disabled");
-                cell.innerText = coord;
-                cell.style.cursor = "pointer";
             }
         });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         const dropdown = document.querySelector("#warehouseCode");
+        const gridItems = document.querySelectorAll(".grid-item");
 
-        // ✅ 최초 로딩 시 드롭다운에서 선택된 값 사용
-        const initiallySelected = dropdown.value;
-        updateGridByWarehouse(initiallySelected);
-
+        // 드롭다운 선택에 따라 사용 중 좌표 갱신
         dropdown.addEventListener("change", e => {
-            const selected = e.target.value;
-            updateGridByWarehouse(selected);
+            updateGridByWarehouse(e.target.value);
+        });
+
+        // ✅ 최초 선택된 창고 반영
+        const initial = dropdown.value;
+        if (initial) updateGridByWarehouse(initial);
+
+        // ✅ 클릭 가능한 칸 토글 처리
+        gridItems.forEach(cell => {
+            cell.addEventListener("click", () => {
+                if (!cell.classList.contains("disabled")) {
+                    cell.classList.toggle("selected");
+                }
+            });
         });
     });
 </script>
+
 
 </body>
 </html>
