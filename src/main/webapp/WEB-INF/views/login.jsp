@@ -64,7 +64,7 @@
             margin-bottom: 5px;
         }
 
-        input[type="email"],
+        input[type="text"],
         input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -166,17 +166,17 @@
         }
 
         @media (max-width: 800px) {
-        body {
-            justify-content: center;
-            align-items: center;
-        }
+            body {
+                justify-content: center;
+                align-items: center;
+            }
 
-        .container {
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px 20px;
-        }
+            .container {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 30px 20px;
+            }
 
             .left,
             .right {
@@ -194,10 +194,9 @@
             .hint-inline {
                 font-size: 0.7rem;
             }
-
         }
 
-            footer {
+        footer {
             text-align: center;
             padding: 20px;
             font-size: 0.9rem;
@@ -213,20 +212,34 @@
     </div>
     <div class="right">
         <h2>로그인</h2>
-        <form>
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="input-label-group">
-                <label for="email">이메일</label>
+                <label for="username">이메일</label>
                 <span class="hint-inline">(올바른 이메일 형식을 입력해주세요)</span>
             </div>
-            <input type="email" id="email" placeholder="example@email.com" required>
+            <input type="text" id="username" name="username" placeholder="아이디를 입력하세요." required>
 
             <div class="input-label-group">
                 <label for="password">비밀번호</label>
                 <span class="hint-inline">(영문, 숫자, 특수문자 포함 8~15자)</span>
             </div>
-            <input type="password" id="password" placeholder="비밀번호를 입력하세요" required>
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+
+            <div style="margin: 10px 0;">
+                <input type="checkbox" id="remember-me" name="remember-me" />
+                <label for="remember-me">로그인 유지</label>
+            </div>
 
             <button type="submit">로그인</button>
+
+            <c:if test="${param.error == 'true'}">
+                <p style="color: red;">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+            </c:if>
+
+            <c:if test="${param.logout == 'true'}">
+                <p style="color: green;">성공적으로 로그아웃 되었습니다.</p>
+            </c:if>
+
             <div class="footer-links">
                 <a href="<c:url value='/find-id' />">아이디찾기</a>
                 <a href="<c:url value='/find-password' />">비밀번호 찾기</a>
@@ -239,7 +252,7 @@
 </div>
 
 <footer>
-     2025 WareFlow Co. All rights reserved ©
+    2025 WareFlow Co. All rights reserved ©
 </footer>
 </body>
 </html>
