@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Log4j2
 public class SignupController {
 
-    private SignupService signupService;
+    private final SignupService signupService;
 
     @GetMapping("/signup")
     public String signup() {
