@@ -145,12 +145,12 @@
             <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
             </div>
         <table id="contractTable">
-            <div>
-            <input type="checkbox" style="margin-right: 5px" id="statusActive" onchange="filterByStatus()" checked>
-                <span>✅ 창고 이용중</span>
+<%--            <div>--%>
+<%--            <input type="checkbox" style="margin-right: 5px" id="statusActive" onchange="filterByStatus()" checked>--%>
+<%--                <span>✅ 창고 이용중</span>--%>
 
-            <input type="checkbox" style="margin-left: 5px" id="statusInactive" onchange="filterByStatus()" checked><span>  ❌ 이용 X</span>
-            </div>
+<%--            <input type="checkbox" style="margin-left: 5px" id="statusInactive" onchange="filterByStatus()" checked><span>  ❌ 이용 X</span>--%>
+<%--            </div>--%>
 
                 <thead>
                 <tr>
@@ -161,8 +161,8 @@
                     <th>가입일</th>
                     <th>
                         상태
-                        <a class="sort" href="#" onclick="sortTable('prodSize', 'asc'); return false;">▲</a>
-                        <a class="sort" href="#" onclick="sortTable('prodSize', 'desc'); return false;">▼</a>
+<%--                        <a class="sort" href="#" onclick="sortTable('prodSize', 'asc'); return false;">▲</a>--%>
+<%--                        <a class="sort" href="#" onclick="sortTable('prodSize', 'desc'); return false;">▼</a>--%>
                     </th>
                 </tr>
                 </thead>

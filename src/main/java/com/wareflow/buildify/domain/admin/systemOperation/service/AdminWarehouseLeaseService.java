@@ -1,6 +1,9 @@
 package com.wareflow.buildify.domain.admin.systemOperation.service;
 
+import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.dto.UserDTO;
+import com.wareflow.buildify.dto.WarehouseLeaseDTO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.List;
@@ -9,15 +12,19 @@ import java.util.List;
 public interface AdminWarehouseLeaseService {
 
     // 유저 계약정보 가져오기
-    List<UserDTO> getUserLeaseInfo();
+    List<WarehouseLeaseDTO> getUserLeaseInfo();
 
-    // 계약 승인
-    List<UserDTO> approveLeaseRequests();
 
-    // 계약 거절
-    List<UserDTO> rejectLeaseRequests();
+    // db에서 꺼내오기 테스트
+    List<WarehouseLeaseDTO> getUserLeaseDbInfo();
 
     // 계약 수정
-    List<UserDTO> modifyLeaseRequests();
+    int modifyLeaseRequests(List<String> clientIds,
+                            List<String> endDates,
+                            List<String> wareIds,
+                            List<String> wareCoords);
+
+    // 검색
+    List<WarehouseLeaseDTO> search(String searchType, String keyword);
 
 }

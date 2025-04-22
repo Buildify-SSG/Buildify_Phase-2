@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -18,6 +19,6 @@ public class UserWareHouseVO {
     private int warehousePosY;
     private BigDecimal warehouseUsage;
     private BigDecimal contractArea;
-    private Date wareStartDate;
-    private Date wareEndDate;
+    private LocalDate wareStartDate;
+    private LocalDate wareEndDate;
 }
