@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <style>
     body {
         font-family: 'Noto Sans KR', sans-serif;
@@ -107,6 +108,50 @@
         color: darkgrey;
     }
 
+    /* 백드롭 (modal-backdrop) */
+    #modalBackdrop {
+        position: fixed;
+        inset: 0;                       /* top/right/bottom/left: 0 */
+        background: rgba(0, 0, 0, 0.4); /* 반투명 어둡게 */
+        backdrop-filter: blur(2px);     /* 살짝 흐리게 */
+        z-index: 1000;
+        display: none;
+    }
+
+    /* 모달 박스 컨테이너 */
+    #updateModal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+        display: none;
+        width: 360px;                   /* 원하는 너비 */
+    }
+
+    /* 모달 내부 콘텐츠 */
+    #updateModal .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    #updateModal .modal-header,
+    #updateModal .modal-footer {
+        margin-bottom: 12px;
+    }
+    #updateModal .modal-header {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    #updateModal .modal-footer {
+        text-align: right;
+    }
+    #updateModal .modal-footer button {
+        margin-left: 8px;
+    }
+
+
 </style>
 
 <body>
@@ -155,8 +200,21 @@
         </div>
     </div>
 
-    <!-- 표 -->
-    <button type="button" style="margin-right: 15px; background: crimson" onclick="confirmDelete()">Delete</button>
+    <!-- 삭제 -->
+    <button type="button"
+            class="btn-action btn-delete"
+            onclick="confirmDelete()">
+        <i class="fa fa-trash"></i> 삭제
+    </button>
+
+    <!-- 수정 -->
+    <button id="updateBtn"
+            type="button"
+            class="btn-action btn-update">
+        <i class="fa fa-edit"></i> 수정
+    </button>
+
+
 
     <div class="table-wrapper">
         <table id="contractTable">
@@ -166,7 +224,30 @@
                 <th>재고ID</th>
                 <th>고객ID</th>
                 <th>상품ID</th>
-                <th>수량</th>
+                <!-- 수량 정렬링크 -->
+                <c:url var="sortAscUrl"  value="/admin/pages/inventory/inventory-1/search">
+                    <c:param name="page"      value="${currentPage}" />
+                    <c:param name="category1" value="${param.category1}" />
+                    <c:param name="category2" value="${param.category2}" />
+                    <c:param name="category3" value="${param.category3}" />
+                    <c:param name="searchType" value="${param.searchType}" />
+                    <c:param name="keyword"   value="${param.keyword}" />
+                    <c:param name="sortBy"    value="asc" />
+                </c:url>
+                <c:url var="sortDescUrl" value="/admin/pages/inventory/inventory-1/search">
+                    <c:param name="page"      value="${currentPage}" />
+                    <c:param name="category1" value="${param.category1}" />
+                    <c:param name="category2" value="${param.category2}" />
+                    <c:param name="category3" value="${param.category3}" />
+                    <c:param name="searchType" value="${param.searchType}" />
+                    <c:param name="keyword"   value="${param.keyword}" />
+                    <c:param name="sortBy"    value="desc" />
+                </c:url>
+                <th>
+                    수량
+                    <a href="${sortAscUrl}"  title="오름차순">▲</a>
+                    <a href="${sortDescUrl}" title="내림차순">▼</a>
+                </th>
                 <th>창고ID</th>
                 <th>창고명</th>
                 <th>창고구역</th>
@@ -176,8 +257,16 @@
             </thead>
             <tbody>
             <c:forEach var="inventory" items="${List}" varStatus="status">
-                <tr>
-                    <td><input type="checkbox" name="selectedIndexes" value="${inventory.inventoryId}" /></td>
+                <tr
+                        data-inventory-id="${inventory.inventoryId}"
+                        data-prod-id      ="${inventory.prodId}"
+                        data-ware-id      ="${inventory.wareId}"
+                >
+                    <td>
+                        <input type="checkbox"
+                               name="selectedIndexes"
+                               value="${inventory.inventoryId}" />
+                    </td>
                     <td>${inventory.inventoryId}</td>
                     <td>${inventory.clientId}</td>
                     <td>${inventory.prodId}</td>
@@ -185,8 +274,16 @@
                     <td>${inventory.wareId}</td>
                     <td>${inventory.wareName}</td>
                     <td>${inventory.warePosition}</td>
-                    <td>${inventory.last_inbound_date}</td>
-                    <td>${inventory.last_outbound_date}</td>
+                    <td>
+                        <fmt:formatDate
+                                value="${inventory.lastInboundDate}"
+                                pattern="yyyy.MM.dd" />
+                    </td>
+                    <td>
+                        <fmt:formatDate
+                                value="${inventory.lastOutboundDate}"
+                                pattern="yyyy.MM.dd" />
+                    </td>
                 </tr>
             </c:forEach>
             <c:if test="${empty List}">
@@ -227,6 +324,100 @@
         alert("${msg}");
     </script>
 </c:if>
+
+<%--모달--%><!-- 백드롭 -->
+<div id="modalBackdrop"></div>
+
+<!-- 수정용 모달 -->
+<div id="updateModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            수량 수정
+            <button type="button" id="cancelBtn" style="float:right; border:none; background:none; font-size:18px; cursor:pointer;">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="modalInventoryId" />
+            <div style="margin-bottom:8px;">
+                <label>상품ID</label>
+                <input type="text" id="modalProdId" class="form-control" readonly />
+            </div>
+            <div style="margin-bottom:8px;">
+                <label>창고ID</label>
+                <input type="text" id="modalWareId" class="form-control" readonly />
+            </div>
+            <div style="margin-bottom:8px;">
+                <label>새 수량</label>
+                <input type="number" id="modalNewQty" class="form-control" min="0" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="cancelBtn2" class="btn btn-secondary">취소</button>
+            <button type="button" id="confirmUpdate" class="btn btn-primary">확인</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const backdrop     = document.getElementById("modalBackdrop");
+        const modal        = document.getElementById("updateModal");
+        const updateBtn    = document.getElementById("updateBtn");
+        const cancelBtns   = document.querySelectorAll("#cancelBtn, #cancelBtn2");
+        const confirmBtn   = document.getElementById("confirmUpdate");
+
+        // 모달 열기
+        updateBtn.addEventListener("click", () => {
+            const checked = document.querySelectorAll('input[name="selectedIndexes"]:checked');
+            if (checked.length !== 1) {
+                return alert("한 개만 선택해주세요.");
+            }
+            const tr = checked[0].closest("tr");
+            document.getElementById("modalInventoryId").value = tr.dataset.inventoryId;
+            document.getElementById("modalProdId").value      = tr.dataset.prodId;
+            document.getElementById("modalWareId").value      = tr.dataset.wareId;
+            document.getElementById("modalNewQty").value      = "";
+            backdrop.style.display = "block";
+            modal.style.display    = "block";
+        });
+
+        // 모달 닫기
+        cancelBtns.forEach(btn =>
+            btn.addEventListener("click", () => {
+                backdrop.style.display = "none";
+                modal.style.display    = "none";
+            })
+        );
+
+        // 확인 버튼 → AJAX 호출
+        confirmBtn.addEventListener("click", () => {
+            const dto = {
+                inventoryId: document.getElementById("modalInventoryId").value,
+                quantity:    parseInt(document.getElementById("modalNewQty").value, 10)
+            };
+            if (isNaN(dto.quantity) || dto.quantity < 0) {
+                return alert("유효한 수량을 입력해주세요.");
+            }
+            fetch('/admin/pages/inventory/inventory-1/updateQuantity', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dto)
+            })
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success) {
+                        alert("수정되었습니다.");
+                        location.reload();
+                    } else {
+                        alert("오류: " + (json.message || "수정 실패"));
+                    }
+                })
+                .catch(() => alert("서버 에러"));
+        });
+    });
+</script>
+
+
 
 <!-- 진짜 비동기 AJAX 드랍다운 JS -->
 <script>
@@ -288,5 +479,9 @@
         }
     }
 </script>
+
+
+
+
 
 </body>

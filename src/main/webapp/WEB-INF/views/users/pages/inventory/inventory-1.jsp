@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <style>
     body {
         font-family: 'Noto Sans KR', sans-serif;
@@ -168,18 +169,27 @@
     <div class="table-wrapper">
         <form method="GET" action="/users/pages/inventory/inventory-1">
             <table id="contractTable">
-<%--                <button type="button" style="margin-right: 15px; background: crimson" onclick="confirmDelete()">Delete</button>--%>
                 <thead>
                 <tr>
-<%--                    <th>선택</th>--%>
                     <th>브랜드</th>
                     <th>상품명</th>
                     <th>가격</th>
                     <th>
                         수량
-                        <a class="sort" href="?category1=${param.category1}&category2=${param.category2}&category3=${param.category3}&searchType=${param.searchType}&keyword=${param.keyword}&sortBy=asc">▲</a>
-                        <a class="sort" href="?category1=${param.category1}&category2=${param.category2}&category3=${param.category3}&searchType=${param.searchType}&keyword=${param.keyword}&sortBy=desc">▼</a>
-
+                        <a class="sort"
+                           href="?category1=${param.category1}
+                  &category2=${param.category2}
+                  &category3=${param.category3}
+                  &searchType=${param.searchType}
+                  &keyword=${param.keyword}
+                  &sortBy=asc">▲</a>
+                        <a class="sort"
+                           href="?category1=${param.category1}
+                  &category2=${param.category2}
+                  &category3=${param.category3}
+                  &searchType=${param.searchType}
+                  &keyword=${param.keyword}
+                  &sortBy=desc">▼</a>
                     </th>
                     <th>창고명</th>
                     <th>창고 주소</th>
@@ -188,35 +198,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="inventory" items="${List}" varStatus="status">
+                <c:forEach var="inventory" items="${List}">
                     <tr>
-<%--                        <td>--%>
-<%--                            <input type="checkbox" name="selectedIndexes" value="${inventory.inventoryId}" />--%>
-                                <%--
-                        </td>
-<%--                        <td>${product.prodId}</td>--%>
                         <td>${inventory.brand}</td>
                         <td>${inventory.prodName}</td>
                         <td>${inventory.prodPrice}</td>
                         <td>${inventory.quantity}</td>
                         <td>${inventory.wareName}</td>
                         <td>${inventory.wareAddress}</td>
-                        <td>${inventory.last_inbound_date}</td>
-                        <td>${inventory.last_outbound_date}</td>
-
-<%--                        <td>${product.prodName}</td>--%>
-<%--                        <td>${product.prodPrice}</td>--%>
-<%--                        <td>${product.prodCategoryid}</td>--%>
-<%--                        <td>${product.prodSize}</td>--%>
+                        <td>
+                            <fmt:formatDate
+                                    value="${inventory.lastInboundDate}"
+                                    pattern="yyyy.MM.dd"/>
+                        </td>
+                        <td>
+                            <fmt:formatDate
+                                    value="${inventory.lastOutboundDate}"
+                                    pattern="yyyy.MM.dd"/>
+                        </td>
                     </tr>
                 </c:forEach>
                 <c:if test="${empty List}">
                     <tr>
-                        <td colspan="7">검색 결과가 없습니다.</td>
+                        <td colspan="8">검색 결과가 없습니다.</td>
                     </tr>
                 </c:if>
                 </tbody>
             </table>
+
         </form>
         <!-- Pagination Block -->
         <c:if test="${totalPages > 1}">

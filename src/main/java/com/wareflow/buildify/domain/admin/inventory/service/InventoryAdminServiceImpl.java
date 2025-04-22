@@ -47,24 +47,10 @@ public class InventoryAdminServiceImpl implements InventoryAdminService {
         return inventoryAdminMapper.findSmallCategoriesByLevel2(category2);
     }
 
-    //    @Override
-//    public List<String> findMidCategoriesByLevel1(String category1) {
-//        return inventoryAdminMapper.findMidCategoriesByLevel1(category1);
-//    }
-//
-//    @Override
-//    public List<String> findSmallCategoriesByLevel2(String category2) {
-//        return inventoryAdminMapper.findSmallCategoriesByLevel2(category2);
-//    }
-
-
     @Override
     public boolean updateQuantity(String inventoryId, int quantity) {
-        return false;
+        return inventoryAdminMapper.updateQuantity(inventoryId,quantity) > 0;
     }
 
-    @Override
-    public boolean deleteInventory(String inventoryId) {
-        return false;
-    }
+
 }

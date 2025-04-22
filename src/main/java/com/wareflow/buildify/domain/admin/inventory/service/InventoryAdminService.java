@@ -15,17 +15,12 @@ public interface InventoryAdminService {
 
     List<String> findSmallCategoriesByLevel2(String category2);
 
+    boolean updateQuantity(String inventoryId, int quantity);
 
 
 
 
 
-
-    // 수량 업데이트 메소드, 성공시 true 반환
-    public boolean updateQuantity(String inventoryId, int quantity);
-
-    // 삭제 메소드
-    public boolean deleteInventory(String inventoryId);
 
 
 }

@@ -29,10 +29,10 @@ public class InventoryDTO {
     private int quantity;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date last_inbound_date;
+    private Date lastInboundDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date last_outbound_date;
+    private Date lastOutboundDate;
 
 
 }

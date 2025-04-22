@@ -15,8 +15,8 @@
             i.inventory_id AS inventoryId,
             i.ware_id AS wareId,
             i.quantity,
-            i.last_inbound_date,
-            i.last_outbound_date,
+            i.last_inbound_date as lastInboundDate,
+            i.last_outbound_date as lastOutboundDate,
             wa.ware_name AS wareName,
             (SELECT CONCAT(w.warehouse_pos_x, w.warehouse_pos_y)
              FROM wareHouse w
@@ -38,8 +38,8 @@
         i.inventory_id AS inventoryId,
         i.ware_id AS wareId,
         i.quantity,
-        i.last_inbound_date,
-        i.last_outbound_date,
+        i.last_inbound_date as lastInboundDate,
+        i.last_outbound_date as lastOutboundDate,
         wa.ware_name AS wareName,
         (SELECT CONCAT(w.warehouse_pos_x, w.warehouse_pos_y)
         FROM wareHouse w
@@ -103,6 +103,12 @@
         FROM category
         WHERE category_level2 = #{category2}
     </select>
+
+    <update id="updateQuantity">
+        UPDATE inventory
+        SET quantity = #{quantity}
+        WHERE inventory_id = #{inventoryId}
+    </update>
 
 
 

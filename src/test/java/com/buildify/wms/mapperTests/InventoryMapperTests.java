@@ -8,8 +8,11 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -17,6 +20,8 @@ import java.util.List;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/root-context.xml")
 @Log4j2
+@Transactional
+@Rollback
 
 
 public class InventoryMapperTests {
@@ -73,6 +78,40 @@ public class InventoryMapperTests {
 
     }
 
+    @Test
+    public void testUpdateQuantity(){
+        String inventoryId = "INV001";
+
+        // 1) 초기값 조회
+        List<InventoryDTO> allBefore = inventoryAdminMapper.getAdminInventory();
+        InventoryDTO beforeDto = allBefore.stream()
+                .filter(i -> inventoryId.equals(i.getInventoryId()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("INV001이 존재해야 합니다."));
+        int beforeQty = beforeDto.getQuantity();
+
+        // 2) 수량 변경 (예: +5)
+        int newQty = beforeQty + 5;
+        int affected = inventoryAdminMapper.updateQuantity(inventoryId, newQty);
+        assertThat(affected)
+                .as("updateQuantity는 1행을 수정해야 합니다")
+                .isEqualTo(1);
+
+        // 3) 변경 후 다시 전체 조회해서 같은 ID의 수량만 추출
+        List<InventoryDTO> allAfter = inventoryAdminMapper.getAdminInventory();
+        InventoryDTO afterDto = allAfter.stream()
+                .filter(i -> inventoryId.equals(i.getInventoryId()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("INV001이 존재해야 합니다."));
+        int afterQty = afterDto.getQuantity();
+
+        assertThat(afterQty)
+                .as("수량이 %d에서 %d로 바뀌어야 합니다", beforeQty, newQty)
+                .isEqualTo(newQty);
+    }
 
     }
+
+
+
 
