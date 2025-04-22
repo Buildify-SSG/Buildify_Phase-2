@@ -52,5 +52,13 @@ public class InventoryAdminServiceImpl implements InventoryAdminService {
         return inventoryAdminMapper.updateQuantity(inventoryId,quantity) > 0;
     }
 
+    @Override
+    public int deleteInventory(List<String> inventoryIds) {
+        // 여러 ID를 순회하며 삭제, 삭제된 총 행 수 리턴
+        return inventoryIds.stream()
+                .mapToInt(inventoryAdminMapper::deleteInventory)
+                .sum();
+    }
+
 
 }

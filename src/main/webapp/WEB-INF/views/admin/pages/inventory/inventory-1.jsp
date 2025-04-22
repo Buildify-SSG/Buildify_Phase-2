@@ -151,6 +151,11 @@
         margin-left: 8px;
     }
 
+    #modalBackdrop,
+    #updateModal {
+        display: none; /* 기본 숨김 */
+    }
+
 
 </style>
 
@@ -200,12 +205,13 @@
         </div>
     </div>
 
-    <!-- 삭제 -->
-    <button type="button"
-            class="btn-action btn-delete"
-            onclick="confirmDelete()">
-        <i class="fa fa-trash"></i> 삭제
-    </button>
+    <!-- 삭제 (AJAX 스크립트 바인딩용 id 추가, onclick 제거) -->
+     <!-- AJAX로 삭제 로직 바인딩할 버튼 -->
+     <button id="deleteBtn"
+             type="button"
+              class="btn-action btn-delete">
+       <i class="fa fa-trash"></i> 삭제
+     </button>
 
     <!-- 수정 -->
     <button id="updateBtn"
@@ -417,6 +423,53 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const deleteBtn = document.getElementById("deleteBtn");
+
+        deleteBtn.addEventListener("click", async () => {
+            // 1) 체크된 ID들 수집
+            const checkedBoxes = Array.from(
+                document.querySelectorAll('input[name="selectedIndexes"]:checked')
+            );
+            if (checkedBoxes.length === 0) {
+                return alert("삭제할 항목을 하나 이상 선택해주세요.");
+            }
+            const ids = checkedBoxes.map(cb => cb.value);
+
+            // 2) 확인
+            if (!confirm(ids.length + '개 항목을 삭제하시겠습니까?')) {
+                return;
+            }
+
+            try {
+                // 3) AJAX 요청
+                const resp = await fetch(
+                    "/admin/pages/inventory/inventory-1/delete",
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(ids)
+                    }
+                );
+                const json = await resp.json();
+
+                if (json.success) {
+                    alert(json.deletedCount + '개 삭제되었습니다.');
+                    // 4) 화면 갱신
+                    location.reload();
+                } else {
+                    alert("삭제에 실패했습니다.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("서버 통신 중 오류가 발생했습니다.");
+            }
+        });
+    });
+</script>
+
+
 
 
 <!-- 진짜 비동기 AJAX 드랍다운 JS -->
@@ -472,12 +525,7 @@
         });
     };
 
-    function confirmDelete() {
-        const confirmed = confirm('정말 삭제하시겠습니까?');
-        if (confirmed) {
-            document.querySelector('form[action="/admin/pages/product/product-1/api/productRemove"]').submit();
-        }
-    }
+
 </script>
 
 

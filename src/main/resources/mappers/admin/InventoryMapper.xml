@@ -110,6 +110,10 @@
         WHERE inventory_id = #{inventoryId}
     </update>
 
+    <delete id="deleteInventory">
+        DELETE FROM inventory
+        WHERE inventory_id = #{inventoryId}
+    </delete>
 
 
 </mapper>

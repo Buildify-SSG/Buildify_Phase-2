@@ -19,6 +19,8 @@ public interface InventoryAdminMapper {
 
     int updateQuantity(@Param("inventoryId") String inventoryId, @Param("quantity") int quantity);
 
+    int deleteInventory(@Param("inventoryId") String inventoryId);
+
 
 
 }

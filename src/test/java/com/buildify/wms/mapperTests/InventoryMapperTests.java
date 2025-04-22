@@ -110,6 +110,37 @@ public class InventoryMapperTests {
                 .isEqualTo(newQty);
     }
 
+    @Test
+    public void testDeleteInventory() {
+        // 1) 사전 조회: 삭제할 ID를 하나 가져온다
+        List<InventoryDTO> before = inventoryAdminMapper.getAdminInventory();
+        assertThat(before)
+                .as("삭제 전 데이터가 있어야 한다")
+                .isNotEmpty();
+
+        String targetId = before.get(0).getInventoryId();
+        log.info("▶ 삭제 대상 ID: {}", targetId);
+
+        // 2) deleteInventory 호출
+        int deletedCount = inventoryAdminMapper.deleteInventory(targetId);
+        assertThat(deletedCount)
+                .as("삭제된 행 수가 1이어야 한다")
+                .isEqualTo(1);
+
+        // 3) 삭제 후 조회: 동일 ID가 없어야 한다
+        List<InventoryDTO> after = inventoryAdminMapper.getAdminInventory();
+        assertThat(after)
+                .extracting(InventoryDTO::getInventoryId)
+                .as("삭제된 ID는 목록에 없어야 한다")
+                .doesNotContain(targetId);
+
+        // 4) 같은 ID를 한 번 더 삭제하려 하면 0을 반환해야 한다
+        int deletedAgain = inventoryAdminMapper.deleteInventory(targetId);
+        assertThat(deletedAgain)
+                .as("이미 삭제된 항목을 다시 삭제하면 0이 반환되어야 한다")
+                .isEqualTo(0);
+    }
+
     }
 
 
