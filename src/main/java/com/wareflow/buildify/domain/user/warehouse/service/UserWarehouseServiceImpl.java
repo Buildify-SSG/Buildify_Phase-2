@@ -1,4 +1,5 @@
 package com.wareflow.buildify.domain.user.warehouse.service;
+import java.time.ZoneId;
 
 import com.wareflow.buildify.domain.user.warehouse.mapper.UserWarehouseMapper;
 import com.wareflow.buildify.dto.UserWareHouseDTO;
@@ -24,8 +25,8 @@ public class UserWarehouseServiceImpl implements UserWarehouseService {
                 .warehousePosY(dto.getWarehousePosY())
                 .warehouseUsage(dto.getWarehouseUsage())
                 .contractArea(dto.getContractArea())
-                .wareStartDate(dto.getWareStartDate())
-                .wareEndDate(dto.getWareEndDate())
+                .wareStartDate(dto.getWareStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                .wareEndDate(dto.getWareEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                 .build();
 
         log.info("register warehouse: {}", vo.getWareId());

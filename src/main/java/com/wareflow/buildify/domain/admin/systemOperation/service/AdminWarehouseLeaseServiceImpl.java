@@ -103,7 +103,7 @@ public class AdminWarehouseLeaseServiceImpl implements AdminWarehouseLeaseServic
             int posY = Integer.parseInt(String.valueOf(lease.getWareCoord().charAt(1)));
 
             UserWareHouseVO vo = UserWareHouseVO.builder()
-                    .clientID(lease.getClientId())
+                    .clientId(lease.getClientId())
                     .wareId(lease.getWareId())
                     .warehousePosX(posX)
                     .warehousePosY(posY)
