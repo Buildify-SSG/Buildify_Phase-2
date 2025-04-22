@@ -56,18 +56,21 @@ public class UserWarehouseController {
     public String submitWarehouse(
             @RequestParam("wareId") String wareId,
             @RequestParam("selectedCoords") List<String> selectedCoords,
-            @AuthenticationPrincipal CustomUserDetails user,
             RedirectAttributes rttr) {
 
         log.info("🟡 선택된 창고: {}", wareId);
         log.info("🟢 선택된 좌표들: {}", selectedCoords);
 
-        if (user == null) {
-            log.error("❌ user가 null입니다.");
+        // 🔽 인증 정보 수동 획득
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+
+        if (userDetails == null) {
+            log.error("❌ userDetails가 null입니다.");
         } else {
-            log.info("✅ user 객체 타입: {}", user.getClass().getName());
-            log.info("✅ user.getUsername(): {}", user.getUsername());
-            log.info("✅ user.getClientId(): {}", user.getClientId());
+            log.info("✅ userDetails 객체 타입: {}", userDetails.getClass().getName());
+            log.info("✅ userDetails.getUsername(): {}", userDetails.getUsername());
+            log.info("✅ userDetails.getClientId(): {}", userDetails.getClientId());
         }
 
         boolean allSuccess = true;
@@ -75,12 +78,13 @@ public class UserWarehouseController {
         for (String coord : selectedCoords) {
             UserWareHouseDTO dto = new UserWareHouseDTO();
             dto.setWareId(wareId);
-            dto.setClientId(user.getClientId());
+            dto.setClientId(userDetails.getClientId());
             dto.setWarehousePosX(coord.substring(0, 1));   // 예: "A"
             dto.setWarehousePosY(Integer.parseInt(coord.substring(1))); // 예: 1
             dto.setWarehouseUsage(BigDecimal.valueOf(0));
             dto.setContractArea(BigDecimal.valueOf(100));
             dto.setWareStartDate(new java.util.Date());
+
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.MONTH, 6); // 계약 6개월
             dto.setWareEndDate(cal.getTime());
@@ -91,56 +95,10 @@ public class UserWarehouseController {
             }
         }
 
-        rttr.addFlashAttribute("msg", allSuccess ? "전체 신청 완료" : "일부 신청 실패");
+        rttr.addFlashAttribute("msg", allSuccess ? "신청 완료" : "신청 실패");
 
-        return "redirect:/users/pages/userWarehouse/userWarehouse-1";
+        return "redirect:/users/pages/userWarehouse/userWarehouse-1?wareId=" + wareId;
     }
 
-//    @PostMapping("/userWarehouse/userWarehouse-1")
-//    public String submitWarehouse(
-//            @RequestParam("wareId") String wareId,
-//            @RequestParam("selectedCoords") List<String> selectedCoords,
-//            Authentication authentication,
-//            RedirectAttributes rttr) {
-//
-//        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
-//
-////        authentication = SecurityContextHolder.getContext().getAuthentication();
-////        Object principal = authentication.getPrincipal();
-////        log.info("🎯 principal 실제 클래스: {}", principal.getClass());
-////        log.info("🎯 principal 내용: {}", principal);
-//
-//        log.info("🟡 선택된 창고: {}", wareId);
-//        log.info("🟢 선택된 좌표들: {}", selectedCoords);
-//        log.info("✅ user 객체 타입: {}", user.getClass().getName());
-//        log.info("✅ user.getUsername(): {}", user.getUsername());
-//        log.info("✅ user.getClientId(): {}", user.getClientId());
-//
-//        boolean allSuccess = true;
-//
-//        for (String coord : selectedCoords) {
-//            UserWareHouseDTO dto = new UserWareHouseDTO();
-//            dto.setWareId(wareId);
-//            dto.setClientId(user.getClientId());
-//            dto.setWarehousePosX(coord.substring(0, 1));   // 예: "A"
-//            dto.setWarehousePosY(Integer.parseInt(coord.substring(1))); // 예: 1
-//            dto.setWarehouseUsage(BigDecimal.valueOf(0));
-//            dto.setContractArea(BigDecimal.valueOf(100));
-//            dto.setWareStartDate(new java.util.Date());
-//
-//            Calendar cal = Calendar.getInstance();
-//            cal.add(Calendar.MONTH, 6); // 계약 6개월
-//            dto.setWareEndDate(cal.getTime());
-//
-//            if (!userWarehouseService.registerWarehouse(dto)) {
-//                allSuccess = false;
-//                break;
-//            }
-//        }
-//
-//        rttr.addFlashAttribute("msg", allSuccess ? "전체 신청 완료" : "일부 신청 실패");
-//
-//        return "redirect:/users/pages/userWarehouse/userWarehouse-1";
-//    }
 
 }

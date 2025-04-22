@@ -9,7 +9,7 @@
     <select id="getWarehouseList" resultType="com.wareflow.buildify.dto.WarehouseViewDTO">
         SELECT
             w.ware_id AS wareId,
-            concat(w.warehouse_pos_x,w.warehouse_pos_y) AS wareCoord,
+            concat(w.warehouse_pos_x, w.warehouse_pos_y) AS wareCoord,
             wa.ware_address AS wareAddress,
             wa.ware_admin_number AS adminNumber,
             userware.client_id AS clientID,
@@ -17,20 +17,19 @@
             user.business_number AS clientBusinessNumber,
             userware.ware_start_date AS startDate,
             userware.ware_end_date AS endDate,
-            MAX(i.last_inbound_date) AS lastInboundDate,
-            MAX(i.last_outbound_date) AS lastOutboundDate
+            i.last_inbound_date AS lastInboundDate,
+            i.last_outbound_date AS lastOutboundDate
         FROM wareHouse w
                  JOIN warehouse_area wa
-                      on w.ware_id = wa.ware_id
+                      ON w.ware_id = wa.ware_id
                  JOIN userWareHouse userware
                       ON w.ware_id = userware.ware_id
-                          and w.warehouse_pos_x = userware.warehouse_pos_x
-                          and w.warehouse_pos_y = userware.warehouse_pos_y
+                          AND w.warehouse_pos_x = userware.warehouse_pos_x
+                          AND w.warehouse_pos_y = userware.warehouse_pos_y
                  JOIN user
                       ON userware.client_id = user.client_id
-                 JOIN inventory i
-                      ON userware.client_id = i.client_id
-        GROUP BY w.ware_id,wareCoord;
+                 LEFT JOIN inventory i
+                           ON userware.client_id = i.client_id;
     </select>
 
     <select id="getWarehouseInfo" resultType="com.wareflow.buildify.dto.WareHouseDTO">

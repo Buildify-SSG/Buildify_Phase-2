@@ -245,7 +245,7 @@
                 <a href="<c:url value='/find-password' />">비밀번호 찾기</a>
             </div>
             <div class="register">
-                계정이 없으신가요? <a href="<c:url value='/register' />">회원가입</a>
+                계정이 없으신가요? <a href="<c:url value='/signup' />">회원가입</a>
             </div>
         </form>
     </div>
