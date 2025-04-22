@@ -1,0 +1,146 @@
+package com.wareflow.buildify.domain.user.warehouse.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wareflow.buildify.domain.admin.systemOperation.service.AdminWarehouseService;
+import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
+import com.wareflow.buildify.domain.user.warehouse.service.UserWarehouseService;
+import com.wareflow.buildify.dto.UserWareHouseDTO;
+import com.wareflow.buildify.dto.WareHouseDTO;
+import com.wareflow.buildify.dto.WarehouseViewDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+@Controller
+@Log4j2
+@RequiredArgsConstructor
+@RequestMapping("/users/pages")
+public class UserWarehouseController {
+
+    private final AdminWarehouseService adminWarehouseService;
+    private final UserWarehouseService userWarehouseService;
+
+    @GetMapping("/userWarehouse/userWarehouse-1")
+    public String getWarehouseList(Model model) throws JsonProcessingException {
+        Map<String , Map<String, List<WarehouseViewDTO>>> layoutmap = adminWarehouseService.getWarehouseList();
+        log.info("layout toString() :" + layoutmap.toString());
+        log.info("컨트롤러 map 사이즈 : "+layoutmap.size());
+        model.addAttribute("body","/WEB-INF/views/users/pages/userWarehouse/userWarehouse-1.jsp");
+        model.addAttribute("map", layoutmap);
+
+        List<WareHouseDTO> wareHouseDTOList = adminWarehouseService.getWarehouseInfo();
+        log.info("wareHouseDTOList toString() :" + wareHouseDTOList.toString());
+        model.addAttribute("wareInfo", wareHouseDTOList);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String mapJson = mapper.writeValueAsString(layoutmap);
+        model.addAttribute("mapJson", mapJson);
+
+        return "users/layouts/userlayout";
+    }
+
+    @PostMapping("/userWarehouse/userWarehouse-1")
+    public String submitWarehouse(
+            @RequestParam("wareId") String wareId,
+            @RequestParam("selectedCoords") List<String> selectedCoords,
+            @AuthenticationPrincipal CustomUserDetails user,
+            RedirectAttributes rttr) {
+
+        log.info("🟡 선택된 창고: {}", wareId);
+        log.info("🟢 선택된 좌표들: {}", selectedCoords);
+
+        if (user == null) {
+            log.error("❌ user가 null입니다.");
+        } else {
+            log.info("✅ user 객체 타입: {}", user.getClass().getName());
+            log.info("✅ user.getUsername(): {}", user.getUsername());
+            log.info("✅ user.getClientId(): {}", user.getClientId());
+        }
+
+        boolean allSuccess = true;
+
+        for (String coord : selectedCoords) {
+            UserWareHouseDTO dto = new UserWareHouseDTO();
+            dto.setWareId(wareId);
+            dto.setClientId(user.getClientId());
+            dto.setWarehousePosX(coord.substring(0, 1));   // 예: "A"
+            dto.setWarehousePosY(Integer.parseInt(coord.substring(1))); // 예: 1
+            dto.setWarehouseUsage(BigDecimal.valueOf(0));
+            dto.setContractArea(BigDecimal.valueOf(100));
+            dto.setWareStartDate(new java.util.Date());
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH, 6); // 계약 6개월
+            dto.setWareEndDate(cal.getTime());
+
+            if (!userWarehouseService.registerWarehouse(dto)) {
+                allSuccess = false;
+                break;
+            }
+        }
+
+        rttr.addFlashAttribute("msg", allSuccess ? "전체 신청 완료" : "일부 신청 실패");
+
+        return "redirect:/users/pages/userWarehouse/userWarehouse-1";
+    }
+
+//    @PostMapping("/userWarehouse/userWarehouse-1")
+//    public String submitWarehouse(
+//            @RequestParam("wareId") String wareId,
+//            @RequestParam("selectedCoords") List<String> selectedCoords,
+//            Authentication authentication,
+//            RedirectAttributes rttr) {
+//
+//        CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+//
+////        authentication = SecurityContextHolder.getContext().getAuthentication();
+////        Object principal = authentication.getPrincipal();
+////        log.info("🎯 principal 실제 클래스: {}", principal.getClass());
+////        log.info("🎯 principal 내용: {}", principal);
+//
+//        log.info("🟡 선택된 창고: {}", wareId);
+//        log.info("🟢 선택된 좌표들: {}", selectedCoords);
+//        log.info("✅ user 객체 타입: {}", user.getClass().getName());
+//        log.info("✅ user.getUsername(): {}", user.getUsername());
+//        log.info("✅ user.getClientId(): {}", user.getClientId());
+//
+//        boolean allSuccess = true;
+//
+//        for (String coord : selectedCoords) {
+//            UserWareHouseDTO dto = new UserWareHouseDTO();
+//            dto.setWareId(wareId);
+//            dto.setClientId(user.getClientId());
+//            dto.setWarehousePosX(coord.substring(0, 1));   // 예: "A"
+//            dto.setWarehousePosY(Integer.parseInt(coord.substring(1))); // 예: 1
+//            dto.setWarehouseUsage(BigDecimal.valueOf(0));
+//            dto.setContractArea(BigDecimal.valueOf(100));
+//            dto.setWareStartDate(new java.util.Date());
+//
+//            Calendar cal = Calendar.getInstance();
+//            cal.add(Calendar.MONTH, 6); // 계약 6개월
+//            dto.setWareEndDate(cal.getTime());
+//
+//            if (!userWarehouseService.registerWarehouse(dto)) {
+//                allSuccess = false;
+//                break;
+//            }
+//        }
+//
+//        rttr.addFlashAttribute("msg", allSuccess ? "전체 신청 완료" : "일부 신청 실패");
+//
+//        return "redirect:/users/pages/userWarehouse/userWarehouse-1";
+//    }
+
+}

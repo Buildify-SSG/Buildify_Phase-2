@@ -23,47 +23,50 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final AdminLoginMapper adminLoginMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String id) {
         log.info("🟢 로그인 시도: {}", id);
 
         // 1️⃣ auth 테이블에서 id와 role 확인
         AuthVO authVO = authMapper.findById(id);
         if (authVO == null) {
-            throw new UsernameNotFoundException("존재하지 않는 아이디입니다.");
+            log.info("존재하지 않는 아이디입니다.");
         }
 
         String role = authVO.getRole();
 
         if(role.equals("0")){
             UserVO user = userLoginMapper.findById(id);
-            if (user == null) {
 
-                throw new UsernameNotFoundException("사용자 정보가 존재하지 않습니다.");
+            if (user == null) {
+               log.info("사용자 정보가 존재하지 않습니다.");
             }
 
-            return CustomUserDetails.builder()
-                    .id(user.getUserId())
-                    .password(user.getUserPw())
-                    .role("ROLE_USER")
-                    .clientId(user.getClientId())
-                    .build();
+            log.info("🔍 user.getClientId() = {}", user.getClientId());
+
+            CustomUserDetails customUser = new CustomUserDetails();
+            customUser.setId(user.getUserId());
+            customUser.setPassword(user.getUserPw());
+            customUser.setRole("ROLE_USER");
+            customUser.setClientId(user.getClientId());
+            return customUser;
         } else {
             // 관리자
             AdminVO admin = adminLoginMapper.findById(id);
 
             log.info("🔐 loaded admin pw: {}", admin.getAdminPassword());
+            log.info("🟢 유저 클라이언트 아이디: {}", admin.getAdminNumber());
 
             if (admin == null) {
-                throw new UsernameNotFoundException("관리자 정보가 존재하지 않습니다.");
+                log.info("관리자 정보가 존재하지 않습니다.");
             }
 
 
-            return CustomUserDetails.builder()
-                    .id(admin.getAdminId())
-                    .password(admin.getAdminPassword())
-                    .role("ROLE_ADMIN")
-                    .adminNumber(admin.getAdminNumber())
-                    .build();
+            CustomUserDetails customUser = new CustomUserDetails();
+            customUser.setId(admin.getAdminId());
+            customUser.setPassword(admin.getAdminPassword());
+            customUser.setRole("ROLE_ADMIN");
+            customUser.setAdminNumber(admin.getAdminNumber());
+            return customUser;
         }
 
     }

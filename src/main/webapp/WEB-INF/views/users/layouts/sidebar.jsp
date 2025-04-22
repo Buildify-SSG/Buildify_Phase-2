@@ -25,13 +25,13 @@
                     </a>
                     <ul id="submenu-userWarehouse" class="sidebar-dropdown list-unstyled collapse ps-4" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-1' />">현황 조회</a>
+                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-1' />">창고 신청</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-2' />">계약 내역</a>
+                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-2' />">창고 현황</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-3' />">유저 창고 추가 메뉴 1</a>
+                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-3' />">계약 내역<</a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-4' />">유저 창고 추가 메뉴 2</a>

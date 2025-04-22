@@ -64,7 +64,7 @@ public class AdminHomeController {
         return "admin/layouts/adminlayout";
     }
 
-//    // inventory
+
 //    @GetMapping("/pages/inventory/inventory-1")
 //    public String inventory1(Model model) {
 //        model.addAttribute("body", "/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");

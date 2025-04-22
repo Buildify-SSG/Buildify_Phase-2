@@ -115,11 +115,11 @@ public class UserHomeController {
     }
 
     // userWarehouse
-    @GetMapping("/pages/userWarehouse/userWarehouse-1")
-    public String userWarehouse1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/users/pages/userWarehouse/userWarehouse-1.jsp");
-        return "users/layouts/userlayout";
-    }
+//    @GetMapping("/pages/userWarehouse/userWarehouse-1")
+//    public String userWarehouse1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/users/pages/userWarehouse/userWarehouse-1.jsp");
+//        return "users/layouts/userlayout";
+//    }
 
     @GetMapping("/pages/userWarehouse/userWarehouse-2")
     public String userWarehouse2(Model model) {

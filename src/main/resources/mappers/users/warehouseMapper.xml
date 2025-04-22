@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wareflow.buildify.domain.user.warehouse.mapper.UserWarehouseMapper">
+    <insert id="insertWarehouse" parameterType="com.wareflow.buildify.vo.UserWareHouseVO">
+        INSERT INTO userWareHouse (
+            ware_id, client_id, warehouse_pos_x, warehouse_pos_y, warehouse_usage,
+            contract_area, ware_start_date, ware_end_date
+        ) VALUES (
+            #{wareId}, #{clientId}, #{warehousePosX}, #{warehousePosY},
+            #{warehouseUsage}, #{contractArea}, #{wareStartDate}, #{wareEndDate}
+        )
+    </insert>
+</mapper>
