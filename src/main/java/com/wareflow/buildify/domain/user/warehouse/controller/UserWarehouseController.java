@@ -100,5 +100,19 @@ public class UserWarehouseController {
         return "redirect:/users/pages/userWarehouse/userWarehouse-1?wareId=" + wareId;
     }
 
+    @GetMapping("/userWarehouse/userWarehouse-2")
+    public String getMyWarehouse(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        List<UserWareHouseDTO> myWarehouses = userWarehouseService.getMyWarehouse(userDetails.getClientId());
+        log.info("내 창고 신청 내역: " + myWarehouses);
+        model.addAttribute("myWarehouses", myWarehouses);
+
+        // ✨ layout에서 include할 JSP 경로 지정!
+        model.addAttribute("body", "/WEB-INF/views/users/pages/userWarehouse/userWarehouse-2.jsp");
+
+        return "users/layouts/userlayout";
+    }
+
 
 }
