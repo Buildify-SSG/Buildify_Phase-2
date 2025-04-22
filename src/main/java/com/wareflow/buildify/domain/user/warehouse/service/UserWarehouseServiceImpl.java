@@ -41,6 +41,7 @@ public class UserWarehouseServiceImpl implements UserWarehouseService {
         List<UserWareHouseDTO> list = userWarehouseMapper.selectMyWarehouse(clientId);
 
         list.sort(Comparator.comparing(UserWareHouseDTO::getWarehousePosX).thenComparing(UserWareHouseDTO::getWarehousePosY));
+//        list.sort(Comparator.comparing(UserWareHouseDTO::getWareEndDate));
         return list;
     }
 
