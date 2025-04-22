@@ -146,11 +146,11 @@ public class AdminHomeController {
 //        return "admin/layouts/adminlayout";
 //    }
 
-    @GetMapping("/pages/systemOperation/systemOperation-2")
-    public String systemOperation2(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-2.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/systemOperation/systemOperation-2")
+//    public String systemOperation2(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/systemOperation/systemOperation-2.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/systemOperation/systemOperation-3")
     public String systemOperation3(Model model) {
