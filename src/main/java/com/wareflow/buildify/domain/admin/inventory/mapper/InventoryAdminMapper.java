@@ -17,6 +17,8 @@ public interface InventoryAdminMapper {
 
     List<String> findSmallCategoriesByLevel2(String category2);
 
+    int updateQuantity(@Param("inventoryId") String inventoryId, @Param("quantity") int quantity);
+
 
 
 }

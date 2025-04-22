@@ -4,6 +4,7 @@ import com.wareflow.buildify.domain.admin.inventory.service.InventoryAdminServic
 import com.wareflow.buildify.dto.CategoryDTO;
 import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.dto.InventoryFilterDTO;
+import com.wareflow.buildify.dto.InventoryUpdateDTO;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/admin/pages/inventory")
 @RequiredArgsConstructor
@@ -21,8 +24,8 @@ import java.util.List;
 
 public class InventoryAdminController {
 
-    @Autowired
-    private InventoryAdminService inventoryAdminService;
+
+    private final InventoryAdminService inventoryAdminService;
 
     private Pagination pagination;
 
@@ -66,6 +69,17 @@ public class InventoryAdminController {
     public List<String> getSmallCategories(@RequestParam("category2") String category2) {
         return inventoryAdminService.findSmallCategoriesByLevel2(category2);
     }
+
+    // 재고 수량 수정(AJAX JSON 비동기)
+    @PostMapping("/inventory-1/updateQuantity")
+    @ResponseBody
+    public Map<String,Object> updateQuantity(@RequestBody InventoryUpdateDTO dto) {
+        boolean ok = inventoryAdminService.updateQuantity(dto.getInventoryId(), dto.getQuantity());
+        return ok
+                ? Map.of("success", true)
+                : Map.of("success", false, "message", "업데이트 실패");
+    }
+
 
 
 
