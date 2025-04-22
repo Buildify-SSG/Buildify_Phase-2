@@ -5,19 +5,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // ✅ 이거만 남김
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CustomUserDetails implements UserDetails {
+@ToString
+public class CustomUserDetails implements UserDetails, Serializable {
 
     private String id;
     private String password;
     private String role;
-
     private String clientId;    // ✅ 추가 (User일 경우)
     private String adminNumber; // ✅ 추가 (Admin일 경우)
 

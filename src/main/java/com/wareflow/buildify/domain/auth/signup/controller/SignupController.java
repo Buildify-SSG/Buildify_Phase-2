@@ -2,6 +2,7 @@ package com.wareflow.buildify.domain.auth.signup.controller;
 
 import com.wareflow.buildify.domain.auth.signup.service.SignupService;
 import com.wareflow.buildify.dto.UserDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 @Log4j2
 public class SignupController {
 
-    @Autowired
     private SignupService signupService;
 
     @GetMapping("/signup")

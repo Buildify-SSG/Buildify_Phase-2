@@ -1,17 +1,15 @@
-package com.wareflow.buildify.vo;
+package com.wareflow.buildify.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserWareHouseVO {
+public class UserWareHouseDTO {
     private String wareId;
     private String clientId;
     private String warehousePosX;
