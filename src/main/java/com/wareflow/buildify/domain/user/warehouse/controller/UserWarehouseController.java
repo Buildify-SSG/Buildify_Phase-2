@@ -95,9 +95,9 @@ public class UserWarehouseController {
             }
         }
 
-        rttr.addFlashAttribute("msg", allSuccess ? "전체 신청 완료" : "일부 신청 실패");
+        rttr.addFlashAttribute("msg", allSuccess ? "신청 완료" : "신청 실패");
 
-        return "redirect:/userWarehouse/userWarehouse-1?wareId=" + wareId;
+        return "redirect:/users/pages/userWarehouse/userWarehouse-1?wareId=" + wareId;
     }
 
 
