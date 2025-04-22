@@ -54,8 +54,7 @@
         <thead>
         <tr>
             <th>창고 ID</th>
-            <th>고객 ID</th>
-            <th>좌표 (X, Y)</th>
+            <th>섹션</th>
             <th>사용 면적 (㎡)</th>
             <th>계약 면적 (㎡)</th>
             <th>시작일</th>
@@ -65,8 +64,16 @@
         <tbody>
         <c:forEach var="warehouse" items="${myWarehouses}">
             <tr>
-                <td>${warehouse.wareId}</td>
-                <td>${warehouse.clientId}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${warehouse.wareId == 'W001'}">서울</c:when>
+                        <c:when test="${warehouse.wareId == 'W002'}">부산</c:when>
+                        <c:when test="${warehouse.wareId == 'W003'}">대구</c:when>
+                        <c:when test="${warehouse.wareId == 'W004'}">광주</c:when>
+                        <c:when test="${warehouse.wareId == 'W005'}">대전</c:when>
+                        <c:otherwise>${warehouse.wareId}</c:otherwise>
+                    </c:choose>
+                </td>
                 <td>${warehouse.warehousePosX}${warehouse.warehousePosY}</td>
                 <td>${warehouse.warehouseUsage}</td>
                 <td>${warehouse.contractArea}</td>

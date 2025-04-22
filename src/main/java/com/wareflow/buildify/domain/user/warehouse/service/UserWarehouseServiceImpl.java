@@ -1,5 +1,6 @@
 package com.wareflow.buildify.domain.user.warehouse.service;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,11 @@ public class UserWarehouseServiceImpl implements UserWarehouseService {
 
     @Override
     public List<UserWareHouseDTO> getMyWarehouse(String clientId) {
-        return userWarehouseMapper.selectMyWarehouse(clientId);
+        List<UserWareHouseDTO> list = userWarehouseMapper.selectMyWarehouse(clientId);
+
+        list.sort(Comparator.comparing(UserWareHouseDTO::getWarehousePosX).thenComparing(UserWareHouseDTO::getWarehousePosY));
+//        list.sort(Comparator.comparing(UserWareHouseDTO::getWareEndDate));
+        return list;
     }
 
 }
