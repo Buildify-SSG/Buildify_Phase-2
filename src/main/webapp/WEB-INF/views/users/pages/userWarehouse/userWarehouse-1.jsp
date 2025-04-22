@@ -106,7 +106,16 @@
             </div>
             <div class="modal-body">
                 <p><strong>선택한 섹션:</strong> <span id="modal-sections"></span></p>
-                <p><strong>임대 기간:</strong> 6개월</p>
+                <p><strong>임대 기간:</strong>
+                    <select id="rental-months" class="form-select" style="display:inline-block; width:auto;">
+                        <option value="1" selected>1개월</option>
+                        <option value="2">2개월</option>
+                        <option value="3">3개월</option>
+                        <option value="4">4개월</option>
+                        <option value="5">5개월</option>
+                        <option value="6">6개월</option>
+                    </select>
+                </p>
                 <p><strong>총 금액:</strong> <span id="modal-fee"></span></p>
             </div>
             <div class="modal-footer">
@@ -175,16 +184,40 @@
         document.getElementById("submitBtn").disabled = selectedCount === 0;
     }
 
-    document.getElementById("submitBtn").addEventListener("click", () => {
+    // ✅ 총 금액 계산 로직 함수로 분리
+    function updateModalFeeInfo() {
+        // ✅ 먼저 rentalMonths 값을 얻어야 함!
+        const rentalMonths = parseInt(document.getElementById("rental-months").value);
+
+        // ✅ 숨겨진 input에 rentalMonths 값 추가/갱신
+        const hiddenContainer = document.getElementById('hiddenFields');
+        let existingInput = document.getElementById("rentalMonths");
+        if (existingInput) {
+            existingInput.value = rentalMonths;
+        } else {
+            const hiddenMonths = document.createElement("input");
+            hiddenMonths.type = "hidden";
+            hiddenMonths.name = "rentalMonths";
+            hiddenMonths.id = "rentalMonths";
+            hiddenMonths.value = rentalMonths;
+            hiddenContainer.appendChild(hiddenMonths);
+        }
+
+        // ✅ 선택된 섹션 수 계산
         const selected = document.querySelectorAll(".grid-item.selected");
         const coordList = Array.from(selected).map(item => item.dataset.coord);
         const sectionList = coordList.join(", ");
         const sectionCount = coordList.length;
-        const totalFee = sectionCount * 100;
 
+        // ✅ 금액 계산
+        const unitFeePerMonth = 100; // 1개월당 100만원
+        const totalFee = sectionCount * rentalMonths * unitFeePerMonth;
+
+        // ✅ 모달에 표시
         document.getElementById("modal-sections").innerText = sectionList || "없음";
         document.getElementById("modal-fee").innerText = totalFee.toLocaleString() + "만원";
-    });
+    }
+
 
     document.addEventListener("DOMContentLoaded", () => {
         if (dropdown.value) updateGridByWarehouse(dropdown.value);
@@ -219,8 +252,12 @@
             modal.hide();
             form.submit();
         });
+
+        document.getElementById("submitBtn").addEventListener("click", updateModalFeeInfo);
+        document.getElementById("rental-months").addEventListener("change", updateModalFeeInfo);
     });
 </script>
+
 <c:if test="${not empty msg}">
     <script>alert("${msg}");</script>
 </c:if>

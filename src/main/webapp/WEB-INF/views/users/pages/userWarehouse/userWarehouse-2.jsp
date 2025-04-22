@@ -55,7 +55,7 @@
         <tr>
             <th>창고 ID</th>
             <th>고객 ID</th>
-            <th>좌표 (X, Y)</th>
+            <th>섹션</th>
             <th>사용 면적 (㎡)</th>
             <th>계약 면적 (㎡)</th>
             <th>시작일</th>

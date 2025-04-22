@@ -56,6 +56,7 @@ public class UserWarehouseController {
     public String submitWarehouse(
             @RequestParam("wareId") String wareId,
             @RequestParam("selectedCoords") List<String> selectedCoords,
+            @RequestParam("rentalMonths") int rentalMonths,
             RedirectAttributes rttr) {
 
         log.info("🟡 선택된 창고: {}", wareId);
@@ -86,7 +87,7 @@ public class UserWarehouseController {
             dto.setWareStartDate(new java.util.Date());
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.MONTH, 6); // 계약 6개월
+            cal.add(Calendar.MONTH, rentalMonths); // ✅ 사용자가 선택한 개월 수 반영
             dto.setWareEndDate(cal.getTime());
 
             if (!userWarehouseService.registerWarehouse(dto)) {
