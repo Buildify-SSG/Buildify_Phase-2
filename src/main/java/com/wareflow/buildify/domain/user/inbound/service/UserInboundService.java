@@ -33,5 +33,7 @@ public interface UserInboundService {
 
     List<ProductDTO> searchInboundInsertList(String searchType, String keyword);
 
+//    void requestInbound(String userId, List<String> prodIds, List<Integer> quantities);
 
+    void requestInbound(List<String> prodIds, List<Integer> quantities);
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class InboundVO {
     private String inboundId;
     private String prodId;
@@ -18,7 +19,10 @@ public class InboundVO {
     private String wareId;
     private String warehousePosX;
     private String warehousePosY;
-    private String inboundProcessDate;
+    private String  inboundProcessDate;
 
     private String prodName;
+    private int prodPrice;
+
+
 }
