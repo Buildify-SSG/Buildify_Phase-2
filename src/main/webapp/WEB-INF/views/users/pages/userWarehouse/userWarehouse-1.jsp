@@ -6,11 +6,19 @@
 <head>
     <meta charset="UTF-8">
     <title>창고 신청</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <style>
-        body {
+        html, body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #f8fafc;
             color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .container-flex {
             display: flex;
