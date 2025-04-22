@@ -43,7 +43,7 @@
             MAX(i.last_inbound_date) as lastInboundDate,
             MAX(i.last_outbound_date) as lastOutboundDate
         FROM warehouse_area ware
-        JOIN inventory i
+        LEFT JOIN inventory i
             ON ware.ware_id = i.ware_id
         JOIN admin
             ON ware.ware_admin_number = admin.admin_number

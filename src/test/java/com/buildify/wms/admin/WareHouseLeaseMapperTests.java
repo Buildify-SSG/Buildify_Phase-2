@@ -51,7 +51,7 @@ public class WareHouseLeaseMapperTests {
                 .wareId("W001")
                 .warehousePosX("A")
                 .warehousePosY(1)
-                .clientID("CLT-001-AAA")
+                .clientId("CLT-001-AAA")
                 .wareEndDate(LocalDate.now())
                 .build();
         userWareHouseVOList.add(userWareHouseVO);
@@ -60,7 +60,7 @@ public class WareHouseLeaseMapperTests {
                 .wareId("W001")
                 .warehousePosX("D")
                 .warehousePosY(4)
-                .clientID("USR-250418-7IBCKT")
+                .clientId("USR-250418-7IBCKT")
                 .wareEndDate(LocalDate.now())
                 .build();
         userWareHouseVOList.add(userWareHouseVO2);
