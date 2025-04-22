@@ -80,6 +80,17 @@ public class InventoryAdminController {
                 : Map.of("success", false, "message", "업데이트 실패");
     }
 
+    /** AJAX JSON 비동기 삭제 */
+    @PostMapping("/inventory-1/delete")
+    @ResponseBody
+    public Map<String,Object> deleteInventories(@RequestBody List<String> inventoryIds) {
+        int deleted = inventoryAdminService.deleteInventory(inventoryIds);
+        return Map.of(
+                "success", true,
+                "deletedCount", deleted
+        );
+    }
+
 
 
 

@@ -17,6 +17,8 @@ public interface InventoryAdminService {
 
     boolean updateQuantity(String inventoryId, int quantity);
 
+    int deleteInventory(List<String> inventoryIds);
+
 
 
 
