@@ -1,5 +1,7 @@
 package com.wareflow.buildify.domain.user.warehouse.service;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.wareflow.buildify.domain.user.warehouse.mapper.UserWarehouseMapper;
 import com.wareflow.buildify.dto.UserWareHouseDTO;
@@ -32,4 +34,10 @@ public class UserWarehouseServiceImpl implements UserWarehouseService {
         log.info("register warehouse: {}", vo.getWareId());
        return userWarehouseMapper.insertWarehouse(vo) == 1;
     }
+
+    @Override
+    public List<UserWareHouseDTO> getMyWarehouse(String clientId) {
+        return userWarehouseMapper.selectMyWarehouse(clientId);
+    }
+
 }

@@ -31,7 +31,7 @@
                             <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-2' />">창고 현황</a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-3' />">계약 내역<</a>
+                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-3' />">계약 내역</a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-4' />">유저 창고 추가 메뉴 2</a>
