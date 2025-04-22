@@ -136,21 +136,18 @@
         <!-- export 버튼 -->
         <div class="export-buttons">
 
-
-
-
             <button style="margin-right: 5px;">exportExcel</button>
             <button>exportPDF</button>
         </div>
     </div>
 
 
-
     <!-- 표 -->
     <div class="table-wrapper">
-        <form method="post" action="/admin/pages/product/product-1/api/productRemove">
+<%--        <form method="post" action="/users/pages/inbound/inbound-1/insert">--%>
+            <form id="inboundForm">
             <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                <button type="button" style="background-color: crimson; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="confirmDelete()">입고 요청</button>
+                <button type="button" id="requestInboundBtn" style="background-color: #14bedc; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" >입고 요청</button>
             </div>
             <table id="contractTable">
                 <thead>
@@ -168,17 +165,12 @@
                 </thead>
                 <tbody>
                 <c:forEach var="product" items="${List}" varStatus="status">
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="selectedIndexes" value="${product.prodId}" />
-                                <%--            <input type="checkbox" name="selectedIndexes" value="${status.index}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].productId" value="${product.prodId}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].brand" value="${product.brand}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].productName" value="${product.prodName}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].price" value="${product.prodPrice}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].categoryId" value="${product.prodCategoryid}" />--%>
-                                <%--            <input type="hidden" name="productList[${status.index}].size" value="${product.prodSize}" />--%>
-                        </td>
+                    <tr class="product-row"
+                        data-prodid="${product.prodId}"
+                        data-prodname="${product.prodName}"
+                        data-prodprice="${product.prodPrice}"
+                        data-prodsize="${product.prodSize}">
+                        <td><input type="checkbox" class="prod-check" value="${product.prodId}" /></td>
                         <td>${product.prodId}</td>
                         <td>${product.prodName}</td>
                         <td><fmt:formatNumber value="${product.prodPrice}" type="number" groupingUsed="true"/></td>
@@ -216,6 +208,32 @@
             </div>
             </c:if>
     </div>
+</div>
+
+<!-- ✅ 모달 -->
+<div id="inboundModal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 1000; min-width: 400px;">
+    <h3 style="margin-bottom: 16px;">입고 수량 입력</h3>
+    <form id="inboundModalForm">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+            <tr style="background: #f1f5f9;">
+                <th style="padding: 6px;">상품 ID</th>
+                <th style="padding: 6px;">상품명</th>
+                <th style="padding: 6px;">가격</th>
+                <th style="padding: 6px;">사이즈</th>
+                <th style="padding: 6px;">수량</th>
+            </tr>
+            </thead>
+            <tbody id="modalInputs"></tbody>
+        </table>
+        <div style="margin-top: 16px; text-align: right;">
+
+            <button type="submit" style="padding: 6px 12px; background: #14bedc; color: white; border: none; border-radius: 5px;">요청</button>
+            <button type="button" onclick="closeModal()" style="margin-right: 8px; padding: 6px 12px; background: #e5e7eb; color: #333; border: none; border-radius: 5px;">취소</button>
+        </div>
+
+
+    </form>
 </div>
 
 <c:if test="${not empty msg}">
@@ -256,6 +274,82 @@
 
         rows.forEach(row => tbody.appendChild(row)); // 재배치
     }
+
+    // 입고요청
+
+        // 요청 버튼 클릭 시
+    // 입고 요청 버튼 눌렀을 때
+    document.getElementById('requestInboundBtn').addEventListener('click', () => {
+        const checked = document.querySelectorAll('.prod-check:checked');
+        const modalInputs = document.getElementById('modalInputs');
+        modalInputs.innerHTML = ''; // 이전 내용 초기화
+
+        if (checked.length === 0) {
+            alert("입고 요청할 상품을 선택해주세요.");
+            return;
+        }
+
+        // 체크된 상품마다 행 추가
+        checked.forEach((checkbox) => {
+            const tr = checkbox.closest('tr');
+            const prodId = tr.dataset.prodid;
+            const prodName = tr.dataset.prodname;
+            const prodPrice = tr.dataset.prodprice;
+            const prodSize = tr.dataset.prodsize;
+
+            modalInputs.innerHTML += `
+                <tr>
+                    <td><input type="hidden" name="prodIds" value="${prodId}">${prodId}</td>
+                    <td>${prodName}</td>
+                    <td>${prodPrice}</td>
+                    <td>${prodSize}</td>
+                    <td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('inboundModal').style.display = 'block';
+    });
+
+    // 요청 버튼 눌렀을 때
+    document.getElementById('inboundModalForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const prodIds = formData.getAll('prodIds');
+        const quantities = formData.getAll('quantities');
+
+        // 유효성 체크
+        for (let q of quantities) {
+            if (!q || isNaN(q) || parseInt(q) <= 0) {
+                alert("모든 상품의 수량을 1개 이상 입력해주세요.");
+                return;
+            }
+        }
+
+        fetch('/users/pages/inbound/inbound-1/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prodIds, quantities })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("입고 요청이 성공적으로 등록되었습니다.");
+                    location.reload();
+                } else {
+                    alert("입고 요청에 실패했습니다.");
+                }
+            });
+    });
+
+    // 모달 닫기
+    function closeModal() {
+        document.getElementById('inboundModal').style.display = 'none';
+    }
+
+
+
+
 </script>
 <%--<script>--%>
 <%--    function confirmDelete() {--%>

@@ -34,4 +34,8 @@ public interface UserInboundMapper {
     List<ProductDTO> searchInboundInsertList(@Param("searchType") String searchType, @Param("keyword") String keyword);
 
     List<InboundDTO> inboundInsert();
+
+
+    void insertInbound(InboundVO inboundVO);
+
 }

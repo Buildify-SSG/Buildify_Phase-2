@@ -84,4 +84,31 @@
     </select>
 <!--selectΩ-->
 
+    <!-- user_id를 통해 client_id 조회 -->
+    <select id="findClientIdByUserId" resultType="string">
+        SELECT client_id
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 입고 요청 등록 -->
+    <insert id="insertInbound" parameterType="com.wareflow.buildify.dto.InboundDTO">
+        INSERT INTO inbound (
+            inbound_id,
+            prod_id,
+            client_id,
+            quantity,
+            inbound_status,
+--             req_inbound_date
+        )
+        VALUES (
+                   CONCAT('IN-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(FLOOR(RAND()*1000000), 6, '0')),
+                   #{dto.prodId},
+                   #{dto.clientId},
+                   #{dto.quantity},
+                   #{dto.inboundStatus},
+--                    #{dto.reqInboundDate}
+               )
+    </insert>
+
 </mapper>

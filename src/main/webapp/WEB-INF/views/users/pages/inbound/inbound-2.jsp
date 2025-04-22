@@ -125,8 +125,8 @@
                 <select name="searchType">
                     <%--                            <option value="prodId">상품 ID</option>--%>
                     <%--                            <option value="brand">브랜드</option>--%>
-                    <option value="prodName">상품이름</option>
-                    <option value="prodCategoryId">창고</option>
+                    <option value="prodName">상품명</option>
+                    <option value="wareId">창고</option>
                 </select>
                 <input type="text" name="keyword" placeholder="검색" />
                 <button type="submit">🔍</button>

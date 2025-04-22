@@ -40,17 +40,17 @@ public class AdminHomeController {
         return "admin/layouts/adminlayout";
     }
 
-    @GetMapping("/pages/inbound/inbound-1")
-    public String inbound1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-1.jsp");
-        return "admin/layouts/adminlayout";
-    }
-
-    @GetMapping("/pages/inbound/inbound-2")
-    public String inbound2(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-2.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/inbound/inbound-1")
+//    public String inbound1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
+//
+//    @GetMapping("/pages/inbound/inbound-2")
+//    public String inbound2(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/inbound/inbound-2.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/inbound/inbound-3")
     public String inbound3(Model model) {

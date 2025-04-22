@@ -4,15 +4,19 @@ import com.wareflow.buildify.domain.user.inbound.service.UserInboundService;
 import com.wareflow.buildify.domain.user.inbound.service.UserInboundServiceImpl;
 import com.wareflow.buildify.dto.InboundDTO;
 import com.wareflow.buildify.dto.InboundProduntDTO;
+import com.wareflow.buildify.dto.InboundRequestDTO;
 import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -23,10 +27,11 @@ import java.util.List;
 
 public class UserInboundController {
     private final UserInboundService userInboundService;
+
     @GetMapping("/users/pages/inbound/inbound-1")
-    public String  inboundlist(@RequestParam(defaultValue = "1") int page, Model model){
+    public String inboundlist(@RequestParam(defaultValue = "1") int page, Model model) {
         List<ProductDTO> dtoList = userInboundService.inboundList();
-        log.info("sjfalsdjf");
+
 //        model.addAttribute("body","/WEB-INF/views/users/pages/inbound/inbound-1");
         log.info(":흰색_확인_표시: body: {}", model.getAttribute("body"));
         Pagination.paginate(model, dtoList, page, "/WEB-INF/views/users/pages/inbound/inbound-1.jsp");
@@ -46,7 +51,7 @@ public class UserInboundController {
 //    }
 
     @GetMapping("/users/pages/inbound/inbound-2")
-    public String    inboundInsertlist(@RequestParam(defaultValue = "1") int page, Model model){
+    public String inboundInsertlist(@RequestParam(defaultValue = "1") int page, Model model) {
 
         log.info("inboundinsertlist........");
         List<InboundProduntDTO> dtoList = userInboundService.inboundInsertlist();
@@ -82,11 +87,18 @@ public class UserInboundController {
 
 
     @GetMapping("/insert")
-    public void inboundInsertGet(){
+    public void inboundInsertGet() {
 
     }
-    @PostMapping("/insert")
-    public void inboundInsertPost( ){
+
+    @PostMapping("/users/pages/inbound/inbound-1/request")
+    @ResponseBody
+    public ResponseEntity<String> requestInbound(@RequestBody InboundRequestDTO requestDTO) {
+        log.info("인서트인서트");
+        userInboundService.requestInbound(requestDTO.getProdIds(), requestDTO.getQuantities());
+        log.info(requestDTO);
+
+        return ResponseEntity.ok("success");
 
     }
 }
