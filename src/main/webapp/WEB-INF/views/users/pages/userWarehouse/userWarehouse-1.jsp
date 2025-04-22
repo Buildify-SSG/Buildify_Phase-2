@@ -19,7 +19,7 @@
         .left-panel {
             width: 700px;
             flex-shrink: 0;
-            transform: translateY(20px); /* 삼선버튼 겹침 방지용 */
+            transform: translateY(20px);
         }
         .right-panel {
             flex-grow: 1;
@@ -59,13 +59,6 @@
     </style>
 </head>
 <body>
-
-<!-- 이하 본문은 그대로 유지됨 -->
-
-
-<!-- 이하 본문은 그대로 유지됨 -->
-
-
 <div class="container-flex">
     <form id="warehouseForm" method="post" action="/users/pages/userWarehouse/userWarehouse-1" class="left-panel">
         <div class="warehouse-select">
@@ -92,7 +85,7 @@
         <div id="hiddenFields"></div>
 
         <div class="submit-button">
-            <button type="button" class="btn btn-primary" id="submitBtn" data-bs-toggle="modal" data-bs-target="#confirmModal" disabled title="최소 하나 이상의 창고 구역을 선택해주세요">
+            <button type="button" class="btn btn-primary" id="submitBtn" data-bs-toggle="modal" data-bs-target="#confirmModal" disabled>
                 신청하기
             </button>
         </div>
@@ -111,7 +104,11 @@
                 <h5 class="modal-title" id="confirmModalLabel">창고 신청 확인</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
             </div>
-            <div class="modal-body">선택하신 창고로 신청하시겠습니까?</div>
+            <div class="modal-body">
+                <p><strong>선택한 섹션:</strong> <span id="modal-sections"></span></p>
+                <p><strong>임대 기간:</strong> 6개월</p>
+                <p><strong>총 금액:</strong> <span id="modal-fee"></span></p>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
                 <button type="button" class="btn btn-primary" id="confirmYesBtn">예</button>
@@ -139,13 +136,8 @@
         center: new kakao.maps.LatLng(lat, lng),
         level: 5
     });
-    let marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(lat, lng),
-        map: map
-    });
-    let infowindow = new kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;">' + name + '</div>'
-    });
+    let marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng), map: map });
+    let infowindow = new kakao.maps.InfoWindow({ content: '<div style="padding:5px;">' + name + '</div>' });
     infowindow.open(map, marker);
 
     dropdown.addEventListener("change", (e) => {
@@ -183,6 +175,17 @@
         document.getElementById("submitBtn").disabled = selectedCount === 0;
     }
 
+    document.getElementById("submitBtn").addEventListener("click", () => {
+        const selected = document.querySelectorAll(".grid-item.selected");
+        const coordList = Array.from(selected).map(item => item.dataset.coord);
+        const sectionList = coordList.join(", ");
+        const sectionCount = coordList.length;
+        const totalFee = sectionCount * 100;
+
+        document.getElementById("modal-sections").innerText = sectionList || "없음";
+        document.getElementById("modal-fee").innerText = totalFee.toLocaleString() + "만원";
+    });
+
     document.addEventListener("DOMContentLoaded", () => {
         if (dropdown.value) updateGridByWarehouse(dropdown.value);
         gridItems.forEach(cell => {
@@ -218,10 +221,8 @@
         });
     });
 </script>
-
 <c:if test="${not empty msg}">
     <script>alert("${msg}");</script>
 </c:if>
-
 </body>
 </html>
