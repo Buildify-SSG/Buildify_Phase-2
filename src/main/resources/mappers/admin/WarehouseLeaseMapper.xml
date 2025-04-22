@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wareflow.buildify.domain.admin.systemOperation.mapper.AdminWarehouseLeaseMapper">
+
+    <select id="getUserLeaseInfo" resultType="com.wareflow.buildify.dto.WarehouseLeaseDTO">
+        SELECT ware.client_id AS clientID,
+               user.user_name AS clientName,
+               user.business_number AS clientBusinessNumber,
+               ware.ware_start_date AS startDate,
+               ware.ware_end_date AS endDate,
+               ware.ware_id AS wareId,
+               concat(ware.warehouse_pos_x,ware.warehouse_pos_y) AS wareCoord,
+               wareinfo.rental_fee AS wareFee
+        FROM userWareHouse ware
+        JOIN user
+            ON ware.client_id = user.client_id
+        JOIN wareHouse wareinfo
+            ON ware.ware_id = wareinfo.ware_id
+                and ware.warehouse_pos_x = wareinfo.warehouse_pos_x
+                and ware.warehouse_pos_y = wareinfo.warehouse_pos_y
+    </select>
+
+    <insert id="insertDummyUser">
+        INSERT INTO user (client_id, user_name, business_number, user_phone,user_email,user_address,user_enterdate,user_id,user_pw,user_status)
+        VALUES (#{clientId}, #{userName}, #{businessNumber}, #{userPhone},#{userEmail},#{userAddress},now(),#{userId},#{userPw},#{userStatus});
+    </insert>
+
+    <update id="modifyUserLeaseInfo" parameterType="java.util.List">
+
+        UPDATE userWareHouse
+        SET ware_end_date = CASE
+          <foreach collection="list" item="item">
+            WHEN ware_id = #{item.wareId}
+             AND warehouse_pos_x = #{item.warehousePosX}
+             AND warehouse_pos_y = #{item.warehousePosY}
+             AND client_id = #{item.clientID}
+            THEN #{item.wareEndDate}
+          </foreach>
+        END
+        WHERE (ware_id, warehouse_pos_x, warehouse_pos_y, client_id) IN
+          <foreach collection="list" item="item" separator="," open="(" close=")">
+            (#{item.wareId}, #{item.warehousePosX}, #{item.warehousePosY}, #{item.clientID})
+          </foreach>
+
+    </update>
+
+    <select id="search" resultType="com.wareflow.buildify.dto.WarehouseLeaseDTO">
+        SELECT ware.client_id AS clientID,
+        user.user_name AS clientName,
+        user.business_number AS clientBusinessNumber,
+        ware.ware_start_date AS startDate,
+        ware.ware_end_date AS endDate,
+        ware.ware_id AS wareId,
+        concat(ware.warehouse_pos_x,ware.warehouse_pos_y) AS wareCoord,
+        wareinfo.rental_fee AS wareFee
+        FROM userWareHouse ware
+        JOIN user
+        ON ware.client_id = user.client_id
+        JOIN wareHouse wareinfo
+        ON ware.ware_id = wareinfo.ware_id
+        and ware.warehouse_pos_x = wareinfo.warehouse_pos_x
+        and ware.warehouse_pos_y = wareinfo.warehouse_pos_y
+        <where>
+            <choose>
+                <when test="searchType == 'clientId'">ware.client_id = #{keyword} </when>
+                <when test="searchType == 'userName'">user.user_name LIKE CONCAT('%', #{keyword}, '%')</when>
+                <when test="searchType == 'wareId'">ware.ware_id LIKE CONCAT('%', #{keyword}, '%')</when>
+            </choose>
+        </where>
+    </select>
+
+
+</mapper>
