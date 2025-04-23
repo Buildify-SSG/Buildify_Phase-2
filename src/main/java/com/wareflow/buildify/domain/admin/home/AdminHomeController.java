@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminHomeController {
 
-    @GetMapping("/pages/index")
-    public String adminIndex(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/index.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/index")
+//    public String adminIndex(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/index.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     // userManagement
 //    @GetMapping("/pages/userManagement/userManagement-1")

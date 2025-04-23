@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wareflow.buildify.domain.admin.dashboard.mapper.AdminDashboardMapper">
+
+<select id="getInboundStats" resultType="com.wareflow.buildify.dto.InboundStatsDTO">
+    SELECT
+        date,
+        requestCount,
+        approvalCount
+        FROM v_inbound_stats
+</select>
+
+
+<select id="getOutboundStats" resultType="com.wareflow.buildify.dto.OutboundStatsDTO">
+    SELECT
+        date,
+        requestCount,
+        approvalCount
+    FROM v_outbound_stats
+</select>
+
+    <select id="getWarehouseDashboardInfo" resultType="com.wareflow.buildify.dto.WareHouseDashBoardDTO">
+        SELECT
+            ware_id AS wareId,
+            계약률 AS contractRate,
+            가용률 AS usageRate
+        FROM v_ware_dashboard
+    </select>
+
+</mapper>
