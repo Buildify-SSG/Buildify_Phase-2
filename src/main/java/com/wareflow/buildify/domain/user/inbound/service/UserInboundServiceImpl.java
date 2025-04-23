@@ -11,22 +11,28 @@ import com.wareflow.buildify.vo.ProductVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
+@Transactional
 
 public class UserInboundServiceImpl implements UserInboundService {
     private final UserInboundMapper userInboundMapper;
 
     @Override
     public List<ProductDTO> inboundList() {
+        log.info("인바운드1서비스");
         List<ProductVO> vo = userInboundMapper.inboundList();
         List<ProductDTO> dtoList = new ArrayList<>();
         for(ProductVO productVO:vo){
@@ -78,17 +84,30 @@ public class UserInboundServiceImpl implements UserInboundService {
     }
 
     @Override
-    public void requestInbound(List<String> prodIds, List<Integer> quantities) {
-        for (int i = 0; i < prodIds.size(); i++) {
-            log.info("인서트서비스");
-            InboundVO inbound = new InboundVO();
-            inbound.setProdId(prodIds.get(i));
-            inbound.setQuantity(quantities.get(i));
-            inbound.setInboundStatus(0); // 대기
-//            inbound.setReqInboundDate(LocalDate.now());
-            log.info("➡️ INSERT 요청: {}", inbound);
+    public List<ProductDTO> getInboundInsert(List<String> prodId) {
+        return userInboundMapper.getInboundInsert(prodId);
+    }
 
-            userInboundMapper.insertInbound(inbound);
+    public void insertInboundRequests(List<String> prodIds, List<Integer> quantities) {
+        log.info("여기까진오니");
+        for (int i = 0; i < prodIds.size(); i++) {
+            InboundVO vo = new InboundVO();
+            String uniqueId = "INB-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+                    + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
+            vo.setInboundId(uniqueId);
+            vo.setProdId(prodIds.get(i));
+            vo.setClientId("client1");
+            vo.setQuantity(quantities.get(i));
+            vo.setInboundStatus(0); // 상태: 대기
+            vo.setReqInboundDate(Date.valueOf(LocalDate.now()));
+
+            int result = userInboundMapper.insertInbound(vo);
+            // 로그로 insert 결과 확인
+            log.info("🧾 insert 실행 결과: {} (inboundId={}, prodId={}, quantity={})",
+                    result, vo.getInboundId(), vo.getProdId(), vo.getQuantity());
         }
     }
+
+
 }
