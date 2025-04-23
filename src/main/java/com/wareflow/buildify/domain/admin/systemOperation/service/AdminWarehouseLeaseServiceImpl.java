@@ -1,19 +1,15 @@
 package com.wareflow.buildify.domain.admin.systemOperation.service;
 
-import com.wareflow.buildify.cache.WarehouseLeaseList;
+import com.wareflow.buildify.cache.WarehouseLeaseListCache;
 import com.wareflow.buildify.domain.admin.systemOperation.mapper.AdminWarehouseLeaseMapper;
-import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.dto.WarehouseLeaseDTO;
-import com.wareflow.buildify.vo.ProductVO;
 import com.wareflow.buildify.vo.UserWareHouseVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.rmi.dgc.Lease;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -31,24 +27,24 @@ public class AdminWarehouseLeaseServiceImpl implements AdminWarehouseLeaseServic
     @Override
     public List<WarehouseLeaseDTO> getUserLeaseInfo() {
 
-        WarehouseLeaseList.getInstance(adminWarehouseLeaseMapper.getUserLeaseInfo());
+        WarehouseLeaseListCache.getInstance(adminWarehouseLeaseMapper.getUserLeaseInfo());
 
         // 싱글톤 캐싱 리스트 가져오기
         List<WarehouseLeaseDTO> warehouseLeaseDTOList =
-                WarehouseLeaseList.getInstance().getWarehouseLeaseList();
+                WarehouseLeaseListCache.getInstance().getWarehouseLeaseList();
 
         // 싱글톤 캐싱 리스트 비었을 경우 DB -> 싱글톤 저장
         if (warehouseLeaseDTOList.isEmpty()){
-            WarehouseLeaseList.getInstance().setWarehouseLeaseList(adminWarehouseLeaseMapper.getUserLeaseInfo());
+            WarehouseLeaseListCache.getInstance().setWarehouseLeaseList(adminWarehouseLeaseMapper.getUserLeaseInfo());
         }
 
         // 저장된 싱글톤 캐싱 리스트 가져오기
         warehouseLeaseDTOList =
-                WarehouseLeaseList.getInstance().getWarehouseLeaseList();
+                WarehouseLeaseListCache.getInstance().getWarehouseLeaseList();
 
         // 계약기간이 만료되지 않은 계약 찾아서 리스트에 담기
 
-        WarehouseLeaseList.getInstance().setWarehouseLeaseList(
+        WarehouseLeaseListCache.getInstance().setWarehouseLeaseList(
         warehouseLeaseDTOList.stream()
                 .filter(dto -> dto.getEndDate().isAfter(LocalDate.now()))
                 .map(dto -> {
@@ -56,7 +52,7 @@ public class AdminWarehouseLeaseServiceImpl implements AdminWarehouseLeaseServic
                     return dto.toBuilder().remainDays(remainDays).build();
                 })
                 .toList());
-        return  WarehouseLeaseList.getInstance().getWarehouseLeaseList();
+        return  WarehouseLeaseListCache.getInstance().getWarehouseLeaseList();
 
 
     }
@@ -115,8 +111,8 @@ public class AdminWarehouseLeaseServiceImpl implements AdminWarehouseLeaseServic
         log.info("서비스 리스트 : {}", voList.size());
 
         // 3. 캐시 동기화 (싱글톤 리스트 갱신)
-        WarehouseLeaseList.getInstance(adminWarehouseLeaseMapper.getUserLeaseInfo());
-        List<WarehouseLeaseDTO> singletonList = WarehouseLeaseList.getInstance().getWarehouseLeaseList();
+        WarehouseLeaseListCache.getInstance(adminWarehouseLeaseMapper.getUserLeaseInfo());
+        List<WarehouseLeaseDTO> singletonList = WarehouseLeaseListCache.getInstance().getWarehouseLeaseList();
 
         List<WarehouseLeaseDTO> refreshedList = new ArrayList<>();
         for (WarehouseLeaseDTO dto : singletonList) {
@@ -139,7 +135,7 @@ public class AdminWarehouseLeaseServiceImpl implements AdminWarehouseLeaseServic
                 refreshedList.add(dto);
             }
         }
-        WarehouseLeaseList.getInstance().setWarehouseLeaseList(refreshedList);
+        WarehouseLeaseListCache.getInstance().setWarehouseLeaseList(refreshedList);
 
         // 4. DB 업데이트
         return adminWarehouseLeaseMapper.modifyUserLeaseInfo(voList);

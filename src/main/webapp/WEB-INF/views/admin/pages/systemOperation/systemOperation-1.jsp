@@ -175,7 +175,7 @@
               </div>
               <div class="ware-info" style="color: white; text-align: center">
 <%--                  <h1> 카카오 지도 표시 </h1>--%>
-                  <div id="map" style="color:black; width: 100%; height: 95%; margin-top: 10px;"></div>
+                  <div id="map" style="color:black; width: 100%; height: 100%;"></div>
               </div>
               <div class="ware-info" style="color: white !important; text-align: left">
                   <c:forEach var="info" items="${wareInfo}">

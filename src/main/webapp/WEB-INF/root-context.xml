@@ -3,7 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <context:component-scan base-package="com.wareflow.buildify">
     </context:component-scan>
@@ -16,6 +17,7 @@ com.wareflow.buildify.domain.admin.outbound.mapper,
 com.wareflow.buildify.domain.admin.product.mapper,
 com.wareflow.buildify.domain.admin.systemOperation.mapper,
 com.wareflow.buildify.domain.admin.userManagement.mapper,
+com.wareflow.buildify.domain.admin.dashboard.mapper,
 com.wareflow.buildify.domain.user.product.mapper,
 com.wareflow.buildify.domain.user.outbound.mapper,
 com.wareflow.buildify.domain.user.inbound.mapper,
@@ -56,5 +58,9 @@ com.wareflow.buildify.domain.user.warehouse.mapper" />
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
+    <!-- 스케줄링 활성화 -->
+    <task:annotation-driven scheduler="scheduler" />
+    <task:scheduler id="scheduler" pool-size="1" />
 
 </beans>

@@ -211,7 +211,7 @@
 
 <div style="padding: 20px;">
 
-    <h1>회원 조회</h1>
+    <h1>계약 조회</h1>
     <h4><br></h4>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -342,6 +342,29 @@
             </tbody>
 
         </table>
+
+    <!-- Pagination Block -->
+    <c:if test="${totalPages > 1}">
+        <div class="pagination" style="margin-top: 20px; text-align: center;">
+            <ul style="display: inline-flex; list-style: none; padding: 0;">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <li style="margin: 0 5px;">
+                        <c:url var="pageUrl" value="">
+                            <c:param name="page" value="${i}" />
+                            <c:param name="searchType" value="${param.searchType}" />
+                            <c:param name="keyword" value="${param.keyword}" />
+                        </c:url>
+                        <a href="${pageUrl}"
+                           style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
+                                   background-color: ${i == currentPage ? '#333' : '#fff'};
+                                   color: ${i == currentPage ? '#fff' : '#000'};">
+                                ${i}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:if>
 
         <script>
             function sortTable(field, direction) {

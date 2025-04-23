@@ -99,6 +99,10 @@ dependencies {
 	// JSON processing libraries (Jackson, org.json)
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2' // 또는 비슷한 버전
 	implementation 'org.json:json:20231013'
+
+	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
 }
 
 test {
