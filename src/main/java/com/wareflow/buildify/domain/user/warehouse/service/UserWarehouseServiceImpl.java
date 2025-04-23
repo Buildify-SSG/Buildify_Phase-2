@@ -1,5 +1,7 @@
 package com.wareflow.buildify.domain.user.warehouse.service;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,9 +41,21 @@ public class UserWarehouseServiceImpl implements UserWarehouseService {
     @Override
     public List<UserWareHouseDTO> getMyWarehouse(String clientId) {
         List<UserWareHouseDTO> list = userWarehouseMapper.selectMyWarehouse(clientId);
+        // 남은 일수 계산 추가
+        LocalDate today = LocalDate.now();
+        for (UserWareHouseDTO dto : list) {
+            if (dto.getWareEndDate() != null) {
+                LocalDate endDate = dto.getWareEndDate().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                long remaining = ChronoUnit.DAYS.between(today, endDate);
+                dto.setRemainingDays(remaining);
+            } else {
+                dto.setRemainingDays(-1); // 종료일 없을 경우 예외처리
+            }
+        }
 
         list.sort(Comparator.comparing(UserWareHouseDTO::getWarehousePosX).thenComparing(UserWareHouseDTO::getWarehousePosY));
-//        list.sort(Comparator.comparing(UserWareHouseDTO::getWareEndDate));
         return list;
     }
 
