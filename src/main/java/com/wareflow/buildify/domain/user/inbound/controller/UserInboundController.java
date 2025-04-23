@@ -9,6 +9,7 @@ import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,24 +32,15 @@ public class UserInboundController {
     @GetMapping("/users/pages/inbound/inbound-1")
     public String inboundlist(@RequestParam(defaultValue = "1") int page, Model model) {
         List<ProductDTO> dtoList = userInboundService.inboundList();
-
-//        model.addAttribute("body","/WEB-INF/views/users/pages/inbound/inbound-1");
+        log.info("인바운드1 리스트");
         log.info(":흰색_확인_표시: body: {}", model.getAttribute("body"));
+
         Pagination.paginate(model, dtoList, page, "/WEB-INF/views/users/pages/inbound/inbound-1.jsp");
+
         return "users/layouts/userlayout";
-//        model.addAttribute("body","/WEB-INF/views/users/pages/inbound/inbound-1");
-//        log.info(":흰색_확인_표시: body: {}", model.getAttribute("body"));
-//        return "/users/layouts/userlayout";
+
     }
 
-//    @GetMapping("/users/pages/inbound/inbound-2")
-//    public String    inboundInsertlist(@RequestParam(defaultValue = "1") int page, Model model){
-//        log.info("inboundinsertlist........");
-//        List<InboundDTO> dtoList = userInboundService.inboundInsertlist();
-////        model.addAttribute("dtoList",dtoList);
-//        Pagination.paginate(model, dtoList, page, "/WEB-INF/views/users/pages/inbound/inbound-2.jsp");
-//        return "users/layouts/userlayout";
-//    }
 
     @GetMapping("/users/pages/inbound/inbound-2")
     public String inboundInsertlist(@RequestParam(defaultValue = "1") int page, Model model) {
@@ -86,19 +78,38 @@ public class UserInboundController {
     }
 
 
-    @GetMapping("/insert")
-    public void inboundInsertGet() {
-
+    @GetMapping("/users/pages/inbound/inbound-1/modal-info")
+    @ResponseBody
+    public List<ProductDTO> getInboundInsert(@RequestParam List<String> prodIds) {
+        log.info("🔍 모달용 상품 ID 리스트: {}", prodIds);
+        return userInboundService.getInboundInsert(prodIds);  // productDTO 리스트 반환
     }
 
     @PostMapping("/users/pages/inbound/inbound-1/request")
-    @ResponseBody
-    public ResponseEntity<String> requestInbound(@RequestBody InboundRequestDTO requestDTO) {
-        log.info("인서트인서트");
-        userInboundService.requestInbound(requestDTO.getProdIds(), requestDTO.getQuantities());
-        log.info(requestDTO);
+    public ResponseEntity<String> requestInbound(@RequestBody Map<String, Object> request) {
+        log.info("🔥 requestInbound() 진입");
+        log.info("📦 받은 데이터: {}", request);
 
-        return ResponseEntity.ok("success");
+        List<String> prodIds = (List<String>) request.get("prodIds");
+        List<Integer> quantities = (List<Integer>) request.get("quantities");
 
+        if (prodIds == null || quantities == null || prodIds.size() != quantities.size()) {
+            log.warn("❌ 유효하지 않은 데이터 형식");
+            return ResponseEntity.badRequest().body("Invalid request format");
+        }
+
+        try {
+            // 실제 처리 로직
+            log.info("✅ 입고 등록 처리 시작...");
+             userInboundService.insertInboundRequests(prodIds, quantities);
+             log.info(prodIds+","+quantities);
+
+            return ResponseEntity.ok("입고 요청 성공");
+        } catch (Exception e) {
+            log.error("❌ 서버 처리 중 에러 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러");
+        }
     }
+
+
 }

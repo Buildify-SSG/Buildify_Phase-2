@@ -32,7 +32,7 @@
                inbound.inbound_process_date as inboundProcessDate,
                product.prod_name as prodName,
                product.prod_price as prodPrice
-        from inbound JOIN product ON inbound.client_id = product.client_id
+        from inbound JOIN product ON inbound.prod_id = product.prod_id
     </select>
 
     <select id="searchInboundList" resultType="com.wareflow.buildify.dto.InboundProduntDTO">
@@ -91,23 +91,31 @@
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 입고 요청 등록 -->
-    <insert id="insertInbound" parameterType="com.wareflow.buildify.dto.InboundDTO">
+    <select id="getInboundInsert" parameterType="list" resultType="com.wareflow.buildify.dto.ProductDTO">
+        SELECT prod_id, prod_name, prod_price, prod_size
+        FROM product
+        WHERE prod_id IN
+        <foreach item="id" collection="prodId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertInbound" parameterType="com.wareflow.buildify.vo.InboundVO">
         INSERT INTO inbound (
             inbound_id,
             prod_id,
             client_id,
             quantity,
             inbound_status,
---             req_inbound_date
+            req_inbound_date
         )
         VALUES (
-                   CONCAT('IN-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(FLOOR(RAND()*1000000), 6, '0')),
-                   #{dto.prodId},
-                   #{dto.clientId},
-                   #{dto.quantity},
-                   #{dto.inboundStatus},
---                    #{dto.reqInboundDate}
+                   #{inboundId},
+                   #{prodId},
+                   #{clientId},
+                   #{quantity},
+                   #{inboundStatus},
+                   #{reqInboundDate}
                )
     </insert>
 

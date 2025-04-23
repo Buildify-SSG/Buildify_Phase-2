@@ -144,76 +144,75 @@
 
     <!-- 표 -->
     <div class="table-wrapper">
-<%--        <form method="post" action="/users/pages/inbound/inbound-1/insert">--%>
-            <form id="inboundForm">
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                <button type="button" id="requestInboundBtn" style="background-color: #14bedc; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" >입고 요청</button>
-            </div>
-            <table id="contractTable">
-                <thead>
-                <tr>
-                    <th>선택</th>
-                    <th>상품ID</th>
-                    <th>상품명</th>
-                    <th>
-                        가격
-                        <a class="sort" href="#" onclick="sortTable('prodPrice', 'asc'); return false;">▲</a>
-                        <a class="sort" href="#" onclick="sortTable('prodPrice', 'desc'); return false;">▼</a>
-                    </th>
-                    <th>사이즈</th>
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+            <button type="button" id="requestInboundBtn" style="background-color: #14bedc; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" >입고 요청</button>
+        </div>
+        <table id="contractTable">
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>상품ID</th>
+                <th>상품명</th>
+                <th>
+                    가격
+                    <a class="sort" href="#" onclick="sortTable('prodPrice', 'asc'); return false;">▲</a>
+                    <a class="sort" href="#" onclick="sortTable('prodPrice', 'desc'); return false;">▼</a>
+                </th>
+                <th>사이즈</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="product" items="${List}" varStatus="status">
+                <tr class="product-row"
+                    data-prodid="${product.prodId}"
+                    data-prodname="${product.prodName}"
+                    data-prodprice="${product.prodPrice}"
+                    data-prodsize="${product.prodSize}">
+                    <td><input type="checkbox" class="prod-check" value="${product.prodId}" /></td>
+                    <td>${product.prodId}</td>
+                    <td>${product.prodName}</td>
+                    <td><fmt:formatNumber value="${product.prodPrice}" type="number" groupingUsed="true"/></td>
+                    <td>${product.prodSize}</td>
                 </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="product" items="${List}" varStatus="status">
-                    <tr class="product-row"
-                        data-prodid="${product.prodId}"
-                        data-prodname="${product.prodName}"
-                        data-prodprice="${product.prodPrice}"
-                        data-prodsize="${product.prodSize}">
-                        <td><input type="checkbox" class="prod-check" value="${product.prodId}" /></td>
-                        <td>${product.prodId}</td>
-                        <td>${product.prodName}</td>
-                        <td><fmt:formatNumber value="${product.prodPrice}" type="number" groupingUsed="true"/></td>
-                        <td>${product.prodSize}</td>
-                    </tr>
-                </c:forEach>
-                <c:if test="${empty List}">
-                    <tr>
-                        <td colspan="7">검색 결과가 없습니다.</td>
-                    </tr>
-                </c:if>
-                </tbody>
-            </table>
-            <%--        </form>--%>
-            <!-- Pagination Block -->
-            <c:if test="${totalPages > 1}">
-            <div class="pagination" style="margin-top: 20px; text-align: center;">
-                <ul style="display: inline-flex; list-style: none; padding: 0;">
-                    <c:forEach begin="1" end="${totalPages}" var="i">
-                        <li style="margin: 0 5px;">
-                            <c:url var="pageUrl" value="">
-                                <c:param name="page" value="${i}" />
-                                <c:param name="searchType" value="${param.searchType}" />
-                                <c:param name="keyword" value="${param.keyword}" />
-                            </c:url>
-                            <a href="${pageUrl}"
-                               style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
-                                       background-color: ${i == currentPage ? '#333' : '#fff'};
-                                       color: ${i == currentPage ? '#fff' : '#000'};">
-                                    ${i}
-                            </a>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </div>
+            </c:forEach>
+            <c:if test="${empty List}">
+                <tr>
+                    <td colspan="7">검색 결과가 없습니다.</td>
+                </tr>
             </c:if>
+            </tbody>
+        </table>
+        <!-- Pagination Block -->
+        <c:if test="${totalPages > 1}">
+        <div class="pagination" style="margin-top: 20px; text-align: center;">
+            <ul style="display: inline-flex; list-style: none; padding: 0;">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <li style="margin: 0 5px;">
+                        <c:url var="pageUrl" value="">
+                            <c:param name="page" value="${i}" />
+                            <c:param name="searchType" value="${param.searchType}" />
+                            <c:param name="keyword" value="${param.keyword}" />
+                        </c:url>
+                        <a href="${pageUrl}"
+                           style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
+                                   background-color: ${i == currentPage ? '#333' : '#fff'};
+                                   color: ${i == currentPage ? '#fff' : '#000'};">
+                                ${i}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+        </c:if>
     </div>
 </div>
 
 <!-- ✅ 모달 -->
 <div id="inboundModal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 1000; min-width: 400px;">
     <h3 style="margin-bottom: 16px;">입고 수량 입력</h3>
-    <form id="inboundModalForm">
+
+    <!-- ✅ form 시작 -->
+    <form id="inboundModalFF">
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
             <tr style="background: #f1f5f9;">
@@ -226,14 +225,14 @@
             </thead>
             <tbody id="modalInputs"></tbody>
         </table>
-        <div style="margin-top: 16px; text-align: right;">
 
+        <!-- ✅ 버튼도 form 안쪽에 있어야 함 -->
+        <div style="margin-top: 16px; text-align: right;">
             <button type="submit" style="padding: 6px 12px; background: #14bedc; color: white; border: none; border-radius: 5px;">요청</button>
             <button type="button" onclick="closeModal()" style="margin-right: 8px; padding: 6px 12px; background: #e5e7eb; color: #333; border: none; border-radius: 5px;">취소</button>
         </div>
-
-
     </form>
+    <!-- ✅ form 끝 -->
 </div>
 
 <c:if test="${not empty msg}">
@@ -243,6 +242,8 @@
 </c:if>
 
 <script>
+
+
     function sortTable(field, direction) {
         const table = document.getElementById("contractTable");
         const tbody = table.querySelector("tbody");
@@ -275,90 +276,165 @@
         rows.forEach(row => tbody.appendChild(row)); // 재배치
     }
 
-    // 입고요청
+    <%--document.getElementById('requestInboundBtn').addEventListener('click', function () {--%>
+    <%--    const checked = document.querySelectorAll('.prod-check:checked');--%>
+    <%--    const modalInputs = document.getElementById('modalInputs');--%>
+    <%--    modalInputs.innerHTML = '';--%>
 
-        // 요청 버튼 클릭 시
-    // 입고 요청 버튼 눌렀을 때
-    document.getElementById('requestInboundBtn').addEventListener('click', () => {
-        const checked = document.querySelectorAll('.prod-check:checked');
-        const modalInputs = document.getElementById('modalInputs');
-        modalInputs.innerHTML = ''; // 이전 내용 초기화
+    <%--    if (checked.length === 0) {--%>
+    <%--        alert("입고 요청할 상품을 선택해주세요.");--%>
+    <%--        return;--%>
+    <%--    }--%>
 
-        if (checked.length === 0) {
-            alert("입고 요청할 상품을 선택해주세요.");
-            return;
-        }
+    <%--    const prodIds = Array.from(checked).map(cb => cb.value);--%>
 
-        // 체크된 상품마다 행 추가
-        checked.forEach((checkbox) => {
-            const tr = checkbox.closest('tr');
-            const prodId = tr.dataset.prodid;
-            const prodName = tr.dataset.prodname;
-            const prodPrice = tr.dataset.prodprice;
-            const prodSize = tr.dataset.prodsize;
+    <%--    fetch('/users/pages/inbound/inbound-1/modal-info', {--%>
+    <%--        method: 'POST',--%>
+    <%--        headers: {--%>
+    <%--            'Content-Type': 'application/json'--%>
+    <%--        },--%>
+    <%--        body: JSON.stringify({ prodIds })--%>
+    <%--    })--%>
+    <%--        .then(res => res.json())--%>
+    <%--        .then(products => {--%>
+    <%--            products.forEach(product => {--%>
+    <%--                modalInputs.innerHTML += `--%>
+    <%--                <tr>--%>
+    <%--                    <td><input type="hidden" name="prodIds" value="${product.prodId}">${product.prodId}</td>--%>
+    <%--                    <td>${product.prodName}</td>--%>
+    <%--                    <td>${product.prodPrice}</td>--%>
+    <%--                    <td>${product.prodSize}</td>--%>
+    <%--                    <td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>--%>
+    <%--                </tr>`;--%>
+    <%--            });--%>
 
-            modalInputs.innerHTML += `
-                <tr>
-                    <td><input type="hidden" name="prodIds" value="${prodId}">${prodId}</td>
-                    <td>${prodName}</td>
-                    <td>${prodPrice}</td>
-                    <td>${prodSize}</td>
-                    <td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>
-                </tr>
-            `;
-        });
+    <%--            document.getElementById('inboundModal').style.display = 'block';--%>
 
-        document.getElementById('inboundModal').style.display = 'block';
-    });
+    <%--            const form = document.getElementById('inboundModalFF');--%>
+    <%--            form.onsubmit = function (e) {--%>
+    <%--                e.preventDefault();--%>
 
-    // 요청 버튼 눌렀을 때
-    document.getElementById('inboundModalForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+    <%--                const formData = new FormData(form);--%>
+    <%--                const prodIds = formData.getAll('prodIds');--%>
+    <%--                const quantities = formData.getAll('quantities');--%>
 
-        const formData = new FormData(this);
-        const prodIds = formData.getAll('prodIds');
-        const quantities = formData.getAll('quantities');
+    <%--                fetch('/users/pages/inbound/inbound-1/request', {--%>
+    <%--                    method: 'POST',--%>
+    <%--                    headers: {--%>
+    <%--                        'Content-Type': 'application/json'--%>
+    <%--                    },--%>
+    <%--                    body: JSON.stringify({ prodIds, quantities })--%>
+    <%--                })--%>
+    <%--                    .then(response => {--%>
+    <%--                        if (response.ok) {--%>
+    <%--                            alert("입고 요청이 성공적으로 등록되었습니다.");--%>
+    <%--                            location.reload();--%>
+    <%--                        } else {--%>
+    <%--                            alert("입고 요청에 실패했습니다.");--%>
+    <%--                        }--%>
+    <%--                    })--%>
+    <%--                    .catch(error => {--%>
+    <%--                        console.error("서버 오류:", error);--%>
+    <%--                        alert("서버 요청 중 에러가 발생했습니다.");--%>
+    <%--                    });--%>
+    <%--            };--%>
+    <%--        })--%>
+    <%--        .catch(error => {--%>
+    <%--            console.error("모달 데이터 로딩 실패:", error);--%>
+    <%--            alert("상품 정보를 불러올 수 없습니다.");--%>
+    <%--        });--%>
+    <%--});--%>
 
-        // 유효성 체크
-        for (let q of quantities) {
-            if (!q || isNaN(q) || parseInt(q) <= 0) {
-                alert("모든 상품의 수량을 1개 이상 입력해주세요.");
-                return;
-            }
-        }
 
-        fetch('/users/pages/inbound/inbound-1/request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prodIds, quantities })
-        })
-            .then(response => {
-                if (response.ok) {
+
+
+
+
+
+
+
+
+
+
+
+
+     document.getElementById('requestInboundBtn').addEventListener('click', function () {
+         const checked = document.querySelectorAll('.prod-check:checked');
+         const modalInputs = document.getElementById('modalInputs');
+         modalInputs.innerHTML = '';
+
+         if (checked.length === 0) {
+             alert("입고 요청할 상품을 선택해주세요.");
+             return;
+         }
+         console.log("1111111");
+         const prodIds = Array.from(checked).map(cb => cb.value);
+         const query = prodIds.map(function (id) {
+             return 'prodIds=' + encodeURIComponent(id);
+         }).join('&');
+
+         fetch('/users/pages/inbound/inbound-1/modal-info?' + query)
+             .then(function (res) {
+                 return res.json();
+             })
+             .then(function (products) {
+                 products.forEach(function (product) {
+                     modalInputs.innerHTML +=
+                         '<tr>' +
+                         '<td><input type="hidden" name="prodIds" value="' + product.prodId + '">' + product.prodId + '</td>' +
+                         '<td>' + product.prodName + '</td>' +
+                         '<td>' + product.prodPrice + '</td>' +
+                         '<td>' + product.prodSize + '</td>' +
+                         '<td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>' +
+                         '</tr>';
+                     console.log("22222222");
+                 });
+
+                 document.getElementById('inboundModal').style.display = 'block';
+                 // ❌ submit 이벤트는 이제 위임 방식으로 처리합니다.
+             })
+             .catch(function (err) {
+                 console.error("모달 정보 불러오기 실패:", err);
+                 alert("상품 정보를 불러오지 못했습니다.");
+             });
+     });
+
+    // ✅ 이벤트 위임 방식으로 모달 form의 submit 처리
+    document.addEventListener('submit', async function (e) {
+        if (e.target && e.target.id === 'inboundModalFF') {
+            console.log("📥 submit 이벤트 발생 확인!");
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const prodIds = formData.getAll('prodIds');
+            const quantities = formData.getAll('quantities').map(q => parseInt(q));
+
+            console.log("📦 전송할 상품 ID:", prodIds);
+            console.log("📦 전송할 수량:", quantities);
+
+            try {
+                const res = await fetch('/users/pages/inbound/inbound-1/request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prodIds, quantities })
+                });
+
+                if (res.ok) {
                     alert("입고 요청이 성공적으로 등록되었습니다.");
                     location.reload();
                 } else {
                     alert("입고 요청에 실패했습니다.");
                 }
-            });
+            } catch (err) {
+                console.error("❌ 서버 요청 중 에러:", err);
+                alert("요청 중 오류가 발생했습니다.");
+            }
+        }
     });
-
-    // 모달 닫기
-    function closeModal() {
-        document.getElementById('inboundModal').style.display = 'none';
-    }
-
 
 
 
 </script>
-<%--<script>--%>
-<%--    function confirmDelete() {--%>
-<%--        const confirmed = confirm('정말 삭제하시겠습니까?');--%>
-<%--        if (confirmed) {--%>
-<%--            document.querySelector('form[action="/admin/pages/product/product-1/api/productRemove"]').submit();--%>
-<%--        }--%>
-<%--    }--%>
-<%--</script>--%>
-
 
 </body>

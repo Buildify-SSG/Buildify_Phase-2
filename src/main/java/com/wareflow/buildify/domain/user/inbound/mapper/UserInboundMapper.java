@@ -35,7 +35,7 @@ public interface UserInboundMapper {
 
     List<InboundDTO> inboundInsert();
 
+    List<ProductDTO> getInboundInsert(@Param("prodId") List<String> prodId);
 
-    void insertInbound(InboundVO inboundVO);
-
+    int insertInbound(InboundVO vo);
 }
