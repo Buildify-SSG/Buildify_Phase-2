@@ -18,4 +18,5 @@ public class UserWareHouseDTO {
     private BigDecimal contractArea;
     private Date wareStartDate;
     private Date wareEndDate;
+    private long remainingDays;
 }

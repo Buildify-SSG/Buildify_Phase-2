@@ -59,10 +59,11 @@
             <th>계약 면적 (㎡)</th>
             <th>시작일</th>
             <th>종료일</th>
+            <th>남은 일수</th> <!-- ✅ 여기 추가 -->
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="warehouse" items="${myWarehouses}">
+        <c:forEach var="warehouse" items="${List}">
             <tr>
                 <td>
                     <c:choose>
@@ -82,9 +83,7 @@
                         <c:when test="${not empty warehouse.wareStartDate}">
                             <fmt:formatDate value="${warehouse.wareStartDate}" pattern="yyyy-MM-dd"/>
                         </c:when>
-                        <c:otherwise>
-                            -
-                        </c:otherwise>
+                        <c:otherwise>-</c:otherwise>
                     </c:choose>
                 </td>
                 <td>
@@ -92,22 +91,50 @@
                         <c:when test="${not empty warehouse.wareEndDate}">
                             <fmt:formatDate value="${warehouse.wareEndDate}" pattern="yyyy-MM-dd"/>
                         </c:when>
-                        <c:otherwise>
-                            -
-                        </c:otherwise>
+                        <c:otherwise>-</c:otherwise>
                     </c:choose>
                 </td>
-
+                <td> <!-- ✅ 남은 일수 출력 -->
+                    <c:choose>
+                        <c:when test="${warehouse.remainingDays >= 0}">
+                            ${warehouse.remainingDays}일
+                        </c:when>
+                        <c:otherwise>-</c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
         </c:forEach>
 
-        <c:if test="${empty myWarehouses}">
+
+        <c:if test="${empty List}">
             <tr>
-                <td colspan="7">신청한 창고 내역이 없습니다.</td>
+                <td colspan="6">신청한 창고 내역이 없습니다.</td>
             </tr>
         </c:if>
         </tbody>
     </table>
+
+    <!-- ✅ 페이지네이션 영역 추가 -->
+    <c:if test="${totalPages > 1}">
+        <div class="pagination" style="margin-top: 20px; text-align: center;">
+            <ul style="display: inline-flex; list-style: none; padding: 0;">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <li style="margin: 0 5px;">
+                        <c:url var="pageUrl" value="">
+                            <c:param name="page" value="${i}" />
+                        </c:url>
+                        <a href="${pageUrl}"
+                           style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
+                                   background-color: ${i == currentPage ? '#333' : '#fff'};
+                                   color: ${i == currentPage ? '#fff' : '#000'};">
+                                ${i}
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:if>
+    <!-- ✅ 페이지네이션 영역 끝 -->
 </div>
 
 </body>

@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wareflow.buildify.domain.admin.systemOperation.service.AdminWarehouseService;
 import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
 import com.wareflow.buildify.domain.user.warehouse.service.UserWarehouseService;
+import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.dto.UserWareHouseDTO;
 import com.wareflow.buildify.dto.WareHouseDTO;
 import com.wareflow.buildify.dto.WarehouseViewDTO;
+import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -102,7 +104,7 @@ public class UserWarehouseController {
     }
 
     @GetMapping("/userWarehouse/userWarehouse-2")
-    public String getMyWarehouse(Model model) {
+    public String getMyWarehouse(@RequestParam(defaultValue = "1") int page, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
         List<UserWareHouseDTO> myWarehouses = userWarehouseService.getMyWarehouse(userDetails.getClientId());
@@ -111,9 +113,8 @@ public class UserWarehouseController {
 
         // ✨ layout에서 include할 JSP 경로 지정!
         model.addAttribute("body", "/WEB-INF/views/users/pages/userWarehouse/userWarehouse-2.jsp");
-
+        Pagination.paginate(model, myWarehouses, page,"/WEB-INF/views/users/pages/userWarehouse/userWarehouse-2.jsp");
         return "users/layouts/userlayout";
     }
-
 
 }
