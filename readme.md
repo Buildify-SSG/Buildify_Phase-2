@@ -1,21 +1,23 @@
-# WareFlow - BuildiFY
+# WareFlow - 📦 BuildiFy - WMS 시스템 (2차 프로젝트)
 
 <br>
 
-> 📘 **구조 설명**  
-> 프로젝트 패키지 및 리소스 구조를 한눈에 정리했습니다. <br>역할별로 구분되어 있어 유지보수에 용이합니다.
+
+
+## 프로젝트 개요
+ 작성 예정
 
 ## 💡 기술 스택
 
 | 영역 | 사용 기술 |
 |------|-----------|
 | Language | Java 17 |
-| Framework | Spring Boot, MyBatis |
+| Framework | Spring , MyBatis |
 | DB | MySQL |
-| View | Thymeleaf |
-| Cache | Redis |
+| View | JSP |
+| Cache | Spring Singleton |
 | Build Tool | Gradle |
-| 기타 | Lombok, Validation, Swagger |
+| 기타 | Lombok , Spring Security |
 <br>
 
 ## 📦 프로젝트 구조
@@ -26,7 +28,7 @@ src/main/java/com.wareflow.buildify
 ├── common             # 공통 기능 (공통 Response, 공통 Exception 등)
 ├── config             # 설정 관련 (WebMvc, Swagger, Security 설정 등)
 ├── constant           # 공통 상수 (에러 메시지, Redis 키, URL path 등)
-├── domain             # 도메인 계층 (Entity, Aggregate 등)
+├── domain             # 도메인 계층 (Controller,Service,Mapper 등)
 │   └── admin
 │       └── inbound
 │           └── controller
@@ -40,30 +42,67 @@ src/main/java/com.wareflow.buildify
 ├── mysql              # DB 쿼리 직접 사용하는 경우 (선택)
 ├── temp               # 임시 작업용
 ├── util               # 공통 유틸 클래스
-└── WareFlowBuildifyApplication.java
+└── vo                 # DB 통신 VO
+
 
 src/main/resources
-├── application.properties          # DB 등 일반 설정
 ├── application-secret.properties   # 민감한 설정 (DB 비밀번호, 보안 키 등)
-├── application.yml                 # 설정 파일 (MyBatis, 보안, 커스텀 프로퍼티 등)
+├── log4j2.xml                      # log4j2 설정 파일
+├── config                          # 설정 파일
+│   ├── mybatis-config.xml          # mabatis 설정 파일
+├── mappers                        # Mapper 
+│   ├── admin/                     # 관리자용 mapper
+│   ├── users/                     # 고객용 mapper
+└───└── auth/                      # 로그인용 mapper
+
+src/main/webapp
 ├── static                          # 정적 파일(css, js, 이미지 등)
 │   ├── css/
 │   ├── fonts/
 │   ├── img/
 │   └── js/
-├── templates                      # Thymeleaf 템플릿
-│   ├── admin/                     # 관리자용 페이지
-│   │   ├── common/                # header/footer/sidebar 등 공통 프래그먼트
-│   │   ├── layouts/               # 공통 레이아웃
-│   │   └── pages/                 # 기능별 페이지 (inbound, outbound 등)
-│   ├── user/                      # 고객용 페이지
-│   │   ├── common/                # header/footer/sidebar 등 공통 프래그먼트
-│   │   ├── layouts/               # 공통 레이아웃
-│   │   └── pages/                 # 기능별 페이지 (inbound, outbound 등)
-│   ├── components/                # 컴포넌트 예시 페이지들
-└───└── common/                    # 일반 공통 템플릿 및 페이지
+├── WEB-INF
+│   ├── root-context.xml
+│   ├── servlet-context.xml
+│   ├── web.xml
+│   └── views
+│   │   ├── admin/                    # 관리자 페이지
+│   │   │      ├── layouts/           # header/footer/sidebar 등 관리자 레이아웃
+│   │   │      ├── pages/             # 관리자 구현 페이지 모음
+│   │   │      │      ├── inbound/
+│   │   │      │      ├── outbound/
+│   │   │      │      ├── ...                
+│   │   ├── users/                    # 유저 페이지
+│   │   │      ├── layouts/           # header/footer/sidebar 등 관리자 레이아웃
+│   │   │      ├── pages/             # 유저 구현 페이지 모음
+│   │   │      │      ├── inbound/
+│   │   │      │      ├── outbound/
+│   │   │      │      ├── ...           
+└───└───└── common/
+│   │   │      ├── pages/             # 관리자 구현 페이지 모음
+└───└───└──────└──────└── errorpage/  # 커스텀 에러페이지 구현
+
 ```
 ---
+
+## 프로젝트 실행 가이드
+ 작성 예정
+
+---
+
+## 🛠 주요 기능
+ 작성 예정
+
+---
+
+## 👥 팀원
+- **김선민**
+- **김성준**
+- **이동휘**
+- **신민혁**
+
+---
+
 ## 🧾 커밋, PR, 이슈 컨벤션
 <br>
 
