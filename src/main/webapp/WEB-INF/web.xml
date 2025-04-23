@@ -101,4 +101,44 @@
         <url-pattern>/static/*</url-pattern>
     </servlet-mapping>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage500.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage403.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage400.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage401.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>405</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage405.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>503</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage503.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>504</error-code>
+        <location>/WEB-INF/views/common/pages/errorPage/errorpage504.jsp</location>
+    </error-page>
+
 </web-app>
