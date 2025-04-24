@@ -114,10 +114,14 @@ public class AdminInboundServiceImpl implements AdminInboundService {
             String uniqueId = "INB-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
                     + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
+
+
+            /////////////
             vo.setInventoryId(uniqueId);
             vo.setProdId(prodIds.get(i));
             vo.setClientId(clientIds.get(i));
             vo.setQuantity(quantitis.get(i));
+            vo.setWareId("loakwjf");
             vo.setLastInboundDate(Date.valueOf(LocalDate.now()));
 
             int result = adminInboundMapper.postAdminInboundCheckUpdate(vo);

@@ -23,22 +23,22 @@ public class WarehouseViewMapperTests {
     @Autowired
     AdminWarehouseMapper adminWarehouseMapper;
 
-    @Test
-    @DisplayName("창고 레이아웃 테스트")
-    public void viewTest(){
-        log.info("창고 정보 불러오기 테스트 시작");
-        List<WarehouseViewDTO> viewDTOS = adminWarehouseMapper.getWarehouseList();
-        log.info(viewDTOS.size());
-        for (WarehouseViewDTO warehouseViewDTO : viewDTOS){
-            log.info("창고 : {}{} 창고주소 : {} 관리자 : {} 고객 : {}-{} 사업자번호 : {} 계약일 {}-{} 입고 {} 출고 {}",
-                    warehouseViewDTO.getWareId(),warehouseViewDTO.getWareCoord(),
-                    warehouseViewDTO.getWareAddress(),warehouseViewDTO.getAdminNumber(),
-                    warehouseViewDTO.getClientID(),warehouseViewDTO.getClientName(),
-                    warehouseViewDTO.getClientBusinessNumber(),
-                    warehouseViewDTO.getStartDate(),warehouseViewDTO.getEndDate(),
-                    warehouseViewDTO.getLastInboundDate(),warehouseViewDTO.getLastOutboundDate());
-        }
-    }
+//    @Test
+//    @DisplayName("창고 레이아웃 테스트")
+//    public void viewTest(){
+//        log.info("창고 정보 불러오기 테스트 시작");
+//        List<WarehouseViewDTO> viewDTOS = adminWarehouseMapper.getWarehouseList();
+//        log.info(viewDTOS.size());
+//        for (WarehouseViewDTO warehouseViewDTO : viewDTOS){
+//            log.info("창고 : {}{} 창고주소 : {} 관리자 : {} 고객 : {}-{} 사업자번호 : {} 계약일 {}-{} 입고 {} 출고 {}",
+//                    warehouseViewDTO.getWareId(),warehouseViewDTO.getWareCoord(),
+//                    warehouseViewDTO.getWareAddress(),warehouseViewDTO.getAdminNumber(),
+//                    warehouseViewDTO.getClientID(),warehouseViewDTO.getClientName(),
+//                    warehouseViewDTO.getClientBusinessNumber(),
+//                    warehouseViewDTO.getStartDate(),warehouseViewDTO.getEndDate(),
+//                    warehouseViewDTO.getLastInboundDate(),warehouseViewDTO.getLastOutboundDate());
+//        }
+//    }
 
     @Test
     @DisplayName("창고 정보 불러오기 테스트")

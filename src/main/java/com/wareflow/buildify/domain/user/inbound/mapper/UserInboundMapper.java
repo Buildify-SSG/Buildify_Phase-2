@@ -10,6 +10,7 @@ import com.wareflow.buildify.vo.UserWareHouseVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -40,5 +41,7 @@ public interface UserInboundMapper {
 
     int insertInbound(InboundVO vo);
 
-    List<UserWareHouseVO> insertware(InboundProductVO vo);
+    List<UserWareHouseVO> insertware(String  vo);
+
+   BigDecimal  getProdSizeAsString(String s);
 }

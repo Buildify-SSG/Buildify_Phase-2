@@ -128,11 +128,13 @@
             i.prod_id,
             i.client_id,
             i.quantity,
-            i.ware_id,
+            #{wareId},
+--             i.ware_id,
             NOW()
         FROM inbound i
         WHERE i.prod_id = #{prodId}
           AND i.client_id = #{clientId}
+
     </insert>
 
 
