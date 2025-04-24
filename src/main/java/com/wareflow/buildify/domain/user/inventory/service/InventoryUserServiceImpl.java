@@ -1,12 +1,17 @@
 package com.wareflow.buildify.domain.user.inventory.service;
 
+import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
 import com.wareflow.buildify.domain.user.inventory.mapper.InventoryUserMapper;
 import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.dto.InventoryFilterDTO;
+import com.wareflow.buildify.vo.InventoryVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,9 +23,23 @@ public class InventoryUserServiceImpl implements InventoryUserService {
 
     @Override
     public List<InventoryDTO> getUserInventory() {
-        log.info("▶ 호출 전 매퍼(빈): {}", inventoryUserMapper);
-        List<InventoryDTO> list = inventoryUserMapper.getUserInventory();
-        log.info("▶ 매퍼가 꺼내온 리스트: {}", list.size());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+
+        log.info("서비스 진입 성공");
+
+        String clientId = userDetails.getClientId();
+
+        log.info("서비스 회원 ID : {}",clientId);
+
+        log.info("재고 회원 서비스");
+
+
+        List<InventoryDTO> list = inventoryUserMapper.getUserInventory(clientId);
+
+            log.info("서비스 리스트 사이즈 : {}", list.size());
+//        }
+
         return list;
 
     }

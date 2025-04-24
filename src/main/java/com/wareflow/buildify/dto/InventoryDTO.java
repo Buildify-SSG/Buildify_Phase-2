@@ -23,6 +23,8 @@ public class InventoryDTO {
     private String wareName;
     private String wareAddress;
     private String warePosition;
+    private String wareHousePosX;
+    private int wareHousePosY;
 
     private String wareId;
 
