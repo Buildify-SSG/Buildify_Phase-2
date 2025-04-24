@@ -29,5 +29,6 @@ public class CustomIdGenerator {
         System.out.println(generateId(IdPrefix.USR)); // 고객
         System.out.println(generateId(IdPrefix.ADM)); // 관리자
         System.out.println(generateId(IdPrefix.PRD)); // 상품
+        System.out.println(generateId(IdPrefix.CAT)); // 상품
     }
 }
