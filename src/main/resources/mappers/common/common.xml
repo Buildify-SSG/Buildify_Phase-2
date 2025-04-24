@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wareflow.buildify.common.mapper.CommonMapper">
+    <!-- 여기에 SQL 정의 들어감 -->
+
+    <select id="getAdminList" resultType="com.wareflow.buildify.vo.AdminVO">
+      SELECT
+          admin_number AS adminNumber,
+          admin_role AS adminRole,
+          admin_name AS adminName,
+          admin_email AS adminEmail,
+          admin_enter_date AS adminEnterDate,
+          admin_address AS adminAddress,
+          admin_phone AS adminPhone,
+          admin_id AS adminId,
+          admin_pw AS adminPassword
+          FROM admin;
+    </select>
+
+</mapper>

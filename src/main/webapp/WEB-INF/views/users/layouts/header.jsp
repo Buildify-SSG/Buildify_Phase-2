@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%-- debug --%>
+<% System.out.println("💬 JSP에서 loginUser: " + request.getAttribute("loginUser")); %>
 <nav class="navbar navbar-expand navbar-light navbar-bg">
     <a class="sidebar-toggle js-sidebar-toggle">
         <i class="hamburger align-self-center"></i>
@@ -171,7 +173,16 @@
                 </a>
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                    <img src="<c:url value='/static/img/avatars/avatar.jpg' />" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+
+                    <c:choose>
+                        <c:when test="${not empty loginUser}">
+                            <span class="text-dark">${loginUser.userName} 회원님</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="text-dark">비회원</span>
+                        </c:otherwise>
+                    </c:choose>
+                </a>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="<c:url value='#' />"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
