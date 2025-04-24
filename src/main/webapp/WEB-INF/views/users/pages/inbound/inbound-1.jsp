@@ -398,6 +398,10 @@
                  alert("상품 정보를 불러오지 못했습니다.");
              });
      });
+    // 모달 닫기 함수
+    function closeModal() {
+        document.getElementById('inboundModal').style.display = 'none';
+    }
 
     // ✅ 이벤트 위임 방식으로 모달 form의 submit 처리
     document.addEventListener('submit', async function (e) {
