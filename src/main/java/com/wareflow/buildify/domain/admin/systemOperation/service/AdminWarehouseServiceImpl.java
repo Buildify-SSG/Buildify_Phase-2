@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.*;
 
 // 📦 AdminWarehouseServiceImpl: 관리자 창고 레이아웃 및 정보 서비스 구현체
@@ -31,11 +32,22 @@ public class AdminWarehouseServiceImpl implements AdminWarehouseService{
     public Map<String, Map<String,List<WarehouseViewDTO>>> getWarehouseList() {
 
         List<WarehouseViewDTO> viewDTOList = adminWarehouseMapper.getWarehouseList();
-        log.info("서비스 창고 정보 가져오기 : " + viewDTOList.size());
+        List<WarehouseViewDTO> resulutList = new ArrayList<>();
+
+        Date now = java.sql.Date.valueOf(LocalDate.now());
+
+        for (WarehouseViewDTO warehouseViewDTO : viewDTOList){
+            if (!warehouseViewDTO.getEndDate().before(now)) {
+                resulutList.add(warehouseViewDTO);
+            }
+        }
+
+
+        log.info("서비스 창고 정보 가져오기 : " + resulutList.size());
 
         Map<String,Map<String,List<WarehouseViewDTO>>> layoutmap = new HashMap<>();
 
-        for (WarehouseViewDTO dto : viewDTOList) {
+        for (WarehouseViewDTO dto : resulutList) {
             String wareId = dto.getWareId(); // W001
             String coord = dto.getWareCoord(); // A1
             // 창고 ID(W001) 및 좌표(A1)를 기준으로 그룹화
