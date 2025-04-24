@@ -67,7 +67,7 @@ public class AdminWarehouseLeaseController{
 
 
 
-    @RequestMapping(value = "/admin/pages/systemOperation/systemOperation-2/search", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/systemOperation-2/search", method = {RequestMethod.GET, RequestMethod.POST})
     public String searchWareHouseLease(@RequestParam(defaultValue = "1") int page,
 
                                 @RequestParam("searchType") String searchType,

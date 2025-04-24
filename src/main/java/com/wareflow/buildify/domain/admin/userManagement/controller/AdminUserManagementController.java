@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,7 +40,8 @@ public class AdminUserManagementController {
         return "admin/layouts/adminlayout";
     }
 
-    @PostMapping("/userManagement-1/search")
+//    @PostMapping("/userManagement-1/search")
+    @RequestMapping(value = "/userManagement-1/search", method = {RequestMethod.GET , RequestMethod.POST})
     public String search(@RequestParam(defaultValue = "1") int page,
                          @RequestParam("searchType") String searchType,
                          @RequestParam("keyword") String keyword,

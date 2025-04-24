@@ -153,7 +153,7 @@
                           data-tooltip="<c:if test='${not empty dtoList}'>
                           창고: ${dtoList[0].wareId}
                           위치: ${coord}
-                          계약 고객: ${dtoList[0].clientID}
+                          계약 고객: ${dtoList[0].clientId}
                           고객 이름: ${dtoList[0].clientName}
                           사업자 번호: ${dtoList[0].clientBusinessNumber}
                           계약 기간: <fmt:formatDate value="${dtoList[0].startDate}" pattern="yyyy.MM.dd" /> ~ <fmt:formatDate value="${dtoList[0].endDate}" pattern="yyyy.MM.dd" />
@@ -225,7 +225,7 @@
       </div>
 
   </div>
-</div>
+
 
 <script>
     const coordMap = {
