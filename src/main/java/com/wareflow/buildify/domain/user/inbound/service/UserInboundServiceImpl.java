@@ -9,12 +9,14 @@ import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.vo.InboundProductVO;
 import com.wareflow.buildify.vo.InboundVO;
 import com.wareflow.buildify.vo.ProductVO;
+import com.wareflow.buildify.vo.UserWareHouseVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.ls.LSOutput;
 
 
 import java.sql.Date;
@@ -38,8 +40,12 @@ public class UserInboundServiceImpl implements UserInboundService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
 
+        ProductVO VO = new ProductVO();
+        VO.setClientId(userDetails.getClientId());
+
+
         log.info("인바운드1서비스");
-        List<ProductVO> vo = userInboundMapper.inboundList();
+        List<ProductVO> vo = userInboundMapper.inboundList(VO);
         List<ProductDTO> dtoList = new ArrayList<>();
         for(ProductVO productVO:vo){
             ProductDTO productDTO = ProductDTO.builder()
@@ -47,7 +53,7 @@ public class UserInboundServiceImpl implements UserInboundService {
                     .prodName(productVO.getProdName())
                     .prodPrice(productVO.getProdPrice())
                     .prodSize(productVO.getProdSize())
-                    .clientId(userDetails.getClientId())
+                    .clientId(productVO.getClientId())
                     .build();
             dtoList.add(productDTO);
 
@@ -58,7 +64,17 @@ public class UserInboundServiceImpl implements UserInboundService {
 
     @Override
     public List<InboundProduntDTO> inboundInsertlist() {
-        List<InboundProductVO> vo = userInboundMapper.inboundInsertlist();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+
+        InboundProductVO VO = new InboundProductVO();
+        VO.setClientId(userDetails.getClientId());
+
+        List<UserWareHouseVO> w = userInboundMapper.insertware(VO);
+
+
+        List<InboundProductVO> vo = userInboundMapper.inboundInsertlist(VO);
+
         List<InboundProduntDTO> dtoList = new ArrayList<>();
         for(InboundProductVO inboundProductVO:vo){
             InboundProduntDTO inboundProduntDTO = InboundProduntDTO.builder()
@@ -82,6 +98,7 @@ public class UserInboundServiceImpl implements UserInboundService {
 
     @Override
     public List<InboundProduntDTO> searchInboundList(String searchType, String keyword) {
+
         return userInboundMapper.searchInboundList(searchType, "%" + keyword + "%");
     }
 
