@@ -3,6 +3,7 @@ package com.wareflow.buildify.domain.user.inventory.controller;
 import com.wareflow.buildify.domain.user.inventory.service.InventoryUserService;
 import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.dto.InventoryFilterDTO;
+import com.wareflow.buildify.util.ExportExcel;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -20,10 +22,24 @@ import java.util.List;
 
 public class InventoryUserController {
 
-    @Autowired
+
     private final InventoryUserService inventoryUserService;
 
     private Pagination pagination;
+
+    private final ExportExcel exportExcel;
+
+
+//    @GetMapping("/inventory-1/api/excel")
+    @RequestMapping(value = "/inventory-1/api/excel", method = {RequestMethod.GET, RequestMethod.POST})
+    public void inventoryExportExcel(HttpServletResponse response) {
+
+        log.info("inventory export excel");
+        List<InventoryDTO> list = inventoryUserService.getUserInventory();
+        log.info("컨트롤러 리스트 사이즈 :{}",list.size());
+        int result = exportExcel.exportExcel(list,response,"user_inventory_list");
+        log.info("엑셀 출력 결과 :{}",result);
+    }
 
 
     @GetMapping("/inventory-1")

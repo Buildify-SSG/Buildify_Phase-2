@@ -2,6 +2,7 @@ package com.wareflow.buildify.domain.admin.inventory.service;
 
 import com.wareflow.buildify.domain.admin.inventory.mapper.InventoryAdminMapper;
 import com.wareflow.buildify.dto.CategoryDTO;
+import com.wareflow.buildify.dto.InventoryAdminDTO;
 import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.dto.InventoryFilterDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +19,15 @@ public class InventoryAdminServiceImpl implements InventoryAdminService {
     private final InventoryAdminMapper inventoryAdminMapper;
 
     @Override
-    public List<InventoryDTO> getAdminInventory() {
+    public List<InventoryAdminDTO> getAdminInventory() {
         log.info("▶ 호출 전 매퍼(빈): {}", inventoryAdminMapper);
-        List<InventoryDTO> list = inventoryAdminMapper.getAdminInventory();
+        List<InventoryAdminDTO> list = inventoryAdminMapper.getAdminInventory();
         log.info("▶ 매퍼가 꺼내온 리스트: {}", list.size());
         return list;
     }
 
     @Override
-    public List<InventoryDTO> searchAdminInventory(InventoryFilterDTO filter) {
+    public List<InventoryAdminDTO> searchAdminInventory(InventoryFilterDTO filter) {
         return inventoryAdminMapper.searchAdminInventory(filter);
     }
 

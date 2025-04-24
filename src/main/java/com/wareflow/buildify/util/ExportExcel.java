@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class ExportExcel {
 
-    public <T> void exportExcel(List<T> data, HttpServletResponse response, String fileName){
+    public <T> int exportExcel(List<T> data, HttpServletResponse response, String fileName){
 
         // 1. 워크북 만들기 (라이브러리에서 제공하는 방식 or 직접 만든 유틸)
         ToWorkBook workBook = new ToWorkBook(ToWorkBookType.XSSF);
@@ -28,8 +28,10 @@ public class ExportExcel {
         try (OutputStream os = response.getOutputStream()) {
             workBook.write(os); // 바로 HTTP 응답으로 출력
         } catch (IOException e) {
-            throw new RuntimeException("엑셀 다운로드 실패", e);
+            return 1;
+//            throw new RuntimeException("엑셀 다운로드 실패", e);
         }
+        return 0;
     }
 
 }

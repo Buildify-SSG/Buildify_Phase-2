@@ -1,10 +1,8 @@
 package com.wareflow.buildify.domain.admin.inventory.controller;
 
 import com.wareflow.buildify.domain.admin.inventory.service.InventoryAdminService;
-import com.wareflow.buildify.dto.CategoryDTO;
-import com.wareflow.buildify.dto.InventoryDTO;
-import com.wareflow.buildify.dto.InventoryFilterDTO;
-import com.wareflow.buildify.dto.InventoryUpdateDTO;
+import com.wareflow.buildify.dto.*;
+import com.wareflow.buildify.util.ExportExcel;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +28,17 @@ public class InventoryAdminController {
 
     private Pagination pagination;
 
+    private final ExportExcel exportExcel;
+
+    @GetMapping("/inventory-1/api/excel")
+    public void inventoryUserExportExcel(HttpServletResponse response){
+        List<InventoryAdminDTO> list = inventoryAdminService.getAdminInventory();
+        exportExcel.exportExcel(list, response, "inventory_admin_list");
+    }
+
     @GetMapping("/inventory-1")
     public String getAdminInventory(Model model, @RequestParam(defaultValue = "1") int page){
-        List<InventoryDTO>inventoryList = inventoryAdminService.getAdminInventory();
+        List<InventoryAdminDTO>inventoryList = inventoryAdminService.getAdminInventory();
         log.info(inventoryList.size());
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");
 
@@ -43,7 +50,7 @@ public class InventoryAdminController {
 //    @GetMapping("/inventory-1/search")
     @RequestMapping(value = "/inventory-1/search", method = {RequestMethod.GET, RequestMethod.POST})
     public String searchUserInventory(InventoryFilterDTO filter, Model model, @RequestParam(defaultValue = "1") int page) {
-        List<InventoryDTO> inventoryList = inventoryAdminService.searchAdminInventory(filter);
+        List<InventoryAdminDTO> inventoryList = inventoryAdminService.searchAdminInventory(filter);
         log.info(inventoryList.size());
 
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");
