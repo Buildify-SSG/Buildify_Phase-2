@@ -10,4 +10,5 @@ public interface ProductService {
     boolean registerProduct(ProductDTO productDTO);
     Map<String, Map<String, List<String>>> getCategoryList();
     String getCategoryId(String categoryLevel1, String categoryLevel2, String categoryLevel3);
+    List<ProductDTO> getProductList();
 }

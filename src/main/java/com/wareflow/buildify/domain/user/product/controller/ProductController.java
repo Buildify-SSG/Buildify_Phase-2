@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wareflow.buildify.domain.user.product.service.ProductService;
 import com.wareflow.buildify.dto.CategoryDTO;
 import com.wareflow.buildify.dto.ProductDTO;
+import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -55,5 +56,15 @@ public class ProductController {
         }
 
         return "redirect:/users/pages/product/product-1";
+    }
+
+    @GetMapping("product/product-2")
+    public String showMyProductList(@RequestParam(defaultValue = "1") int page, Model model) {
+
+        List<ProductDTO> productDTOList = productService.getProductList();
+        model.addAttribute("productDTOList", productDTOList);
+        Pagination.paginate(model, productDTOList, page, "/WEB-INF/views/users/pages/userWarehouse/userWarehouse-2.jsp");
+        model.addAttribute("body", "/WEB-INF/views/users/pages/product/product-2.jsp");
+        return "users/layouts/userlayout";
     }
 }
