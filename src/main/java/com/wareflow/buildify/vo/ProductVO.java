@@ -1,9 +1,6 @@
 package com.wareflow.buildify.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -11,6 +8,7 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class ProductVO {
     private String prodId;         // [접두어]-[날짜]-[랜덤문자열]
     private String brand;
