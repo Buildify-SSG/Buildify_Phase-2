@@ -3,6 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.ProductMapper">
-    <!-- 여기에 SQL 정의 들어감 -->
+<mapper namespace="com.wareflow.buildify.domain.user.product.mapper.ProductMapper">
+    <insert id="insertProduct" parameterType="com.wareflow.buildify.vo.ProductVO">
+        INSERT INTO product (
+                                   prod_id, brand, prod_name, prod_price, prod_code,
+                                   prod_size, prod_categoryid, client_id
+        )
+        VALUES (#{prodId}, #{brand}, #{prodName}, #{prodPrice},
+                #{prodCode}, #{prodSize}, #{prodCategoryid}, #{clientId})
+    </insert>
+
+    <select id="selectCategoryList" resultType="com.wareflow.buildify.vo.CategoryVO">
+        SELECT
+            prod_categoryid, category_level1, category_level2, category_level3
+        FROM category
+    </select>
+
 </mapper>
+
