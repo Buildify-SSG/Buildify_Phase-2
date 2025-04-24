@@ -58,16 +58,24 @@
     </form>
 </div>
 
-<!-- ✅ JSON 값 기반 하드 채움 -->
 <script>
-    const categoryData = JSON.parse('<c:out value="${categoryJson}" escapeXml="false"/>');
+    const categoryMap = JSON.parse('<c:out value="${categoryJson}" escapeXml="false"/>');
 
     const level1Select = document.getElementById("category-level1");
     const level2Select = document.getElementById("category-level2");
     const level3Select = document.getElementById("category-level3");
 
-    function fillOptions(select, options) {
+    function clearSelect(select) {
         select.innerHTML = '';
+        const defaultOption = document.createElement("option");
+        defaultOption.textContent = '선택';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
+    }
+
+    function fillSelect(select, options) {
+        clearSelect(select);
         options.forEach(opt => {
             const option = document.createElement("option");
             option.value = opt;
@@ -77,8 +85,25 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        fillOptions(level1Select, categoryData.categoryLevel1);
-        fillOptions(level2Select, categoryData.categoryLevel2);
-        fillOptions(level3Select, categoryData.categoryLevel3);
+        const level1List = Object.keys(categoryMap);
+        fillSelect(level1Select, level1List);
+
+        level1Select.addEventListener("change", () => {
+            const selectedLevel1 = level1Select.value;
+            const level2List = Object.keys(categoryMap[selectedLevel1]);
+            fillSelect(level2Select, level2List);
+            clearSelect(level3Select); // 중분류 변경되면 소분류 초기화
+        });
+
+        level2Select.addEventListener("change", () => {
+            const selectedLevel1 = level1Select.value;
+            const selectedLevel2 = level2Select.value;
+            const level3List = categoryMap[selectedLevel1][selectedLevel2];
+            fillSelect(level3Select, level3List);
+        });
+
+        // 초기화 트리거
+        level1Select.dispatchEvent(new Event("change"));
     });
 </script>
+

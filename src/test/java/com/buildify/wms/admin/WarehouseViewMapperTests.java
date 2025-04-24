@@ -33,7 +33,7 @@ public class WarehouseViewMapperTests {
             log.info("창고 : {}{} 창고주소 : {} 관리자 : {} 고객 : {}-{} 사업자번호 : {} 계약일 {}-{} 입고 {} 출고 {}",
                     warehouseViewDTO.getWareId(),warehouseViewDTO.getWareCoord(),
                     warehouseViewDTO.getWareAddress(),warehouseViewDTO.getAdminNumber(),
-                    warehouseViewDTO.getClientID(),warehouseViewDTO.getClientName(),
+                    warehouseViewDTO.getClientId(),warehouseViewDTO.getClientName(),
                     warehouseViewDTO.getClientBusinessNumber(),
                     warehouseViewDTO.getStartDate(),warehouseViewDTO.getEndDate(),
                     warehouseViewDTO.getLastInboundDate(),warehouseViewDTO.getLastOutboundDate());
