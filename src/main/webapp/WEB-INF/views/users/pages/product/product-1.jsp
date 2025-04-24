@@ -3,67 +3,58 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <div class="container mt-5">
-    <h2>상품 등록</h2>
+    <div class="card mx-auto p-5 shadow rounded" style="max-width: 700px;">
+        <h2 class="text-center mb-4 fw-bold">🛒 상품 등록</h2>
 
-    <form method="post" action="<c:url value='/users/pages/product/product-1'/>">
+        <form method="post" action="<c:url value='/users/pages/product/product-1'/>">
+            <div class="mb-3">
+                <label class="form-label">브랜드</label>
+                <input type="text" class="form-control" name="brand" required>
+            </div>
 
-        <!-- 기존 필드들 유지 -->
-        <div class="mb-3">
-            <label for="brand" class="form-label">브랜드</label>
-            <input type="text" class="form-control" id="brand" name="brand" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">상품명</label>
+                <input type="text" class="form-control" name="prodName" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="prodName" class="form-label">상품명</label>
-            <input type="text" class="form-control" id="prodName" name="prodName" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">가격</label>
+                <input type="number" class="form-control" name="prodPrice" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="prodPrice" class="form-label">가격</label>
-            <input type="number" class="form-control" id="prodPrice" name="prodPrice" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">상품 코드</label>
+                <input type="number" class="form-control" name="prodCode" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="prodCode" class="form-label">상품 코드</label>
-            <input type="number" class="form-control" id="prodCode" name="prodCode" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">상품 크기 (cm³)</label>
+                <input type="number" step="any" class="form-control" name="prodSize" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="prodSize" class="form-label">상품 크기 (cm³)</label>
-            <input type="number" step="any" class="form-control" id="prodSize" name="prodSize" required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">대분류</label>
+                <select id="category-level1" name="categoryLevel1" class="form-select" required></select>
+            </div>
 
-        <!-- ✅ 카테고리 -->
-        <div class="mb-3">
-            <label class="form-label">대분류</label>
-            <select id="category-level1" name="categoryLevel1" class="form-select" required></select>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">중분류</label>
+                <select id="category-level2" name="categoryLevel2" class="form-select" required></select>
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">중분류</label>
-            <select id="category-level2" name="categoryLevel2" class="form-select" required></select>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">소분류</label>
+                <select id="category-level3" name="categoryLevel3" class="form-select" required></select>
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">소분류</label>
-            <select id="category-level3" name="categoryLevel3" class="form-select" required></select>
-        </div>
-
-<%--        <div class="mb-3">--%>
-<%--            <label class="form-label">소분류</label>--%>
-<%--            <select id="category-level3" name="prodCategoryid" class="form-select" required></select>--%>
-<%--        </div>--%>
-
-        <button type="submit" class="btn btn-primary">등록</button>
-    </form>
-
-    <c:if test="${not empty msg}">
-        <script>
-            alert("${msg}");
-        </script>
-    </c:if>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5 py-2 fw-semibold">등록</button>
+            </div>
+        </form>
+    </div>
 </div>
-</div>
+
+
 
 <script>
     const categoryMap = JSON.parse('<c:out value="${categoryJson}" escapeXml="false"/>');
