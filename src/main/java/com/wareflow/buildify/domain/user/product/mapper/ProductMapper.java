@@ -14,4 +14,5 @@ public interface ProductMapper {
     String selectCategoryId(@Param("level1") String level1,
                             @Param("level2") String level2,
                             @Param("level3") String level3);
+    List<ProductVO> selectProductList(@Param("clientId") String clientId);
 }

@@ -73,4 +73,24 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.selectCategoryId(categoryLevel1, categoryLevel2, categoryLevel3);
     }
 
+    @Override
+    public List<ProductDTO> getProductList() {
+        String clientId = ((CustomUserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getClientId();
+
+        List<ProductVO> productVOList = productMapper.selectProductList(clientId);
+
+        return productVOList.stream().map(vo -> ProductDTO.builder()
+                .prodId(vo.getProdId())
+                        .brand(vo.getBrand())
+                        .prodName(vo.getProdName())
+                        .prodPrice(vo.getProdPrice())
+                        .prodCode(vo.getProdCode())
+                        .prodSize(vo.getProdSize())
+                        .prodCategoryid(vo.getProdCategoryid())
+                        .clientId(clientId)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }
