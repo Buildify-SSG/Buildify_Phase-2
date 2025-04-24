@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,7 +27,7 @@ public class AdminWarehouseController {
 
     private final AdminWarehouseService adminWarehouseService;
     // 창고 레이아웃 정보 가져오기
-    @GetMapping("/admin/pages/systemOperation/systemOperation-1")
+    @RequestMapping(value = "/admin/pages/systemOperation/systemOperation-1", method = RequestMethod.GET)
     public String getWarehouseList(Model model) throws JsonProcessingException {
         Map<String , Map<String, List<WarehouseViewDTO>>> layoutmap = adminWarehouseService.getWarehouseList();
 
