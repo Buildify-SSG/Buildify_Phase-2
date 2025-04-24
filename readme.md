@@ -3,9 +3,17 @@
 <br>
 
 
-
 ## 프로젝트 개요
- 작성 예정
+ BuildiFy WMS(창고 관리 시스템)는 물류센터의 **입·출고 요청부터 재고 현황 모니터링, 계약 관리, 보고서 생성**까지   
+ 창고 운영 전 과정을 웹 기반으로 자동화·시각화하는 시스템입니다.  
+ 
+주요 목적은  
+- 입·출고 처리 효율화  
+- 실시간 재고 정확도 확보  
+- 관리자용 대시보드를 통한 의사결정 지원  
+- Excel·PDF 기반 출력물 자동 생성
+    
+등을 통해 물류 운영 비용을 절감하고, 사용자 편의성을 극대화하는 것입니다.
 
 ## 💡 기술 스택
 
@@ -86,12 +94,84 @@ src/main/webapp
 ---
 
 ## 프로젝트 실행 가이드
- 작성 예정
+ 1. **환경 준비**  
+   - JDK 17 설치  
+   - MySQL 8.x 이상 설치 및 실행  
+   - Gradle 설치 (wrapper 사용 시 별도 설치 불필요)  
 
+2. **DB 설정**  
+   - `src/main/resources/application-secret.properties` 에서 DB 접속 정보 설정
+     
+     ```properties
+     application-secret.driver=com.mysql.cj.jdbc.Driver
+     application-secret.url=jdbc:mysql://localhost:3306//buildifydb?serverTimezone=Asia/Seoul
+     application-secret.username=YOUR_DB_USER
+     application-secret.password=YOUR_DB_PASSWORD
+
+     ```
+   - 초기 스키마 및 더미 데이터 로딩  
+     ```bash
+     mysql -u YOUR_DB_USER -p buildify_wms < db/schema.sql
+     mysql -u YOUR_DB_USER -p buildify_wms < db/data/init_data.sql
+     ```
+
+3. **앱 실행**  
+     ```bash
+     cd 프로젝트_루트_디렉터리
+     ./gradlew clean build
+     ./gradlew bootRun
+     정상 구동 시 http://localhost:8080 에 접속 가능
+    
+4. **캐시/뷰 리소스 적용**  
+     ```
+     cache 패키드의 Singleton 빈이 정상 등록되었는지 확인
+	    src/main/webapp/static 내 CSS/JS 파일 변경 시 브라우저 캐시 비우기
+
+5. **테스트 실행**  
+     ```
+     bash
+     ./gradlew test
 ---
 
 ## 🛠 주요 기능
- 작성 예정
+ 1. 인증·인가  
+	•	Spring Security 기반 로그인/로그아웃  
+	•	관리자(Admin) / 사용자(User) 역할별 접근 제어  
+
+2. 입고 관리 (Inbound)  
+	•	입고 요청 등록·조회·수정  
+	•	관리자 승인·반려 처리  
+	•	Excel 리포트 자동 생성
+	•	재고 및 입고 이력 실시간 업데이트  
+   
+4. 출고 관리 (Outbound)  
+	•	출고 요청 등록·조회·수정·삭제  
+	•	관리자 승인·반려 처리
+	•	Excel 리포트 자동 생성  
+	•	재고 및 출고 이력 실시간 업데이트  
+
+6. 재고 현황  
+	•	재고 현황 조회    
+	•	재고 카테고리 별 조회  
+
+7. 계약 관리  
+	•	창고 임대 계약 등록·갱신  
+	•	계약 기간 체크  
+	•	계약별 고객 정보 관리  
+
+8. 대시보드  
+	•	관리자용 홈 화면  
+	•	JavaScript 기반 차트(JSP+Chart.js)로 시각화  
+	•	5분 단위 자동 리프레시  
+
+9. 공통  
+	•	글로벌 예외 처리(@ControllerAdvice) 및 커스텀 에러 페이지  
+	•	Spring Singleton 캐시 활용  
+
+10. 보안·성능  
+	•	MyBatis 성능 튜닝(동적 SQL, 페이징)   
+	•	트랜잭션 관리 및 롤백 보장(@Transactional)  
+
 
 ---
 
