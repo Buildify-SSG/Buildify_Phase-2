@@ -28,6 +28,7 @@ public class InventoryUserController {
 
     @GetMapping("/inventory-1")
     public String getUserInventoryList(Model model, @RequestParam(defaultValue = "1") int page) {
+        log.info("컨트롤러 진입 성공");
         List<InventoryDTO> inventoryList = inventoryUserService.getUserInventory();
         log.info(inventoryList.size());
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
@@ -66,7 +67,7 @@ public class InventoryUserController {
     @RequestMapping(value = "/inventory-1/getSmallCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getSmallCategories(@RequestParam("category2") String category2) {
-       
+
         return inventoryUserService.findSmallCategoriesByLevel2(category2);
     }
 
