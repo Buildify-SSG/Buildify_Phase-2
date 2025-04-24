@@ -5,6 +5,7 @@ import com.github.ckpoint.toexcel.core.ToWorkSheet;
 import com.github.ckpoint.toexcel.core.type.ToWorkBookType;
 import com.wareflow.buildify.domain.admin.product.service.AdminProductService;
 import com.wareflow.buildify.dto.ProductDTO;
+import com.wareflow.buildify.util.ExportExcel;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,6 +29,7 @@ import java.util.List;
 public class AdminProductController {
 
     private final AdminProductService adminProductService;
+    private final ExportExcel exportExcel;
 
 
     // 관리자 상품 전체 조회
@@ -82,20 +84,8 @@ public class AdminProductController {
         // 1. 데이터 준비 (보통은 서비스에서 가져옴)
         List<ProductDTO> data = adminProductService.adminProductView();
 
-        // 2. 워크북 만들기 (라이브러리에서 제공하는 방식 or 직접 만든 유틸)
-        ToWorkBook workBook = new ToWorkBook(ToWorkBookType.XSSF);
-        ToWorkSheet sheet = workBook.createSheet();
-        sheet.from(data);
-
-        // 3. 파일 다운로드 설정
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=\"adminProductList.xlsx\"");
-
-        try (OutputStream os = response.getOutputStream()) {
-            workBook.write(os); // 바로 HTTP 응답으로 출력
-        } catch (IOException e) {
-            throw new RuntimeException("엑셀 다운로드 실패", e);
+        // 2. ExportExcel 메소드 실행(리스트,response,파일이름)
+        exportExcel.exportExcel(data, response, "adminProductList");
         }
     }
 
-}
