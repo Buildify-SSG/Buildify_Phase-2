@@ -12,5 +12,12 @@
         VALUES (#{prodId}, #{brand}, #{prodName}, #{prodPrice},
                 #{prodCode}, #{prodSize}, #{prodCategoryid}, #{clientId})
     </insert>
+
+    <select id="selectCategoryList" resultType="com.wareflow.buildify.vo.CategoryVO">
+        SELECT
+            prod_categoryid, category_level1, category_level2, category_level3
+        FROM category
+    </select>
+
 </mapper>
 

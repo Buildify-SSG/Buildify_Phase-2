@@ -1,15 +1,12 @@
-package com.wareflow.buildify.dto;
+package com.wareflow.buildify.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
+public class CategoryVO {
     private String categoryId;
     private String categoryLevel1; // 대분류
     private String categoryLevel2; // 중분류
