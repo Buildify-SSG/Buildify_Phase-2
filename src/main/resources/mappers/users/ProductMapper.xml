@@ -19,5 +19,14 @@
         FROM category
     </select>
 
+    <select id="selectCategoryId" resultType="String">
+        SELECT prod_categoryid
+        FROM category
+        WHERE category_level1 = #{level1}
+          AND category_level2 = #{level2}
+          AND category_level3 = #{level3}
+
+    </select>
+
 </mapper>
 

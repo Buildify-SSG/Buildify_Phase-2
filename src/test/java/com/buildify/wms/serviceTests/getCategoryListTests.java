@@ -1,5 +1,7 @@
 package com.buildify.wms.serviceTests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wareflow.buildify.domain.user.product.mapper.ProductMapper;
 import com.wareflow.buildify.domain.user.product.service.ProductService;
 import com.wareflow.buildify.dto.CategoryDTO;
@@ -25,14 +27,14 @@ public class getCategoryListTests {
     private ProductService productService;
 
     @Test
-    public void testSelectCategoryList(){
-        Map<String, List<String>> testlist = productService.getCategoryList();
-        testlist.forEach((key, valueList) -> {
-            System.out.println("🔹 분류: " + key);
-            for (String value : valueList) {
-                System.out.println("   - " + value);
-            }
-        });
+    public void testSelectCategoryList() throws JsonProcessingException {
+        Map<String, Map<String, List<String>>> result = productService.getCategoryList();
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);
+
+        System.out.println("json : " + json);
     }
 
 }
