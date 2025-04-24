@@ -120,12 +120,12 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <!-- 검색 영역 -->
-        <form method="get" action="/users/pages/inbound/inbound-2/search">
+        <form method="get" action="/admin/pages/inbound/inbound-2/search">
             <div class="search-bar">
                 <select name="searchType">
                     <%--                            <option value="prodId">상품 ID</option>--%>
-                    <%--                            <option value="brand">브랜드</option>--%>
-                    <option value="prodName">상품이름</option>
+                    <option value="clientId">고객ID</option>
+                    <option value="prodName">상품명</option>
                     <option value="wareId">창고</option>
                 </select>
                 <input type="text" name="keyword" placeholder="검색" />

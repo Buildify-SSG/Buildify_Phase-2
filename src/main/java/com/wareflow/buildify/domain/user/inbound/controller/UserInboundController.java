@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 
 
+
 public class UserInboundController {
     private final UserInboundService userInboundService;
 
@@ -80,6 +81,7 @@ public class UserInboundController {
 
     @GetMapping("/users/pages/inbound/inbound-1/modal-info")
     @ResponseBody
+
     public List<ProductDTO> getInboundInsert(@RequestParam List<String> prodIds) {
         log.info("🔍 모달용 상품 ID 리스트: {}", prodIds);
         return userInboundService.getInboundInsert(prodIds);  // productDTO 리스트 반환
