@@ -1,10 +1,14 @@
 package com.wareflow.buildify.domain.admin.systemOperation.controller;
 
 
+import com.github.ckpoint.toexcel.core.ToWorkBook;
+import com.github.ckpoint.toexcel.core.ToWorkSheet;
+import com.github.ckpoint.toexcel.core.type.ToWorkBookType;
 import com.wareflow.buildify.domain.admin.systemOperation.service.AdminWarehouseLeaseService;
 import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.dto.UserDTO;
 import com.wareflow.buildify.dto.WarehouseLeaseDTO;
+import com.wareflow.buildify.util.ExportExcel;
 import com.wareflow.buildify.util.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,19 +18,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 // 관리자 - 창고 계약 관리 컨트롤러 구현체
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-@RequestMapping("")
+@RequestMapping("/admin/pages/systemOperation")
 public class AdminWarehouseLeaseController{
 
     private final AdminWarehouseLeaseService adminWarehouseLeaseService;
+    private final ExportExcel exportExcel;
 
     //유저 계약정보 가져오기
-    @GetMapping("/admin/pages/systemOperation/systemOperation-2")
+    @GetMapping("/systemOperation-2")
     public String getUserLeaseInfo(@RequestParam(defaultValue = "1") int page, Model model) {
         log.info("계약 조회 시작");
         List<WarehouseLeaseDTO> warehouseLeaseDTOList = adminWarehouseLeaseService.getUserLeaseInfo();
@@ -39,7 +47,7 @@ public class AdminWarehouseLeaseController{
 
 
     // 계약 변경
-    @PostMapping("/admin/pages/systemOperation/systemOperation-2/api/modify")
+    @PostMapping("/systemOperation-2/api/modify")
     public String modifyLeaseRequests(
             @RequestParam("clientIdList") List<String> clientIds,
             @RequestParam("endDateList") List<String> endDates,
@@ -58,7 +66,7 @@ public class AdminWarehouseLeaseController{
     }
 
 
-    @PostMapping("/admin/pages/systemOperation/systemOperation-2/search")
+    @PostMapping("/systemOperation-2/search")
     public String searchProduct(@RequestParam(defaultValue = "1") int page,
                                 @RequestParam("searchType") String searchType,
                                 @RequestParam("keyword") String keyword,
@@ -73,5 +81,12 @@ public class AdminWarehouseLeaseController{
 
         Pagination.paginate(model, warehouseLeaseDTOList, page,"/WEB-INF/views/admin/pages/systemOperation/systemOperation-2.jsp");
         return "admin/layouts/adminlayout";
+    }
+
+    @GetMapping("/systemOperation-2/api/excel")
+    public void adminWarehouseLeaseInfoExportExcel(HttpServletResponse response) {
+
+        List<WarehouseLeaseDTO> data = adminWarehouseLeaseService.getUserLeaseInfo();
+        exportExcel.exportExcel(data, response, "adminUserWareLeaseInfo");
     }
 }

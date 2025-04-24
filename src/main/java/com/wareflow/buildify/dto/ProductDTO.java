@@ -22,6 +22,7 @@ public class ProductDTO {
     @ExcelHeader(headerName = "가격", priority = 3)
     private Integer prodPrice;
     private Integer prodCode;      // 중복 x
+    @ExcelHeader(headerName = "상품 사이즈", priority = 5)
     private BigDecimal prodSize;   // cm^3.3 단위
 
     @ExcelHeader(headerName = "카테고리 ID", priority = 4)
