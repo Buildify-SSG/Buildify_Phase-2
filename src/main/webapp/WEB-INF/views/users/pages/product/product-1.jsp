@@ -56,6 +56,13 @@
 
         <button type="submit" class="btn btn-primary">등록</button>
     </form>
+
+    <c:if test="${not empty msg}">
+        <script>
+            alert("${msg}");
+        </script>
+    </c:if>
+</div>
 </div>
 
 <script>
