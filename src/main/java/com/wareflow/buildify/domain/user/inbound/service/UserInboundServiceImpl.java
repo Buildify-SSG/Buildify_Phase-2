@@ -1,5 +1,6 @@
 package com.wareflow.buildify.domain.user.inbound.service;
 
+import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
 import com.wareflow.buildify.domain.user.inbound.mapper.UserInboundMapper;
 import com.wareflow.buildify.dto.InboundDTO;
 import com.wareflow.buildify.dto.InboundProduntDTO;
@@ -10,6 +11,8 @@ import com.wareflow.buildify.vo.InboundVO;
 import com.wareflow.buildify.vo.ProductVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,9 @@ public class UserInboundServiceImpl implements UserInboundService {
 
     @Override
     public List<ProductDTO> inboundList() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+
         log.info("인바운드1서비스");
         List<ProductVO> vo = userInboundMapper.inboundList();
         List<ProductDTO> dtoList = new ArrayList<>();
@@ -41,6 +47,7 @@ public class UserInboundServiceImpl implements UserInboundService {
                     .prodName(productVO.getProdName())
                     .prodPrice(productVO.getProdPrice())
                     .prodSize(productVO.getProdSize())
+                    .clientId(userDetails.getClientId())
                     .build();
             dtoList.add(productDTO);
 
@@ -90,6 +97,18 @@ public class UserInboundServiceImpl implements UserInboundService {
 
     public void insertInboundRequests(List<String> prodIds, List<Integer> quantities) {
         log.info("여기까진오니");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+
+        if (userDetails == null) {
+            log.error("❌ userDetails가 null입니다.");
+        } else {
+            log.info("✅ userDetails 객체 타입: {}", userDetails.getClass().getName());
+            log.info("✅ userDetails.getUsername(): {}", userDetails.getUsername());
+            log.info("✅ userDetails.getClientId(): {}", userDetails.getClientId());
+        }
+
         for (int i = 0; i < prodIds.size(); i++) {
             InboundVO vo = new InboundVO();
             String uniqueId = "INB-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
@@ -97,7 +116,7 @@ public class UserInboundServiceImpl implements UserInboundService {
 
             vo.setInboundId(uniqueId);
             vo.setProdId(prodIds.get(i));
-            vo.setClientId("client1");
+            vo.setClientId(userDetails.getClientId());
             vo.setQuantity(quantities.get(i));
             vo.setInboundStatus(0); // 상태: 대기
             vo.setReqInboundDate(Date.valueOf(LocalDate.now()));

@@ -15,7 +15,7 @@ public class WarehouseViewDTO {
     private String wareCoord;
     private String wareAddress;
     private String adminNumber;
-    private String clientID;
+    private String clientId;
     private String clientName;
     private String clientBusinessNumber;
     private Date startDate;

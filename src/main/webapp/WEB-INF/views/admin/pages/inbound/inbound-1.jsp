@@ -115,17 +115,17 @@
 
 <div style="padding: 20px;">
 
-    <h1>입고 현황 조회</h1>
+    <h1>상품 조회</h1>
     <h4><br></h4>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <!-- 검색 영역 -->
-        <form method="get" action="/users/pages/inbound/inbound-2/search">
+        <form method="get" action="/admin/pages/inbound/inbound-1/search">
             <div class="search-bar">
                 <select name="searchType">
-                    <%--                            <option value="prodId">상품 ID</option>--%>
-                    <%--                            <option value="brand">브랜드</option>--%>
-                    <option value="prodName">상품이름</option>
+                    <option value="clientId">고객 ID</option>
+                    <%--                    <option value="brand">브랜드</option>--%>
+                    <option value="prodName">상품명</option>
                     <option value="wareId">창고</option>
                 </select>
                 <input type="text" name="keyword" placeholder="검색" />
@@ -142,48 +142,64 @@
     </div>
 
 
-
     <!-- 표 -->
     <div class="table-wrapper">
-        <form method="post" action="/admin/pages/product/product-1/api/productRemove">
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-                <%--                <button type="button" style="background-color: crimson; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="confirmDelete()">Delete</button>--%>
-            </div>
-            <table id="contractTable">
-                <thead>
-                <tr>
-                    <th>고객ID</th>
-                    <th>상품명</th>
-                    <th>수량</th>
-                    <th>요청일</th>
-                    <th>처리일</th>
-                    <th>창고</th>
-                    <th>현황</th>
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+            <button type="button" id="requestInboundBtn" style="background-color: #14bedc; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" >승 인</button>
+        </div>
+        <table id="contractTable">
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>고객ID</th>
+                <th>상품ID</th>
+                <th>상품명</th>
+<%--                <th>--%>
+<%--                    가격--%>
+<%--                    <a class="sort" href="#" onclick="sortTable('prodPrice', 'asc'); return false;">▲</a>--%>
+<%--                    <a class="sort" href="#" onclick="sortTable('prodPrice', 'desc'); return false;">▼</a>--%>
+<%--                </th>--%>
+                <th>수량</th>
+                <th>요청일</th>
+                <th>창고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="item" items="${List}" varStatus="status">
+                <tr class="product-row"
+                    data-clientid="${item.clientId}"
+                    data-prodid="${item.prodId}"
+                    data-prodname="${item.prodName}"
+                    data-quantity="${item.quantity}"
+                    data-prodprice="${item.prodPrice}"
+                    data-prodsize="${item.prodSize}"
+                    data-reqinbounddate="${item.reqInboundDate}"
+                    data-wareid="${item.wareId}">
+                    <script>console.log("가격 확인: ${item.prodPrice}, 사이즈 확인: ${item.prodSize}");</script>
+                    <td>
+                      <input type="checkbox"
+                             class="prod-check"
+                             value="${item.prodId}"
+                             data-clientid="${item.clientId}"
+                             data-quantity="${item.quantity}" />
+                    </td>
+                    <td>${item.clientId}</td>
+                    <td>${item.prodId}</td>
+                    <td>${item.prodName}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.reqInboundDate}</td>
+                    <td>${item.wareId}</td>
                 </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="Admininbound" items="${List}" varStatus="status">
-                    <tr>
-                        <td>${Admininbound.clientId}</td>
-                        <td>${Admininbound.prodName}</td>
-                        <td>${Admininbound.quantity}</td>
-                        <td>${Admininbound.reqInboundDate}</td>
-                        <td>${Admininbound.inboundProcessDate}</td>
-                        <td>${Admininbound.wareId}</td>
-                        <td>${Admininbound.inboundStatus}</td>
-
-                    </tr>
-                </c:forEach>
-                <c:if test="${empty List}">
-                    <tr>
-                        <td colspan="7">검색 결과가 없습니다.</td>
-                    </tr>
-                </c:if>
-                </tbody>
-            </table>
-            <%--        </form>--%>
-            <!-- Pagination Block -->
-            <c:if test="${totalPages > 1}">
+            </c:forEach>
+            <c:if test="${empty List}">
+                <tr>
+                    <td colspan="7">검색 결과가 없습니다.</td>
+                </tr>
+            </c:if>
+            </tbody>
+        </table>
+        <!-- Pagination Block -->
+        <c:if test="${totalPages > 1}">
             <div class="pagination" style="margin-top: 20px; text-align: center;">
                 <ul style="display: inline-flex; list-style: none; padding: 0;">
                     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -203,8 +219,37 @@
                     </c:forEach>
                 </ul>
             </div>
-            </c:if>
+        </c:if>
     </div>
+</div>
+
+<!-- ✅ 모달 -->
+<div id="inboundModal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); z-index: 1000; min-width: 400px;">
+    <h3 style="margin-bottom: 16px;">입고 승인</h3>
+
+    <!-- ✅ form 시작 -->
+    <form id="inboundModalFF">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+            <tr style="background: #f1f5f9;">
+                <th style="padding: 6px;">고객 ID</th>
+                <th style="padding: 6px;">상품 ID</th>
+                <th style="padding: 6px;">상품명</th>
+<%--                <th style="padding: 6px;">가격</th>--%>
+<%--                <th style="padding: 6px;">사이즈</th>--%>
+                <th style="padding: 6px;">수량</th>
+            </tr>
+            </thead>
+            <tbody id="modalInputs"></tbody>
+        </table>
+
+        <!-- ✅ 버튼도 form 안쪽에 있어야 함 -->
+        <div style="margin-top: 16px; text-align: right;">
+            <button type="submit" style="padding: 6px 12px; background: #14bedc; color: white; border: none; border-radius: 5px;">승인</button>
+            <button type="button" onclick="closeModal()" style="margin-right: 8px; padding: 6px 12px; background: #e5e7eb; color: #333; border: none; border-radius: 5px;">취소</button>
+        </div>
+    </form>
+    <!-- ✅ form 끝 -->
 </div>
 
 <c:if test="${not empty msg}">
@@ -214,6 +259,8 @@
 </c:if>
 
 <script>
+
+
     function sortTable(field, direction) {
         const table = document.getElementById("contractTable");
         const tbody = table.querySelector("tbody");
@@ -245,15 +292,104 @@
 
         rows.forEach(row => tbody.appendChild(row)); // 재배치
     }
-</script>
-<%--<script>--%>
-<%--    function confirmDelete() {--%>
-<%--        const confirmed = confirm('정말 삭제하시겠습니까?');--%>
-<%--        if (confirmed) {--%>
-<%--            document.querySelector('form[action="/admin/pages/product/product-1/api/productRemove"]').submit();--%>
-<%--        }--%>
-<%--    }--%>
-<%--</script>--%>
 
+
+
+
+    document.getElementById('requestInboundBtn').addEventListener('click', function () {
+        const checked = document.querySelectorAll('.prod-check:checked');
+        const modalInputs = document.getElementById('modalInputs');
+        modalInputs.innerHTML = '';
+
+        if (checked.length === 0) {
+            alert("입고 요청할 상품을 선택해주세요.");
+            return;
+        }
+
+
+        console.log("1111111");
+        const prodIds = Array.from(checked).map(cb => cb.value).filter(id => id); // 필터 추가
+        if (prodIds.length === 0) {
+            alert("선택된 상품의 ID가 비어 있습니다.");
+            return;
+        }
+
+        checked.forEach(function (checkbox) {
+            const tr = checkbox.closest('tr');
+            const prodId = checkbox.value;
+            const clientId = tr.dataset.clientid;
+            const prodName = tr.dataset.prodname;
+            const quantity = tr.dataset.quantity;
+            const prodPrice = tr.dataset.prodprice || '';
+            const prodSize = tr.dataset.prodsize || '';
+
+            modalInputs.innerHTML +=
+                '<tr>' +
+                '<td><input type="hidden" name="clientIds" value="' + clientId + '">' + clientId + '</td>' +
+                '<td><input type="hidden" name="prodIds" value="' + prodId + '">' + prodId + '</td>' +
+                '<td>' + prodName + '</td>' +
+                // '<td>' + prodPrice + '</td>' +
+                // '<td>' + prodSize + '</td>' +
+                '<td><input type="hidden" name="quantitis" value="' + quantity + '">' + quantity + '</td>' +
+                '</tr>';
+        });
+
+        document.getElementById('inboundModal').style.display = 'block';
+    });
+
+    // 모달 닫기 함수
+    function closeModal() {
+        document.getElementById('inboundModal').style.display = 'none';
+    }
+
+    // ✅ 이벤트 위임 방식으로 모달 form의 submit 처리
+document.addEventListener('submit', async function (e) {
+    if (e.target && e.target.id === 'inboundModalFF') {
+        console.log("📥 submit 이벤트 발생 확인!");
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+        const prodIds = formData.getAll('prodIds');
+        const clientIds = formData.getAll('clientIds');
+        const quantitis = formData.getAll('quantitis');
+
+
+        prodIds.forEach((_, index) => {
+            const quantityInput = form.querySelector(`input[name="quantities"][data-index="${index}"]`);
+            const clientIdCell = form.querySelectorAll('tbody tr')[index].children[0]; // 첫 번째 <td>는 clientId
+            if (quantityInput && clientIdCell) {
+                quantities.push(parseInt(quantityInput.value));
+                clientIds.push(clientIdCell.textContent.trim());
+            }
+        });
+
+        console.log("📦 전송할 상품 ID:", prodIds);
+        console.log("📦 전송할 고객 ID:", clientIds);
+        console.log("📦 전송할 고객 ID:", quantitis);
+
+        try {
+            const res = await fetch('/admin/pages/inbound/inbound-1/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prodIds, clientIds, quantitis })
+            });
+
+                if (res.ok) {
+                    alert("입고 요청이 성공적으로 등록되었습니다.");
+                    location.reload();
+                } else {
+                    alert("입고 요청에 실패했습니다.");
+                }
+            } catch (err) {
+                console.error("❌ 서버 요청 중 에러:", err);
+                alert("요청 중 오류가 발생했습니다.");
+            }
+        }
+    });
+
+
+
+</script>
 
 </body>

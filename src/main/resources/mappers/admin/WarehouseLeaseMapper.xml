@@ -6,7 +6,7 @@
 <mapper namespace="com.wareflow.buildify.domain.admin.systemOperation.mapper.AdminWarehouseLeaseMapper">
 
     <select id="getUserLeaseInfo" resultType="com.wareflow.buildify.dto.WarehouseLeaseDTO">
-        SELECT ware.client_id AS clientID,
+        SELECT ware.client_id AS clientId,
                user.user_name AS clientName,
                user.business_number AS clientBusinessNumber,
                ware.ware_start_date AS startDate,
@@ -36,19 +36,19 @@
             WHEN ware_id = #{item.wareId}
              AND warehouse_pos_x = #{item.warehousePosX}
              AND warehouse_pos_y = #{item.warehousePosY}
-             AND client_id = #{item.clientID}
+             AND client_id = #{item.clientId}
             THEN #{item.wareEndDate}
           </foreach>
         END
         WHERE (ware_id, warehouse_pos_x, warehouse_pos_y, client_id) IN
           <foreach collection="list" item="item" separator="," open="(" close=")">
-            (#{item.wareId}, #{item.warehousePosX}, #{item.warehousePosY}, #{item.clientID})
+            (#{item.wareId}, #{item.warehousePosX}, #{item.warehousePosY}, #{item.clientId})
           </foreach>
 
     </update>
 
     <select id="search" resultType="com.wareflow.buildify.dto.WarehouseLeaseDTO">
-        SELECT ware.client_id AS clientID,
+        SELECT ware.client_id AS clientId,
         user.user_name AS clientName,
         user.business_number AS clientBusinessNumber,
         ware.ware_start_date AS startDate,

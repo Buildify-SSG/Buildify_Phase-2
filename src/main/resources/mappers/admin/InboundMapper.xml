@@ -38,4 +38,104 @@
         from inbound JOIN product ON inbound.prod_id = product.prod_id where inbound.inbound_status = 0
     </select>
 
+    <select id="adminSearchInboundList" resultType="com.wareflow.buildify.dto.InboundProduntDTO">
+        SELECT i.*, p.prod_name
+        FROM inbound i
+        JOIN product p ON i.prod_id = p.prod_id
+        WHERE
+        <choose>
+
+            <when test="searchType == 'clientId'">
+                i.client_id LIKE #{keyword}
+            </when>
+            <when test="searchType == 'brand'">
+                p.brand LIKE #{keyword}
+            </when>
+            <when test="searchType == 'prodName'">
+                p.prod_name LIKE #{keyword}
+            </when>
+            <when test="searchType == 'wareId'">
+                i.ware_id LIKE #{keyword}
+            </when>
+            <otherwise>
+                1 = 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="adminSearchInboundCheckList" resultType="com.wareflow.buildify.dto.InboundProduntDTO">
+        SELECT i.*, p.prod_name
+        FROM inbound i
+        JOIN product p ON i.prod_id = p.prod_id
+        WHERE
+        i.inbound_status = 0
+        <choose>
+            <when test="searchType == 'clientId'">
+                AND i.client_id LIKE #{keyword}
+            </when>
+            <when test="searchType == 'brand'">
+                AND p.brand LIKE #{keyword}
+            </when>
+            <when test="searchType == 'prodName'">
+                AND p.prod_name LIKE #{keyword}
+            </when>
+            <when test="searchType == 'wareId'">
+                AND i.ware_id LIKE #{keyword}
+            </when>
+            <otherwise>
+                AND 1 = 1
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <update id="insertInbound" parameterType="map">
+        <!-- 입고 상태 업데이트 -->
+        UPDATE inbound
+        SET inbound_status = 1
+        WHERE (prod_id, client_id) IN
+        <foreach item="pair" collection="idPairs" open="(" separator="),(" close=")">
+            #{pair.prodId}, #{pair.clientId}
+        </foreach>;
+
+        <!-- 인벤토리에 추가 -->
+        INSERT INTO inventory (prod_id, client_id, ware_id, quantity)
+        SELECT i.prod_id, i.client_id, i.ware_id, i.quantity
+        FROM inbound i
+        WHERE (i.prod_id, i.client_id) IN
+        <foreach item="pair" collection="idPairs" open="(" separator="),(" close=")">
+            #{pair.prodId}, #{pair.clientId}
+        </foreach>;
+    </update>
+
+    <update id="updateInboundStatus">
+        UPDATE inbound
+        SET inbound_status = 1
+        WHERE prod_id = #{prodId} AND client_id = #{clientId} AND inbound_status = 0
+    </update>
+
+    <select id="getQuantityByProdAndClient" resultType="int">
+        SELECT quantity
+        FROM inbound
+        WHERE prod_id = #{prodId} AND client_id = #{clientId} AND inbound_status = 0
+            LIMIT 1
+    </select>
+
+    <insert id="postAdminInboundCheckUpdate">
+        INSERT INTO inventory (inventory_id, prod_id, client_id, quantity, ware_id, last_inbound_date)
+        SELECT
+            #{inventoryId},           -- Java에서 생성한 UUID나 시퀀스
+            i.prod_id,
+            i.client_id,
+            i.quantity,
+            i.ware_id,
+            NOW()
+        FROM inbound i
+        WHERE i.prod_id = #{prodId}
+          AND i.client_id = #{clientId}
+    </insert>
+
+
+
+
 </mapper>

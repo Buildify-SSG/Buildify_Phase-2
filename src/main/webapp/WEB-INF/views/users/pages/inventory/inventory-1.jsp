@@ -176,20 +176,14 @@
                     <th>가격</th>
                     <th>
                         수량
-                        <a class="sort"
-                           href="?category1=${param.category1}
-                  &category2=${param.category2}
-                  &category3=${param.category3}
-                  &searchType=${param.searchType}
-                  &keyword=${param.keyword}
-                  &sortBy=asc">▲</a>
-                        <a class="sort"
-                           href="?category1=${param.category1}
-                  &category2=${param.category2}
-                  &category3=${param.category3}
-                  &searchType=${param.searchType}
-                  &keyword=${param.keyword}
-                  &sortBy=desc">▼</a>
+                        <a href="#"
+                           onclick="sortTable('quantity','asc'); return false;">
+                            ▲
+                        </a>
+                        <a href="#"
+                           onclick="sortTable('quantity','desc'); return false;">
+                            ▼
+                        </a>
                     </th>
                     <th>창고명</th>
                     <th>창고 주소</th>
@@ -265,8 +259,8 @@
         const rows = Array.from(tbody.querySelectorAll("tr"));
 
         const fieldIndex = {
-            prodPrice: 4,
-            prodSize: 6
+            prodPrice: 2,
+            quantity: 3
         }[field];
 
         rows.sort((a, b) => {
