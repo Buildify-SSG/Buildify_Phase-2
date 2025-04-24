@@ -306,10 +306,14 @@
                 <ul style="display: inline-flex; list-style: none; padding: 0;">
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li style="margin: 0 5px;">
-                            <c:url var="pageUrl" value="">
+                            <c:url var="pageUrl" value="/admin/pages/inventory/inventory-1/search">
                                 <c:param name="page" value="${i}" />
                                 <c:param name="searchType" value="${param.searchType}" />
                                 <c:param name="keyword" value="${param.keyword}" />
+                                <c:param name="category1" value="${param.category1}" />
+                                <c:param name="category2" value="${param.category2}" />
+                                <c:param name="category3" value="${param.category3}" />
+                                <c:param name="sortBy" value="${param.sortBy}" />
                             </c:url>
                             <a href="${pageUrl}"
                                style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;

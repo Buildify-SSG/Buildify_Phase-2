@@ -9,10 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ import java.util.List;
 public class InventoryUserController {
 
     @Autowired
-    private InventoryUserService inventoryUserService;
+    private final InventoryUserService inventoryUserService;
 
     private Pagination pagination;
 
@@ -38,17 +35,21 @@ public class InventoryUserController {
         return "users/layouts/userlayout";
     }
 
-    @GetMapping("/inventory-1/search")
+//    @GetMapping("/inventory-1/search")
+    @RequestMapping(value = "/inventory-1/search", method = {RequestMethod.GET, RequestMethod.POST})
     public String searchUserInventory(InventoryFilterDTO filter,Model model, @RequestParam(defaultValue = "1") int page) {
         List<InventoryDTO> inventoryList = inventoryUserService.searchUserInventory(filter);
         log.info(inventoryList.size());
+
+//        model.addAttribute("List", inventoryList);
 
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
         return "users/layouts/userlayout";
 
     }
 
-    @GetMapping("/inventory-1/getMidCategories")
+//    @GetMapping("/inventory-1/getMidCategories")
+    @RequestMapping(value = "/inventory-1/getMidCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getMidCategories(@RequestParam("category1") String category1) {
         System.out.println("📢 Controller 들어옴, category1 = " + category1);
@@ -61,9 +62,11 @@ public class InventoryUserController {
 
     }
 
-    @GetMapping("/inventory-1/getSmallCategories")
+//    @GetMapping("/inventory-1/getSmallCategories")
+    @RequestMapping(value = "/inventory-1/getSmallCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getSmallCategories(@RequestParam("category2") String category2) {
+       
         return inventoryUserService.findSmallCategoriesByLevel2(category2);
     }
 
