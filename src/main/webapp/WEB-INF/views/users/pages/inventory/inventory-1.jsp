@@ -120,7 +120,7 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <!-- 검색 영역 -->
-        <form method="get" action="/users/pages/inventory/inventory-1/search">
+        <form method="GET" action="/users/pages/inventory/inventory-1/search">
             <div class="search-bar">
 
                 <!-- 대분류 선택 -->
@@ -167,7 +167,7 @@
 
     <!-- 표 -->
     <div class="table-wrapper">
-        <form method="GET" action="/users/pages/inventory/inventory-1">
+
             <table id="contractTable">
                 <thead>
                 <tr>
@@ -220,17 +220,21 @@
                 </tbody>
             </table>
 
-        </form>
+
         <!-- Pagination Block -->
         <c:if test="${totalPages > 1}">
             <div class="pagination" style="margin-top: 20px; text-align: center;">
                 <ul style="display: inline-flex; list-style: none; padding: 0;">
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li style="margin: 0 5px;">
-                            <c:url var="pageUrl" value="">
+                            <c:url var="pageUrl" value="/users/pages/inventory/inventory-1/search">
                                 <c:param name="page" value="${i}" />
                                 <c:param name="searchType" value="${param.searchType}" />
                                 <c:param name="keyword" value="${param.keyword}" />
+                                <c:param name="category1" value="${param.category1}" />
+                                <c:param name="category2" value="${param.category2}" />
+                                <c:param name="category3" value="${param.category3}" />
+                                <c:param name="sortBy" value="asc" />
                             </c:url>
                             <a href="${pageUrl}"
                                style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
@@ -287,6 +291,12 @@
 </script>
 
 <script>
+    const selectedCategory1 = "${param.category1}";
+    const selectedCategory2 = "${param.category2}";
+    const selectedCategory3 = "${param.category3}";
+</script>
+
+<script>
     window.onload = function() {
         document.getElementById("category1").addEventListener("change", function(e) {
             e.preventDefault();
@@ -338,13 +348,10 @@
         });
     };
 
-    function confirmDelete() {
-        const confirmed = confirm('정말 삭제하시겠습니까?');
-        if (confirmed) {
-            document.querySelector('form[action="/users/pages/product/product-1/api/productRemove"]').submit();
-        }
-    }
+
 </script>
+
+
 
 
 </body>

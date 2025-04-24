@@ -40,7 +40,8 @@ public class InventoryAdminController {
 
     }
 
-    @GetMapping("/inventory-1/search")
+//    @GetMapping("/inventory-1/search")
+    @RequestMapping(value = "/inventory-1/search", method = {RequestMethod.GET, RequestMethod.POST})
     public String searchUserInventory(InventoryFilterDTO filter, Model model, @RequestParam(defaultValue = "1") int page) {
         List<InventoryDTO> inventoryList = inventoryAdminService.searchAdminInventory(filter);
         log.info(inventoryList.size());
@@ -50,8 +51,7 @@ public class InventoryAdminController {
 
     }
 
-
-    @GetMapping("/inventory-1/getMidCategories")
+    @RequestMapping(value = "/inventory-1/getMidCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getMidCategories(@RequestParam("category1") String category1) {
         System.out.println("📢 Controller 들어옴, category1 = " + category1);
@@ -64,7 +64,7 @@ public class InventoryAdminController {
 
     }
 
-    @GetMapping("/inventory-1/getSmallCategories")
+    @RequestMapping(value = "/inventory-1/getSmallCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getSmallCategories(@RequestParam("category2") String category2) {
         return inventoryAdminService.findSmallCategoriesByLevel2(category2);
