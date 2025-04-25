@@ -198,11 +198,13 @@
             </div>
         </form>
 
-        <!-- Export 버튼 -->
-        <div class="export-buttons">
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
+        <!-- export 버튼 -->
+        <div class="export-buttons" style="display: flex; gap: 10px;">
+            <form method="get" action="/admin/pages/inventory/inventory-1/api/excel" style="margin: 0;">
+                <button>exportExcel</button>
+            </form>
         </div>
+
     </div>
 
     <!-- 삭제 (AJAX 스크립트 바인딩용 id 추가, onclick 제거) -->

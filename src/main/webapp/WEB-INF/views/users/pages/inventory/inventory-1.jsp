@@ -152,15 +152,17 @@
             </div>
         </form>
 
+
         <!-- export 버튼 -->
-        <div class="export-buttons">
-
-
-
-
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
+        <div class="export-buttons" style="display: flex; gap: 10px;">
+            <form method="post" action="/users/pages/inventory/inventory-1/api/excel" style="margin: 0;">
+                <button>exportExcel</button>
+            </form>
+<%--            <form method="get" action="/admin/pages/product/product-1/api/pdf" style="margin: 0;">--%>
+<%--                <button>exportPDF</button>--%>
+<%--            </form>--%>
         </div>
+
     </div>
 
 
