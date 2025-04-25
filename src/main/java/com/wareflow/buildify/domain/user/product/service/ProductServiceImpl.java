@@ -1,6 +1,7 @@
 package com.wareflow.buildify.domain.user.product.service;
 
 import com.wareflow.buildify.constants.IdPrefix;
+import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
 import com.wareflow.buildify.domain.user.product.mapper.ProductMapper;
 import com.wareflow.buildify.dto.CategoryDTO;
 import com.wareflow.buildify.dto.ProductDTO;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Lazy;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,6 +29,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean registerProduct(ProductDTO productDTO) {
+
+        String clientId = ((CustomUserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getClientId();
+        productDTO.setClientId(clientId);
 
         ProductVO productVO = ProductVO.builder()
                 .prodId(CustomIdGenerator.generateId(IdPrefix.PRD))
@@ -43,34 +49,48 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, List<String>> getCategoryList() {
-        List<CategoryVO> categoryVOList = productMapper.selectCategoryList();
+    public Map<String, Map<String, List<String>>> getCategoryList() {
+        List<CategoryVO> list = productMapper.selectCategoryList();
 
-        List<String> categoryLevel1 = categoryVOList.stream()
-                .map(CategoryVO::getCategoryLevel1)
-                .filter(Objects::nonNull)
-                .distinct()
-                .collect(Collectors.toList());
+        Map<String, Map<String, List<String>>> result = new LinkedHashMap<>();
 
-        List<String> categoryLevel2 = categoryVOList.stream()
-                .map(CategoryVO::getCategoryLevel2)
-                .filter(Objects::nonNull)
-                .distinct()
-                .collect(Collectors.toList());
+        for (CategoryVO vo : list) {
+            String level1 = vo.getCategoryLevel1();
+            String level2 = vo.getCategoryLevel2();
+            String level3 = vo.getCategoryLevel3();
 
-        List<String> categoryLevel3 = categoryVOList.stream()
-                .map(CategoryVO::getCategoryLevel3)
-                .filter(Objects::nonNull)
-                .distinct()
-                .collect(Collectors.toList());
-
-        Map<String, List<String>> result = new HashMap<>();
-        result.put("categoryLevel1", categoryLevel1);
-        result.put("categoryLevel2", categoryLevel2);
-        result.put("categoryLevel3", categoryLevel3);
+            result
+                    .computeIfAbsent(level1, k -> new LinkedHashMap<>())
+                    .computeIfAbsent(level2, k -> new ArrayList<>())
+                    .add(level3);
+        }
 
         return result;
+    }
 
+    @Override
+    public String getCategoryId(String categoryLevel1, String categoryLevel2, String categoryLevel3) {
+        return productMapper.selectCategoryId(categoryLevel1, categoryLevel2, categoryLevel3);
+    }
+
+    @Override
+    public List<ProductDTO> getProductList() {
+        String clientId = ((CustomUserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getClientId();
+
+        List<ProductVO> productVOList = productMapper.selectProductList(clientId);
+
+        return productVOList.stream().map(vo -> ProductDTO.builder()
+                .prodId(vo.getProdId())
+                        .brand(vo.getBrand())
+                        .prodName(vo.getProdName())
+                        .prodPrice(vo.getProdPrice())
+                        .prodCode(vo.getProdCode())
+                        .prodSize(vo.getProdSize())
+                        .prodCategoryid(vo.getProdCategoryid())
+                        .clientId(clientId)
+                        .build())
+                .collect(Collectors.toList());
     }
 
 }

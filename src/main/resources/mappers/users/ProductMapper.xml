@@ -5,18 +5,40 @@
 
 <mapper namespace="com.wareflow.buildify.domain.user.product.mapper.ProductMapper">
     <insert id="insertProduct" parameterType="com.wareflow.buildify.vo.ProductVO">
-        INSERT INTO product (
-                                   prod_id, brand, prod_name, prod_price, prod_code,
-                                   prod_size, prod_categoryid, client_id
-        )
+        INSERT INTO product (prod_id, brand, prod_name, prod_price, prod_code,
+                             prod_size, prod_categoryid, client_id)
         VALUES (#{prodId}, #{brand}, #{prodName}, #{prodPrice},
                 #{prodCode}, #{prodSize}, #{prodCategoryid}, #{clientId})
     </insert>
 
     <select id="selectCategoryList" resultType="com.wareflow.buildify.vo.CategoryVO">
-        SELECT
-            prod_categoryid, category_level1, category_level2, category_level3
+        SELECT prod_categoryid,
+               category_level1,
+               category_level2,
+               category_level3
         FROM category
+    </select>
+
+    <select id="selectCategoryId" resultType="String">
+        SELECT prod_categoryid
+        FROM category
+        WHERE category_level1 = #{level1}
+          AND category_level2 = #{level2}
+          AND category_level3 = #{level3}
+
+    </select>
+
+    <select id="selectProductList" resultType="com.wareflow.buildify.vo.ProductVO">
+        SELECT prod_id,
+               brand,
+               prod_name,
+               prod_price,
+               prod_code,
+               prod_size,
+               prod_categoryid,
+               client_id
+        FROM product
+        WHERE client_id = #{clientId}
     </select>
 
 </mapper>

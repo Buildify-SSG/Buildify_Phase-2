@@ -23,6 +23,8 @@
         JOIN product p ON i.prod_id = p.prod_id
         JOIN category c ON p.prod_categoryid = c.prod_categoryid
         JOIN warehouse_area wa on i.ware_id = wa.ware_id
+        WHERE i.client_id = #{clientId}
+
 
     </select>
 

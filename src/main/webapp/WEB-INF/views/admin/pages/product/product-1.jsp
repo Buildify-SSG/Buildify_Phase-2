@@ -149,13 +149,13 @@
     <!-- 표 -->
     <div class="table-wrapper">
         <form method="post" action="/admin/pages/product/product-1/api/productRemove">
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-            <button type="button" style="background-color: crimson; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="confirmDelete()">Delete</button>
-        </div>
+<%--        <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">--%>
+<%--            <button type="button" style="background-color: crimson; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="confirmDelete()">Delete</button>--%>
+<%--        </div>--%>
         <table id="contractTable">
             <thead>
             <tr>
-                <th>선택</th>
+<%--                <th>선택</th>--%>
                 <th>상품ID</th>
                 <th>브랜드</th>
                 <th>상품이름</th>
@@ -175,8 +175,8 @@
             <tbody>
 <c:forEach var="product" items="${List}" varStatus="status">
     <tr>
-        <td>
-            <input type="checkbox" name="selectedIndexes" value="${product.prodId}" />
+<%--        <td>--%>
+<%--            <input type="checkbox" name="selectedIndexes" value="${product.prodId}" />--%>
 <%--            <input type="checkbox" name="selectedIndexes" value="${status.index}" />--%>
 <%--            <input type="hidden" name="productList[${status.index}].productId" value="${product.prodId}" />--%>
 <%--            <input type="hidden" name="productList[${status.index}].brand" value="${product.brand}" />--%>
@@ -184,7 +184,7 @@
 <%--            <input type="hidden" name="productList[${status.index}].price" value="${product.prodPrice}" />--%>
 <%--            <input type="hidden" name="productList[${status.index}].categoryId" value="${product.prodCategoryid}" />--%>
 <%--            <input type="hidden" name="productList[${status.index}].size" value="${product.prodSize}" />--%>
-        </td>
+<%--        </td>--%>
         <td>${product.prodId}</td>
         <td>${product.brand}</td>
         <td>${product.prodName}</td>

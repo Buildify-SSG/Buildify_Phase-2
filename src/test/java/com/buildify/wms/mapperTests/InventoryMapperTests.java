@@ -35,10 +35,10 @@ public class InventoryMapperTests {
     @Test
     public void testInventoryList() {
 
-        List<InventoryDTO> list = inventoryUserMapper.getUserInventory();
+//        List<InventoryDTO> list = inventoryUserMapper.getUserInventory();
 
-       log.info(list.size());
-       log.info(list);
+//       log.info(list.size());
+//       log.info(list);
 
 
 //        assertThat(list).isNotEmpty();

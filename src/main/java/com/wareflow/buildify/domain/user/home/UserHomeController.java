@@ -96,11 +96,11 @@ public class UserHomeController {
 //        return "users/layouts/userlayout";
 //    }
 
-    @GetMapping("/pages/product/product-2")
-    public String product2(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/users/pages/product/product-2.jsp");
-        return "users/layouts/userlayout";
-    }
+//    @GetMapping("/pages/product/product-2")
+//    public String product2(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/users/pages/product/product-2.jsp");
+//        return "users/layouts/userlayout";
+//    }
 
     @GetMapping("/pages/product/product-3")
     public String product3(Model model) {

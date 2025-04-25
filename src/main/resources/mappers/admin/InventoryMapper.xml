@@ -6,7 +6,7 @@
 <mapper namespace="com.wareflow.buildify.domain.admin.inventory.mapper.InventoryAdminMapper">
 
     <!-- 1. 📌 기본 전체 재고 조회 -->
-    <select id="getAdminInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+    <select id="getAdminInventory" resultType="com.wareflow.buildify.dto.InventoryAdminDTO">
         SELECT
             p.prod_id AS prodId,
             p.prod_name AS prodName,
@@ -18,10 +18,8 @@
             i.last_inbound_date as lastInboundDate,
             i.last_outbound_date as lastOutboundDate,
             wa.ware_name AS wareName,
-            (SELECT CONCAT(w.warehouse_pos_x, w.warehouse_pos_y)
-             FROM wareHouse w
-             WHERE w.ware_id = i.ware_id
-                LIMIT 1) AS warePosition
+            concat(i.warehouse_pos_x,
+            i.warehouse_pos_y) as warePosition
         FROM inventory i
             JOIN product p ON i.prod_id = p.prod_id
             JOIN category c ON p.prod_categoryid = c.prod_categoryid
