@@ -136,11 +136,11 @@
         <!-- export 버튼 -->
         <div class="export-buttons" style="display: flex; gap: 10px;">
             <form method="get" action="/admin/pages/userManagement/userManagement-1/api/excel" style="margin: 0;">
-                <button>exportExcel</button>
+                <button onclick="showAlert()">exportExcel</button>
             </form>
-            <form method="get" action="/admin/pages/userManagement/userManagement-1/api/pdf" style="margin: 0;">
-                <button>exportPDF</button>
-            </form>
+<%--            <form method="get" action="/admin/pages/userManagement/userManagement-1/api/pdf" style="margin: 0;">--%>
+<%--                <button>exportPDF</button>--%>
+<%--            </form>--%>
         </div>
     </div>
 
@@ -240,11 +240,7 @@
     </div>
 </div>
 
-<c:if test="${not empty msg}">
-    <script>
-        alert("${msg}");
-    </script>
-</c:if>
+
 
 <script>
     function sortTable(field, direction) {
@@ -316,6 +312,15 @@
                 noResultRow.remove();
             }
         }
+    }
+</script>
+
+
+<script>
+    function showAlert() {
+        <c:if test="${not empty msg}">
+            alert("${msg}");
+        </c:if>
     }
 </script>
 

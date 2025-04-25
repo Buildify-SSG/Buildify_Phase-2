@@ -37,6 +37,13 @@ public class AdminProductController {
     public String adminProductView(@RequestParam(defaultValue = "1") int page,Model model) {
 
         List<ProductDTO> productList = adminProductService.adminProductView();
+        String msg;
+        if (productList.isEmpty()){
+            msg = "현재 계약된 창고가 없습니다.";
+        } else {
+            msg = "Export Excel Success";
+        }
+        model.addAttribute("msg", msg);
 
         Pagination.paginate(model, productList, page,"/WEB-INF/views/admin/pages/product/product-1.jsp");
         return "admin/layouts/adminlayout";
@@ -80,12 +87,18 @@ public class AdminProductController {
     }
 
     @GetMapping("/product-1/api/excel")
-    public void adminProductExportExcel(HttpServletResponse response) {
-        // 1. 데이터 준비 (보통은 서비스에서 가져옴)
+    public String adminProductExportExcel(HttpServletResponse response,Model model) {
+
         List<ProductDTO> data = adminProductService.adminProductView();
 
-        // 2. ExportExcel 메소드 실행(리스트,response,파일이름)
-        exportExcel.exportExcel(data, response, "adminProductList");
+        if (!data.isEmpty()) {
+            exportExcel.exportExcel(data, response, "adminProductList");
+        }else {
+            model.addAttribute("body","/WEB-INF/views/admin/pages/product/product-1.jsp");
+            return "admin/layouts/adminlayout";
+        }
+
+        return null;
         }
     }
 

@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,16 +32,21 @@ public class AdminUserManagementController {
 
     // 회원 조회
     @GetMapping("/userManagement-1")
-    public String  getUserInfo(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String  getUserInfo(@RequestParam(defaultValue = "1") int page, Model model,RedirectAttributes redirectAttributes) {
         log.info("회원 조회 시작");
         List<UserDTO> userDTOList = adminUserManagementService.getUserInfo();
         log.info("컨트롤러 DTO Size : {}",userDTOList.size());
-
+        String msg;
+        if (userDTOList.isEmpty()){
+            msg = "현재 가입된 회원이 없습니다.";
+        } else {
+            msg = "Export Excel Success";
+        }
+        model.addAttribute("msg", msg);
         Pagination.paginate(model, userDTOList, page, "/WEB-INF/views/admin/pages/userManagement/userManagement-1.jsp");
         return "admin/layouts/adminlayout";
     }
 
-//    @PostMapping("/userManagement-1/search")
     @RequestMapping(value = "/userManagement-1/search", method = {RequestMethod.GET , RequestMethod.POST})
     public String search(@RequestParam(defaultValue = "1") int page,
                          @RequestParam("searchType") String searchType,
@@ -52,16 +58,20 @@ public class AdminUserManagementController {
         List<UserDTO> userDTOList = adminUserManagementService.search(searchType,keyword);
         log.debug("🔍 검색결과 수: {}", userDTOList.size());
 
-//        model.addAttribute("userDTOList",userDTOList);
 
         Pagination.paginate(model, userDTOList, page,"/WEB-INF/views/admin/pages/userManagement/userManagement-1.jsp");
         return "admin/layouts/adminlayout";
     }
 
     @GetMapping("/userManagement-1/api/excel")
-    public void adminUserManagementExportExcel(HttpServletResponse response) {
-
+    public String adminUserManagementExportExcel(HttpServletResponse response, Model model) {
         List<UserDTO> data = adminUserManagementService.getUserInfo();
-        exportExcel.exportExcel(data, response, "adminUserManagementList");
+        if (!data.isEmpty()) {
+            exportExcel.exportExcel(data, response, "adminUserManagementList");
+        } else {
+            model.addAttribute("body","/WEB-INF/views/admin/pages/userManagement/userManagement-1.jsp");
+            return "admin/layouts/adminlayout";
+        }
+        return null;
     }
 }
