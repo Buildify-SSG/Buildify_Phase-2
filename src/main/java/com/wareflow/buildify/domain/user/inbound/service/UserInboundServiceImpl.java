@@ -102,7 +102,6 @@ public class UserInboundServiceImpl implements UserInboundService {
         InboundProductVO VO = new InboundProductVO();
         VO.setClientId(userDetails.getClientId());
 
-
         List<InboundProductVO> vo = userInboundMapper.inboundInsertlist(VO);
 
         List<InboundProduntDTO> dtoList = new ArrayList<>();

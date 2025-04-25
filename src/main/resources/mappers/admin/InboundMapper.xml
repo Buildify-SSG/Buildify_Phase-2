@@ -129,7 +129,6 @@
             i.client_id,
             i.quantity,
             #{wareId},
---             i.ware_id,
             NOW()
         FROM inbound i
         WHERE i.prod_id = #{prodId}

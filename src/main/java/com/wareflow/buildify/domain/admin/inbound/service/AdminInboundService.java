@@ -21,5 +21,5 @@ public interface AdminInboundService {
     List<InboundProduntDTO> getAdminInboundCheck(List<String > prodId);
 
     void updateInboundStatus(List<String> prodIds, List<String > clientIds );
-    void admininsertInboundRequests(List<String> prodIds, List<String > clientIds, List<Integer > quantitis);
+    void admininsertInboundRequests(List<String> prodIds, List<String > clientIds, List<Integer > quantitis, List<String> wareIds);
 }

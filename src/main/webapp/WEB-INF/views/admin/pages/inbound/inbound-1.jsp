@@ -238,6 +238,7 @@
 <%--                <th style="padding: 6px;">가격</th>--%>
 <%--                <th style="padding: 6px;">사이즈</th>--%>
                 <th style="padding: 6px;">수량</th>
+                <th style="padding: 6px;">창고</th>
             </tr>
             </thead>
             <tbody id="modalInputs"></tbody>
@@ -320,6 +321,7 @@
             const clientId = tr.dataset.clientid;
             const prodName = tr.dataset.prodname;
             const quantity = tr.dataset.quantity;
+            const wareId = tr.dataset.wareid;
             const prodPrice = tr.dataset.prodprice || '';
             const prodSize = tr.dataset.prodsize || '';
 
@@ -331,6 +333,7 @@
                 // '<td>' + prodPrice + '</td>' +
                 // '<td>' + prodSize + '</td>' +
                 '<td><input type="hidden" name="quantitis" value="' + quantity + '">' + quantity + '</td>' +
+                '<td><input type="hidden" name="wareIds" value="' + wareId + '">' + wareId + '</td>' +
                 '</tr>';
         });
 
@@ -353,6 +356,7 @@ document.addEventListener('submit', async function (e) {
         const prodIds = formData.getAll('prodIds');
         const clientIds = formData.getAll('clientIds');
         const quantitis = formData.getAll('quantitis');
+        const wareIds = formData.getAll('wareIds');
 
 
         prodIds.forEach((_, index) => {
@@ -366,13 +370,14 @@ document.addEventListener('submit', async function (e) {
 
         console.log("📦 전송할 상품 ID:", prodIds);
         console.log("📦 전송할 고객 ID:", clientIds);
-        console.log("📦 전송할 고객 ID:", quantitis);
+        console.log("📦 전송할 상품 수량:", quantitis);
+        console.log("📦 전송할 창고 ID:", quantitis);
 
         try {
             const res = await fetch('/admin/pages/inbound/inbound-1/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prodIds, clientIds, quantitis })
+                body: JSON.stringify({ prodIds, clientIds, quantitis, wareIds })
             });
 
                 if (res.ok) {
