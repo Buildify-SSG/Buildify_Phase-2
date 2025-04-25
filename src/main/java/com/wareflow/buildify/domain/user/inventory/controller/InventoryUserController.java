@@ -54,7 +54,14 @@ public class InventoryUserController {
     public String getUserInventoryList(Model model, @RequestParam(defaultValue = "1") int page) {
         log.info("컨트롤러 진입 성공");
         List<InventoryDTO> inventoryList = inventoryUserService.getUserInventory();
+        String msg;
+        if(inventoryList.isEmpty()){
+            msg ="현재 재고가 없습니다.";
+        }else{
+            msg = "Export Excel Success";
+        }
         log.info(inventoryList.size());
+        model.addAttribute("msg",msg);
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
 
         return "users/layouts/userlayout";

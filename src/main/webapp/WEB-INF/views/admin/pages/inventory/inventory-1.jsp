@@ -201,7 +201,7 @@
         <!-- export 버튼 -->
         <div class="export-buttons" style="display: flex; gap: 10px;">
             <form method="get" action="/admin/pages/inventory/inventory-1/api/excel" style="margin: 0;">
-                <button>exportExcel</button>
+                <button onclick ="showAlert()">exportExcel</button>
             </form>
         </div>
 
@@ -331,11 +331,7 @@
     </div>
 </div>
 
-<c:if test="${not empty msg}">
-    <script>
-        alert("${msg}");
-    </script>
-</c:if>
+
 
 <%--모달--%><!-- 백드롭 -->
 <div id="modalBackdrop"></div>
@@ -534,7 +530,15 @@
 
 </script>
 
+<script>
+    function showAlert(){
+        <c:if test="${not empty msg}">
+        alert("${msg}");
+        </c:if>
+    }
 
+
+</script>
 
 
 

@@ -50,7 +50,15 @@ public class InventoryAdminController {
     @GetMapping("/inventory-1")
     public String getAdminInventory(Model model, @RequestParam(defaultValue = "1") int page){
         List<InventoryAdminDTO>inventoryList = inventoryAdminService.getAdminInventory();
+        String msg;
+        if(inventoryList.isEmpty()){
+            msg ="현재 재고가 없습니다.";
+        }else{
+            msg = "Export Excel Success";
+        }
         log.info(inventoryList.size());
+        model.addAttribute("msg",msg);
+
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/admin/pages/inventory/inventory-1.jsp");
 
         return "admin/layouts/adminlayout";
