@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
     <meta charset="UTF-8">
     <title>유저 대시보드</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -131,6 +132,33 @@
             margin-bottom: 12px;
             font-size: 16px;
         }
+
+        .scrollable-warehouse-cards {
+            max-height: 400px; /* 적절히 조절 가능 */
+            overflow-y: auto;
+            padding-right: 8px; /* 스크롤 여백 */
+        }
+        .scrollable-warehouse-cards::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-warehouse-cards::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+        .bright-text {
+            color: #222; /* 진한 글자색 */
+        }
+
+        .bright-text h3 {
+            color: #005BAC; /* 제목 포인트 컬러 */
+        }
+
+        .bright-text .warehouse-card {
+            background-color: lightskyblue;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            color: #333;
+        }
+
     </style>
 </head>
 <body>
@@ -160,14 +188,31 @@
             </div>
 
             <!-- 플레이스홀더: 창고 섹션 -->
+            <div class="warehouse-section bright-text">
             <div class="warehouse-section">
-                <h3>창고 현황 (추후 데이터 주입)</h3>
-                <div class="warehouse-cards">
-                    <div class="warehouse-card">Warehouse A</div>
-                    <div class="warehouse-card">Warehouse B</div>
-                    <div class="warehouse-card">Warehouse C</div>
+                <h3>📦 내 창고 현황</h3>
+                <div class="warehouse-cards scrollable-warehouse-cards">
+                    <c:forEach var="w" items="${myWarehouses}">
+                        <div class="warehouse-card">
+                            <div>
+                                <strong>위치:</strong> ${w.warehousePosX}${w.warehousePosY}<br/>
+                                <strong>지역:</strong>
+                                <c:choose>
+                                    <c:when test="${w.wareId == 'W001'}">서울 창고</c:when>
+                                    <c:when test="${w.wareId == 'W002'}">판교 창고</c:when>
+                                    <c:when test="${w.wareId == 'W003'}">부산 창고</c:when>
+                                    <c:when test="${w.wareId == 'W004'}">대구 창고</c:when>
+                                    <c:when test="${w.wareId == 'W005'}">인천 창고</c:when>
+                                </c:choose><br/>
+                                <strong>사용률:</strong> ${w.warehouseUsage}%<br/>
+                                <strong>남은 계약일:</strong> ${w.remainingDays}일
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
+            </div>
+
 
             <!-- 오늘의 날씨 -->
             <div class="notice-card">

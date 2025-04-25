@@ -2,11 +2,17 @@ package com.wareflow.buildify.domain.user.dashboard.controller;
 
 import com.wareflow.buildify.domain.admin.dashboard.service.AdminDashboardService;
 import com.wareflow.buildify.domain.admin.dashboard.service.AdminDashboardServiceImpl;
+import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
 import com.wareflow.buildify.domain.user.dashboard.mapper.DashboardMapper;
 import com.wareflow.buildify.domain.user.dashboard.service.DashboardService;
+import com.wareflow.buildify.domain.user.warehouse.service.UserWarehouseService;
+import com.wareflow.buildify.dto.UserWareHouseDTO;
 import com.wareflow.buildify.dto.WareHouseDashBoardDTO;
 import com.wareflow.buildify.dto.WeatherInfoDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +22,13 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Log4j2
 @RequestMapping("/users/pages")
 public class DashboardController {
 
     private final DashboardService dashboardService;
     private final AdminDashboardService adminDashboardService;
+    private final UserWarehouseService userWarehouseService;
 
     @GetMapping("/index")
     public String getDashboard(Model model) {
@@ -37,6 +45,12 @@ public class DashboardController {
         int countWeekOutboundApproval =  dashboardService.getWeekOutbound(1);
 
         List<WeatherInfoDTO> weatherInfoDTOList = adminDashboardService.getWeatherInfo();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        List<UserWareHouseDTO> myWarehouses = userWarehouseService.getMyWarehouse(userDetails.getClientId());
+        log.info("내 창고 신청 내역: " + myWarehouses);
+        model.addAttribute("myWarehouses", myWarehouses);
 
         model.addAttribute("countDayInboundRequest", countDayInboundRequest);
         model.addAttribute("countDayInboundApproval", countDayInboundApproval);

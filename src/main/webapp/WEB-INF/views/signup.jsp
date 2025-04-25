@@ -83,6 +83,23 @@
 						<option value="010" ${userPhone1 == '010' ? 'selected' : ''}>010 (휴대폰)</option>
 						<option value="070" ${userPhone1 == '070' ? 'selected' : ''}>070 (인터넷전화)</option>
 						<option value="050" ${userPhone1 == '050' ? 'selected' : ''}>050 (안심번호)</option>
+						<option value="02" ${userPhone1 == '02' ? 'selected' : ''}>02 (서울)</option>
+						<option value="031" ${userPhone1 == '031' ? 'selected' : ''}>031 (경기)</option>
+						<option value="032" ${userPhone1 == '032' ? 'selected' : ''}>032 (인천)</option>
+						<option value="033" ${userPhone1 == '033' ? 'selected' : ''}>033 (강원)</option>
+						<option value="041" ${userPhone1 == '041' ? 'selected' : ''}>041 (충남)</option>
+						<option value="042" ${userPhone1 == '042' ? 'selected' : ''}>042 (대전)</option>
+						<option value="043" ${userPhone1 == '043' ? 'selected' : ''}>043 (충북)</option>
+						<option value="044" ${userPhone1 == '044' ? 'selected' : ''}>044 (세종)</option>
+						<option value="051" ${userPhone1 == '051' ? 'selected' : ''}>051 (부산)</option>
+						<option value="052" ${userPhone1 == '052' ? 'selected' : ''}>052 (울산)</option>
+						<option value="053" ${userPhone1 == '053' ? 'selected' : ''}>053 (대구)</option>
+						<option value="054" ${userPhone1 == '054' ? 'selected' : ''}>054 (경북)</option>
+						<option value="055" ${userPhone1 == '055' ? 'selected' : ''}>055 (경남)</option>
+						<option value="061" ${userPhone1 == '061' ? 'selected' : ''}>061 (전남)</option>
+						<option value="062" ${userPhone1 == '062' ? 'selected' : ''}>062 (광주)</option>
+						<option value="063" ${userPhone1 == '063' ? 'selected' : ''}>063 (전북)</option>
+						<option value="064" ${userPhone1 == '064' ? 'selected' : ''}>064 (제주)</option>
 						<!-- 기타 지역번호 옵션 생략 -->
 					</select>
 					<input type="text" class="form-control d-inline-block" name="userPhone2" maxlength="4"
