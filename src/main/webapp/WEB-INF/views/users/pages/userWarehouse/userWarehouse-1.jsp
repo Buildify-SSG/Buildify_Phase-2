@@ -6,150 +6,97 @@
 <head>
     <meta charset="UTF-8">
     <title>창고 신청</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <style>
         html, body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0); /* 부드러운 그라데이션 */
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
             color: #333;
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
-            font-size: 14px;
+            margin: 0; padding: 0;
+            line-height: 1.5; font-size: 14px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
 
         .container-flex {
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            gap: 2rem;
-            width: 100%;
-            padding-top: 40px;
-            position: relative;
-            z-index: 1;
+            display: flex; gap: 2rem;
+            width: 100%; padding-top: 40px;
         }
-
-        .left-panel {
-            width: 700px;
-            flex-shrink: 0;
-            transform: translateY(20px);
-        }
-
-        .right-panel {
-            flex-grow: 1;
-        }
+        .left-panel { width: 700px; }
+        .right-panel { flex-grow: 1; }
 
         .grid-container {
             display: grid;
             grid-template-columns: repeat(5, 70px);
-            gap: 10px;
-            margin-top: 40px;
+            gap: 10px; margin-top: 40px;
         }
-
         .grid-item {
-            width: 70px;
-            height: 70px;
-            background-color: #fff;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            cursor: pointer;
+            width: 70px; height: 70px;
+            background: #fff; border: 1px solid #d1d5db;
+            border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; cursor: pointer;
             transition: all 0.2s ease;
-            text-align: center;
-            white-space: pre-line;
-            font-size: 15px;
+            text-align: center; white-space: pre-line; font-size: 15px;
         }
-
-        .grid-item:hover {
-            background-color: #f1f5f9;
-            transform: scale(1.05);
-        }
-
+        .grid-item:hover { transform: scale(1.05); }
         .grid-item.disabled {
-            background-color: #fb923c;
-            pointer-events: none;
-            color: white;
-            font-size: 0.85em;
-            border: none;
-            box-shadow: none;
+            background: #fb923c; pointer-events: none;
+            color: #fff; border: none; box-shadow: none; font-size: 0.85em;
         }
-
         .grid-item.selected {
-            background-color: #facc15;
-            box-shadow: 0 0 0 3px #fbbf24;
+            background: #facc15; box-shadow: 0 0 0 3px #fbbf24;
         }
 
-        .submit-button {
-            margin-top: 40px;
-        }
-
+        .submit-button { margin-top: 40px; }
         #map {
-            width: 100%;
-            height: 420px;
-            border-radius: 12px;
-            margin-top: 120px;
-            margin-left: -200px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%; height: 420px;
+            border-radius: 12px; margin-top: 120px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
         .btn-primary {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            font-weight: 600;
+            background: #3b82f6; border-color: #3b82f6; font-weight: 600;
         }
-
         .btn-primary:hover {
-            background-color: #2563eb;
-            border-color: #2563eb;
+            background: #2563eb; border-color: #2563eb;
         }
 
-        .modal.fade.show {
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
+        /* 커스텀 모달 스타일 */
+        .custom-modal {
+            display: none; position: fixed; z-index: 9999;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
         }
-
-        .modal.fade {
-            transition: opacity 0.15s linear;
+        .custom-modal-content {
+            background: #fff;
+            margin: 10% auto; padding: 20px;
+            border-radius: 8px; width: 90%; max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
         }
-
-        .modal-backdrop {
-            transition: opacity 0.15s linear;
+        .custom-modal-close {
+            position: absolute; right: 12px; top: 8px;
+            font-size: 24px; font-weight: bold; cursor: pointer;
         }
-
-        .modal-dialog {
-            margin: 0 auto;
-            transform: translate(0, 0) !important;
-            max-width: 300px;
-            width: 100%;
+        .custom-modal-actions {
+            display: flex; justify-content: flex-end;
+            gap: 10px; margin-top: 20px;
         }
     </style>
-
 </head>
 <body>
 <div class="container-flex">
     <form id="warehouseForm" method="post" action="/users/pages/userWarehouse/userWarehouse-1" class="left-panel">
-        <div class="warehouse-select">
-            <label for="warehouseCode">창고 선택:</label>
-            <select id="warehouseCode" name="wareId" class="form-select" style="width: 250px; padding: 8px;">
+        <div class="warehouse-select mb-3">
+            <label for="warehouseCode" class="form-label">창고 선택:</label>
+            <select id="warehouseCode" name="wareId" class="form-select" style="width:250px;">
                 <c:forEach var="wh" items="${wareInfo}" varStatus="status">
-                    <option value="${wh.wareId}" data-lat="${wh.lat}" data-lng="${wh.lng}" data-name="${wh.wareName}" <c:if test="${status.first}">selected</c:if>>
+                    <option value="${wh.wareId}"
+                            data-lat="${wh.lat}"
+                            data-lng="${wh.lng}"
+                            data-name="${wh.wareName}"
+                            <c:if test="${status.first}">selected</c:if>>
                             ${wh.wareId} - ${wh.wareName}
                     </option>
                 </c:forEach>
@@ -159,7 +106,7 @@
         <div class="grid-container">
             <c:forEach var="row" items="${['A','B','C','D','E']}">
                 <c:forEach var="col" begin="1" end="5">
-                    <div class="grid-item" data-coord="${row}${col}" data-x="${row}" data-y="${col}">
+                    <div class="grid-item" data-coord="${row}${col}">
                             ${row}${col}
                     </div>
                 </c:forEach>
@@ -167,9 +114,8 @@
         </div>
 
         <div id="hiddenFields"></div>
-
         <div class="submit-button">
-            <button type="button" class="btn btn-primary" id="submitBtn" data-bs-toggle="modal" data-bs-target="#confirmModal" disabled>
+            <button type="button" class="btn btn-primary" id="submitBtn" disabled>
                 신청하기
             </button>
         </div>
@@ -180,170 +126,146 @@
     </div>
 </div>
 
-<!-- 모달 -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">창고 신청 확인</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>선택한 섹션:</strong> <span id="modal-sections"></span></p>
-                <p><strong>임대 기간:</strong>
-                    <select id="rental-months" class="form-select" style="display:inline-block; width:auto;">
-                        <option value="1" selected>1개월</option>
-                        <option value="2">2개월</option>
-                        <option value="3">3개월</option>
-                        <option value="4">4개월</option>
-                        <option value="5">5개월</option>
-                        <option value="6">6개월</option>
-                    </select>
-                </p>
-                <p><strong>총 금액:</strong> <span id="modal-fee"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-                <button type="button" class="btn btn-primary" id="confirmYesBtn">예</button>
-            </div>
+<!-- 커스텀 모달 -->
+<div id="customModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="custom-modal-close" id="closeModalBtn">&times;</span>
+        <h5>창고 신청 확인</h5>
+        <p><strong>선택한 섹션:</strong> <span id="modal-sections"></span></p>
+        <p><strong>임대 기간:</strong>
+            <select id="rental-months" class="form-select" style="display:inline-block; width:auto;">
+                <option value="1" selected>1개월</option>
+                <option value="2">2개월</option>
+                <option value="3">3개월</option>
+                <option value="4">4개월</option>
+                <option value="5">5개월</option>
+                <option value="6">6개월</option>
+            </select>
+        </p>
+        <p><strong>총 금액:</strong> <span id="modal-fee"></span></p>
+        <div class="custom-modal-actions">
+            <button type="button" class="btn btn-secondary" id="closeModalBtn2">아니오</button>
+            <button type="button" class="btn btn-primary" id="confirmYesBtn">예</button>
         </div>
     </div>
 </div>
 
-<!-- JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <c:set var="kakaoApiKey" value="${applicationScope.kakaoJavascriptKey}" />
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoApiKey}&autoload=true"></script>
-
 <script>
     const layoutMap = ${mapJson};
-    const gridItems = document.querySelectorAll(".grid-item");
-    const dropdown = document.getElementById("warehouseCode");
-    const mapContainer = document.getElementById("map");
+    const gridItems  = document.querySelectorAll('.grid-item');
+    const dropdown   = document.getElementById('warehouseCode');
+    const form       = document.getElementById('warehouseForm');
 
-    let lat = parseFloat(dropdown.options[dropdown.selectedIndex].dataset.lat);
-    let lng = parseFloat(dropdown.options[dropdown.selectedIndex].dataset.lng);
-    let name = dropdown.options[dropdown.selectedIndex].dataset.name;
-
-    let map = new kakao.maps.Map(mapContainer, {
-        center: new kakao.maps.LatLng(lat, lng),
-        level: 5
+    // 카카오 맵 초기화
+    let lat = parseFloat(dropdown.selectedOptions[0].dataset.lat);
+    let lng = parseFloat(dropdown.selectedOptions[0].dataset.lng);
+    const map = new kakao.maps.Map(
+        document.getElementById('map'),
+        { center: new kakao.maps.LatLng(lat, lng), level: 5 }
+    );
+    const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(lat, lng), map
     });
-    let marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng), map: map });
-    let infowindow = new kakao.maps.InfoWindow({ content: '<div style="padding:5px;">' + name + '</div>' });
+    let infowindow = new kakao.maps.InfoWindow({
+        content: '<div style="padding:5px;">' + dropdown.selectedOptions[0].dataset.name + '</div>'
+    });
     infowindow.open(map, marker);
 
-    dropdown.addEventListener("change", (e) => {
-        updateGridByWarehouse(e.target.value);
-        lat = parseFloat(e.target.options[e.target.selectedIndex].dataset.lat);
-        lng = parseFloat(e.target.options[e.target.selectedIndex].dataset.lng);
-        name = e.target.options[e.target.selectedIndex].dataset.name;
+    // 이벤트 바인딩
+    dropdown.addEventListener('change', e => updateGridAndMap(e.target.value));
+    gridItems.forEach(cell => cell.addEventListener('click', toggleCell));
 
-        const moveLatLon = new kakao.maps.LatLng(lat, lng);
-        map.setCenter(moveLatLon);
-        marker.setPosition(moveLatLon);
-        infowindow.setContent('<div style="padding:5px;">' + name + '</div>');
-        infowindow.open(map, marker);
-    });
-
-    function updateGridByWarehouse(warehouseId) {
-        const usedCoords = layoutMap[warehouseId] ? Object.keys(layoutMap[warehouseId]) : [];
-        gridItems.forEach(cell => {
-            const coord = cell.dataset.coord;
-            cell.classList.remove("disabled", "selected");
-            cell.innerText = coord;
-            cell.style.cursor = "pointer";
-            if (usedCoords.includes(coord)) {
-                cell.classList.add("disabled");
-                cell.innerText = coord + "\n(사용중)";
-                cell.style.cursor = "not-allowed";
+    function updateGridAndMap(wareId) {
+        const used = layoutMap[wareId] ? Object.keys(layoutMap[wareId]) : [];
+        gridItems.forEach(c => {
+            const coord = c.dataset.coord;
+            c.classList.remove('disabled','selected');
+            c.innerText = coord;
+            if (used.includes(coord)) {
+                c.classList.add('disabled');
+                c.innerText = coord + '\n(사용중)';
             }
         });
         document.getElementById('hiddenFields').innerHTML = '';
-        toggleSubmitButton();
+        document.getElementById('submitBtn').disabled = true;
+
+        // 지도 업데이트
+        lat = parseFloat(dropdown.selectedOptions[0].dataset.lat);
+        lng = parseFloat(dropdown.selectedOptions[0].dataset.lng);
+        marker.setPosition(new kakao.maps.LatLng(lat, lng));
+        map.setCenter(marker.getPosition());
+        infowindow.setContent(
+            '<div style="padding:5px;">' + dropdown.selectedOptions[0].dataset.name + '</div>'
+        );
     }
 
-    function toggleSubmitButton() {
-        const selectedCount = document.querySelectorAll(".grid-item.selected").length;
-        document.getElementById("submitBtn").disabled = selectedCount === 0;
-    }
-
-    // ✅ 총 금액 계산 로직 함수로 분리
-    function updateModalFeeInfo() {
-        // ✅ 먼저 rentalMonths 값을 얻어야 함!
-        const rentalMonths = parseInt(document.getElementById("rental-months").value);
-
-        // ✅ 숨겨진 input에 rentalMonths 값 추가/갱신
-        const hiddenContainer = document.getElementById('hiddenFields');
-        let existingInput = document.getElementById("rentalMonths");
-        if (existingInput) {
-            existingInput.value = rentalMonths;
+    function toggleCell() {
+        if (this.classList.contains('disabled')) return;
+        const coord = this.dataset.coord;
+        const hidden = document.getElementById('hiddenFields');
+        if (this.classList.toggle('selected')) {
+            const inp = document.createElement('input');
+            inp.type  = 'hidden';
+            inp.name  = 'selectedCoords';
+            inp.value = coord;
+            inp.id    = 'coord-' + coord;
+            hidden.appendChild(inp);
         } else {
-            const hiddenMonths = document.createElement("input");
-            hiddenMonths.type = "hidden";
-            hiddenMonths.name = "rentalMonths";
-            hiddenMonths.id = "rentalMonths";
-            hiddenMonths.value = rentalMonths;
-            hiddenContainer.appendChild(hiddenMonths);
+            document.getElementById('coord-' + coord)?.remove();
         }
-
-        // ✅ 선택된 섹션 수 계산
-        const selected = document.querySelectorAll(".grid-item.selected");
-        const coordList = Array.from(selected).map(item => item.dataset.coord);
-        const sectionList = coordList.join(", ");
-        const sectionCount = coordList.length;
-
-        // ✅ 금액 계산
-        const unitFeePerMonth = 100; // 1개월당 100만원
-        const totalFee = sectionCount * rentalMonths * unitFeePerMonth;
-
-        // ✅ 모달에 표시
-        document.getElementById("modal-sections").innerText = sectionList || "없음";
-        document.getElementById("modal-fee").innerText = totalFee.toLocaleString() + "만원";
+        document.getElementById('submitBtn').disabled =
+            document.querySelectorAll('.grid-item.selected').length === 0;
     }
 
+    function updateModalFeeInfo() {
+        const months = parseInt(document.getElementById('rental-months').value, 10);
+        const selected = [...document.querySelectorAll('.grid-item.selected')]
+            .map(e => e.dataset.coord);
+        const fee = selected.length * months * 100;
+        document.getElementById('modal-sections').innerText = selected.join(', ');
+        document.getElementById('modal-fee').innerText      = fee.toLocaleString() + '만원';
 
-    document.addEventListener("DOMContentLoaded", () => {
-        if (dropdown.value) updateGridByWarehouse(dropdown.value);
-        gridItems.forEach(cell => {
-            cell.addEventListener("click", () => {
-                if (!cell.classList.contains("disabled")) {
-                    const coord = cell.dataset.coord;
-                    const hiddenContainer = document.getElementById('hiddenFields');
-                    if (cell.classList.contains("selected")) {
-                        cell.classList.remove("selected");
-                        const existingInput = document.getElementById("coord-" + coord);
-                        if (existingInput) existingInput.remove();
-                    } else {
-                        cell.classList.add("selected");
-                        const input = document.createElement("input");
-                        input.type = "hidden";
-                        input.name = "selectedCoords";
-                        input.value = coord;
-                        input.id = "coord-" + coord;
-                        hiddenContainer.appendChild(input);
-                    }
-                    toggleSubmitButton();
-                }
-            });
-        });
+        let mi = document.getElementById('rentalMonths');
+        if (!mi) {
+            mi = document.createElement('input');
+            mi.type = 'hidden';
+            mi.name = 'rentalMonths';
+            mi.id   = 'rentalMonths';
+            document.getElementById('hiddenFields').appendChild(mi);
+        }
+        mi.value = months;
+    }
 
-        const confirmBtn = document.getElementById("confirmYesBtn");
-        const form = document.getElementById("warehouseForm");
-        const modalEl = document.getElementById("confirmModal");
-        confirmBtn.addEventListener("click", () => {
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide();
-            form.submit();
-        });
-
-        document.getElementById("submitBtn").addEventListener("click", updateModalFeeInfo);
-        document.getElementById("rental-months").addEventListener("change", updateModalFeeInfo);
+    // 모달 제어
+    document.getElementById('submitBtn').addEventListener('click', () => {
+        updateModalFeeInfo();
+        document.getElementById('customModal').style.display = 'block';
     });
+    document.getElementById('closeModalBtn').addEventListener('click', () =>
+        document.getElementById('customModal').style.display = 'none'
+    );
+    document.getElementById('closeModalBtn2').addEventListener('click', () =>
+        document.getElementById('customModal').style.display = 'none'
+    );
+    window.addEventListener('click', e => {
+        if (e.target.id === 'customModal')
+            document.getElementById('customModal').style.display = 'none';
+    });
+    document.getElementById('confirmYesBtn').addEventListener('click', () => {
+        document.getElementById('customModal').style.display = 'none';
+        form.submit();
+    });
+
+    // 개월수 변경 시 금액 즉시 갱신
+    document.getElementById('rental-months')
+        .addEventListener('change', updateModalFeeInfo);
+
+    // 페이지 로드 시 초기 그리드 업데이트
+    updateGridAndMap(dropdown.value);
 </script>
 
 <c:if test="${not empty msg}">
-    <script>alert("${msg}");</script>
+<script>alert("${msg}");</script>
 </c:if>
-</body>
-</html>
