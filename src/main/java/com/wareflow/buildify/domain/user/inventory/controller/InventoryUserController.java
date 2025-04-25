@@ -32,13 +32,21 @@ public class InventoryUserController {
 
 //    @GetMapping("/inventory-1/api/excel")
     @RequestMapping(value = "/inventory-1/api/excel", method = {RequestMethod.GET, RequestMethod.POST})
-    public void inventoryExportExcel(HttpServletResponse response) {
+    public String inventoryExportExcel(HttpServletResponse response, Model model) {
 
         log.info("inventory export excel");
         List<InventoryDTO> list = inventoryUserService.getUserInventory();
         log.info("컨트롤러 리스트 사이즈 :{}",list.size());
-        int result = exportExcel.exportExcel(list,response,"user_inventory_list");
+        int result = 0;
+        if (list.size() > 0) {
+            result = exportExcel.exportExcel(list,response,"user_inventory_list");
+        }else {
+            model.addAttribute("body","/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
+            return "users/layouts/userlayout";
+        }
+
         log.info("엑셀 출력 결과 :{}",result);
+        return null;
     }
 
 

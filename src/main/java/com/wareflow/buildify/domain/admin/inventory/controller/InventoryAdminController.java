@@ -30,10 +30,21 @@ public class InventoryAdminController {
 
     private final ExportExcel exportExcel;
 
-    @GetMapping("/inventory-1/api/excel")
-    public void inventoryUserExportExcel(HttpServletResponse response){
+    @RequestMapping(value = "/inventory-1/api/excel", method = {RequestMethod.GET, RequestMethod.POST})
+    public String inventoryAdminExportExcel(HttpServletResponse response, Model model){
+        log.info("inventory export excel");
         List<InventoryAdminDTO> list = inventoryAdminService.getAdminInventory();
-        exportExcel.exportExcel(list, response, "inventory_admin_list");
+        log.info("컨트롤러 리스트 사이즈 :{}",list.size());
+        int result = 0;
+        if (list.size() > 0) {
+            result = exportExcel.exportExcel(list,response,"user_inventory_list");
+        }else {
+            model.addAttribute("body","/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
+            return "users/layouts/userlayout";
+        }
+
+        log.info("엑셀 출력 결과 :{}",result);
+        return null;
     }
 
     @GetMapping("/inventory-1")
