@@ -68,8 +68,8 @@
                 <td>
                     <c:choose>
                         <c:when test="${warehouse.wareId == 'W001'}">서울</c:when>
-                        <c:when test="${warehouse.wareId == 'W002'}">부산</c:when>
-                        <c:when test="${warehouse.wareId == 'W003'}">광주</c:when>
+                        <c:when test="${warehouse.wareId == 'W002'}">판교</c:when>
+                        <c:when test="${warehouse.wareId == 'W003'}">부산</c:when>
                         <c:when test="${warehouse.wareId == 'W004'}">대구</c:when>
                         <c:when test="${warehouse.wareId == 'W005'}">인천</c:when>
                         <c:otherwise>${warehouse.wareId}</c:otherwise>
