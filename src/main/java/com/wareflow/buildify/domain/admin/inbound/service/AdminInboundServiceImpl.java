@@ -107,17 +107,21 @@ public class AdminInboundServiceImpl implements AdminInboundService {
 }
 
     @Override
-    public void admininsertInboundRequests(List<String> prodIds, List<String> clientIds, List<Integer> quantitis) {
+    public void admininsertInboundRequests(List<String> prodIds, List<String> clientIds, List<Integer> quantitis, List<String> wareIds) {
         log.info("어드민 승인 업데이트 서비스");
         for (int i = 0; i < prodIds.size(); i++) {
             InventoryVO vo = new InventoryVO();
             String uniqueId = "INB-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
                     + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
+
+
+            /////////////
             vo.setInventoryId(uniqueId);
             vo.setProdId(prodIds.get(i));
             vo.setClientId(clientIds.get(i));
             vo.setQuantity(quantitis.get(i));
+            vo.setWareId(wareIds.get(i));
             vo.setLastInboundDate(Date.valueOf(LocalDate.now()));
 
             int result = adminInboundMapper.postAdminInboundCheckUpdate(vo);

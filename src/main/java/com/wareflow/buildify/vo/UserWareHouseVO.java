@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Setter
 public class UserWareHouseVO {
     private String wareId;
     private String clientId;

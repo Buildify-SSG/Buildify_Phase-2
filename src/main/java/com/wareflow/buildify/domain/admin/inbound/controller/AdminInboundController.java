@@ -84,8 +84,9 @@ public class AdminInboundController {
         List<String> prodIds = (List<String>) request.get("prodIds");
         List<String> clientIds = (List<String>) request.get("clientIds");
         List<String> quantityStrList = (List<String>) request.get("quantitis");
+        List<String> wareIds = (List<String>) request.get("wareIds");
 
-        if (prodIds == null || clientIds == null || quantityStrList == null
+        if (prodIds == null || clientIds == null || quantityStrList == null || wareIds == null
                 || prodIds.size() != quantityStrList.size()) {
             log.warn("❌ 유효하지 않은 데이터 형식");
             return ResponseEntity.badRequest().body("Invalid request format");
@@ -96,7 +97,7 @@ public class AdminInboundController {
                     .map(Integer::parseInt)
                     .collect(Collectors.toList());
 
-            adminInboundService.admininsertInboundRequests(prodIds, clientIds, quantities);
+            adminInboundService.admininsertInboundRequests(prodIds, clientIds, quantities, wareIds);
             return ResponseEntity.ok("입고 요청 성공");
         } catch (Exception e) {
             log.error("❌ 서버 처리 중 에러 발생", e);
