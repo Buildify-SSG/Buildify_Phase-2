@@ -1,1 +1,312 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>유저 대시보드</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 공통 CSS -->
+    <link href="/static/css/app.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- 페이지 전용 스타일 -->
+    <style>
+        .dashboard-container {
+            padding: 40px 24px;
+            background: linear-gradient(to bottom right, #f0f4f8, #ffffff);
+            min-height: 100vh;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .dashboard-main {
+            display: flex;
+            gap: 24px;
+        }
+
+        .left-column, .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .status-area.unified-status {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .status-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .status-box {
+            background-color: #a9c9f3;
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            flex: 1;
+            text-align: center;
+        }
+
+        .warehouse-section {
+            margin: 24px 0;
+        }
+
+        .warehouse-section h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .warehouse-cards {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .warehouse-card {
+            flex: 1 1 30%;
+            min-height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        .notice-card {
+            background-color: #4aa6c3;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .notice-card h3 {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .weather-list {
+            display: flex;
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .weather-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .weather-item .city {
+            font-weight: 700;
+        }
+
+        .weather-item .temp {
+            font-size: 1.2em;
+            margin-top: 4px;
+        }
+
+        .chart-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-box h3 {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <h1>📊 유저 대시보드</h1>
+    <div class="dashboard-main">
+        <!-- 왼쪽 컬럼 -->
+        <div class="left-column">
+            <!-- 오늘/주간 입출고 현황 -->
+            <div class="status-area unified-status">
+                <div class="status-row">
+                    <div class="status-box">오늘 입고 요청: ${countDayInboundRequest} 건</div>
+                    <div class="status-box">오늘 입고 승인: ${countDayInboundApproval} 건</div>
+                </div>
+                <div class="status-row">
+                    <div class="status-box">오늘 출고 요청: ${countDayOutboundRequest} 건</div>
+                    <div class="status-box">오늘 출고 승인: ${countDayOutboundApproval} 건</div>
+                </div>
+                <div class="status-row">
+                    <div class="status-box">주간 입고 요청: ${countWeekInboundRequest} 건</div>
+                    <div class="status-box">주간 입고 승인: ${countWeekInboundApproval} 건</div>
+                </div>
+                <div class="status-row">
+                    <div class="status-box">주간 출고 요청: ${countWeekOutboundRequest} 건</div>
+                    <div class="status-box">주간 출고 승인: ${countWeekOutboundApproval} 건</div>
+                </div>
+            </div>
+
+            <!-- 플레이스홀더: 창고 섹션 -->
+            <div class="warehouse-section">
+                <h3>창고 현황 (추후 데이터 주입)</h3>
+                <div class="warehouse-cards">
+                    <div class="warehouse-card">Warehouse A</div>
+                    <div class="warehouse-card">Warehouse B</div>
+                    <div class="warehouse-card">Warehouse C</div>
+                </div>
+            </div>
+
+            <!-- 오늘의 날씨 -->
+            <div class="notice-card">
+                <h3>🌤 오늘의 날씨</h3>
+                <ul class="weather-list">
+                    <c:forEach var="w" items="${weatherInfoDTOList}">
+                        <li class="weather-item">
+                            <div class="city">${w.city}</div>
+                            <div class="desc">${w.emoji} ${w.description}</div>
+                            <div class="temp">${w.temp}°C</div>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+
+            <!-- 실시간 물류 뉴스 -->
+            <div class="notice-card">
+                <h3>📢 실시간 물류 뉴스</h3>
+                <ul id="news-list">
+                    <li>로딩 중...</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 오른쪽 컬럼 -->
+        <div class="right-column">
+            <div class="chart-box">
+                <h3>주간 입고 현황</h3>
+                <canvas id="inboundChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>주간 출고 현황</h3>
+                <canvas id="outboundChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 뉴스 로드 & 회전
+    let allArticles = [], currentIndex = 0;
+
+    function rotateNews() {
+        const list = document.getElementById('news-list');
+        list.innerHTML = '';
+        if (!allArticles.length) return;
+        allArticles.slice(currentIndex, currentIndex + 3)
+            .forEach(a => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = a.url;
+                link.target = '_blank';
+                link.textContent = a.title;
+                li.appendChild(link);
+                list.appendChild(li);
+            });
+        currentIndex = (currentIndex + 3) % allArticles.length;
+    }
+
+    function loadNews() {
+        const newsUrl = "https://newsapi.org/v2/everything?q=logistics&language=ko&sortBy=publishedAt&pageSize=30&apiKey=fb7e4ecc150841c1b78f9909fdad95f6";
+        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(newsUrl))
+            .then(r => r.json())
+            .then(d => {
+                const data = JSON.parse(d.contents);
+                allArticles = data.articles || [];
+                rotateNews();
+            })
+            .catch(_ => {
+                document.getElementById('news-list').innerHTML = '<li>뉴스 불러오기 실패</li>';
+            });
+    }
+
+    function drawCharts() {
+        // 입고 차트
+        new Chart(document.getElementById('inboundChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['오늘 요청', '오늘 승인', '주간 요청', '주간 승인'],
+                datasets: [{
+                    label: '입고',
+                    data: [
+                        ${countDayInboundRequest},
+                        ${countDayInboundApproval},
+                        ${countWeekInboundRequest},
+                        ${countWeekInboundApproval}
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+
+        // 출고 차트
+        new Chart(document.getElementById('outboundChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['오늘 요청', '오늘 승인', '주간 요청', '주간 승인'],
+                datasets: [{
+                    label: '출고',
+                    data: [
+                        ${countDayOutboundRequest},
+                        ${countDayOutboundApproval},
+                        ${countWeekOutboundRequest},
+                        ${countWeekOutboundApproval}
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+    window.addEventListener('load', () => {
+        loadNews();
+        setInterval(rotateNews, 15000);
+        drawCharts();
+    });
+</script>
+</body>
+</html>

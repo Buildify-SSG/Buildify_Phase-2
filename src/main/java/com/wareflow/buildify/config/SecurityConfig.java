@@ -30,10 +30,10 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()  // ✅ 요거 중요!!
-                //.antMatchers("/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
-                //.antMatchers("/admin/**").hasRole("ADMIN")
-                //.antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/**").permitAll()
+                .antMatchers("/login", "/signup", "/static/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+//                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
