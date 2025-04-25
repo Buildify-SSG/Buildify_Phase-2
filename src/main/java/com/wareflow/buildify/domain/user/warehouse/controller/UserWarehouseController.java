@@ -100,6 +100,7 @@ public class UserWarehouseController {
 
         rttr.addFlashAttribute("msg", allSuccess ? "신청 완료" : "신청 실패");
 
+        //클라이언트 id 기반으로 user 테이블의 status = > 1 로 변경.
         return "redirect:/users/pages/userWarehouse/userWarehouse-1?wareId=" + wareId;
     }
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wareflow.buildify.domain.user.dashboard.mapper.DashboardMapper">
+
+    <select id="selectDayInbound"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM inbound
+        WHERE client_id = #{clientId}
+          AND inbound_status = #{status}
+          AND DATE (req_inbound_date) = CURDATE()
+    </select>
+
+    <select id="selectDayOutbound"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM outbound
+        WHERE client_id = #{clientId}
+          AND status = #{status}
+          AND DATE (req_outbound_date) = CURDATE()
+    </select>
+
+    <select id="selectWeekInbound"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM inbound
+        WHERE client_id = #{clientId}
+          AND inbound_status = #{status}
+          AND YEARWEEK(req_inbound_date, 1) = YEARWEEK(CURDATE(), 1)
+    </select>
+
+    <select id="selectWeekOutbound"
+            parameterType="map"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM outbound
+        WHERE client_id = #{clientId}
+          AND status = #{status}
+          AND YEARWEEK(req_outbound_date, 1) = YEARWEEK(CURDATE(), 1)
+    </select>
+
+</mapper>
+

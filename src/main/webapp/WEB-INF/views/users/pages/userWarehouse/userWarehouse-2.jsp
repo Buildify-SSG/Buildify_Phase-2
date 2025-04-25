@@ -53,7 +53,7 @@
     <table>
         <thead>
         <tr>
-            <th>창고 ID</th>
+            <th>창고 지역</th>
             <th>섹션</th>
             <th>사용 면적 (㎡)</th>
             <th>계약 면적 (㎡)</th>

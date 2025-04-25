@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserHomeController {
 
-    @GetMapping("/pages/index")
-    public String adminIndex(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/users/pages/index.jsp");
-        return "users/layouts/userlayout";
-    }
+//    @GetMapping("/pages/index")
+//    public String adminIndex(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/users/pages/index.jsp");
+//        return "users/layouts/userlayout";
+//    }
 
 //    @GetMapping("/pages/inbound/inbound-1")
 //    public String inbound1(Model model) {
