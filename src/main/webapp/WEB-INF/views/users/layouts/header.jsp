@@ -1,6 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- debug --%>
 <% System.out.println("💬 JSP에서 loginUser: " + request.getAttribute("loginUser")); %>
+
+<!-- 로그아웃 URL 미리 생성 -->
+<c:url var="logoutUrl" value="/logout"/>
+
 <nav class="navbar navbar-expand navbar-light navbar-bg">
     <a class="sidebar-toggle js-sidebar-toggle">
         <i class="hamburger align-self-center"></i>
@@ -8,33 +13,29 @@
 
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
+            <!-- 다크모드 토글 -->
             <button id="darkToggle" class="btn btn-light me-3" onclick="toggleDark()">🌙</button>
             <script>
                 function toggleDark() {
-                    // Toggle the dark-mode class
                     document.documentElement.classList.toggle("dark-mode");
-
-                    // Save dark mode state to localStorage
                     if (document.documentElement.classList.contains("dark-mode")) {
                         localStorage.setItem("darkMode", "enabled");
                     } else {
                         localStorage.removeItem("darkMode");
                     }
-
-                    // Reapply feather icons after dark mode is toggled
                     setTimeout(() => {
                         if (typeof feather !== "undefined") {
-                            // Initialize all i[data-feather] after applying dark mode
                             document.querySelectorAll("i[data-feather]").forEach(el => {
                                 const icon = el.getAttribute("data-feather");
                                 const svg = feather.icons[icon].toSvg();
                                 el.outerHTML = svg;
                             });
                         }
-                    }, 100); // 100ms wait before applying
+                    }, 100);
                 }
-
             </script>
+
+            <!-- 알림 -->
             <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
                     <div class="position-relative">
@@ -43,9 +44,7 @@
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-                    <div class="dropdown-menu-header">
-                        4 New Notifications
-                    </div>
+                    <div class="dropdown-menu-header">4 New Notifications</div>
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <div class="row g-0 align-items-center">
@@ -100,6 +99,8 @@
                     </div>
                 </div>
             </li>
+
+            <!-- 메시지 -->
             <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-bs-toggle="dropdown">
                     <div class="position-relative">
@@ -107,11 +108,7 @@
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="messagesDropdown">
-                    <div class="dropdown-menu-header">
-                        <div class="position-relative">
-                            4 New Messages
-                        </div>
-                    </div>
+                    <div class="dropdown-menu-header">4 New Messages</div>
                     <div class="list-group">
                         <a href="#" class="list-group-item">
                             <div class="row g-0 align-items-center">
@@ -167,13 +164,16 @@
                     </div>
                 </div>
             </li>
+
+            <!-- 숨은 로그아웃 폼 (POST /logout) -->
+            <form id="logoutForm" action="${logoutUrl}" method="post" style="display:none;"></form>
+
+            <!-- 사용자 드롭다운 -->
             <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                    <i class="align-middle" data-feather="settings"></i>
+                    <i class="align-middle" data-feather="user"></i>
                 </a>
-
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-
                     <c:choose>
                         <c:when test="${not empty loginUser}">
                             <span class="text-dark">${loginUser.userName} 회원님</span>
@@ -183,15 +183,22 @@
                         </c:otherwise>
                     </c:choose>
                 </a>
-                </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="<c:url value='#' />"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
-                    <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+                    <a class="dropdown-item" href="#">
+                        <i class="align-middle me-1" data-feather="user"></i> Profile
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <i class="align-middle me-1" data-feather="pie-chart"></i> Analytics
+                    </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value='admin/pages/index' />"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
-                    <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                    <a class="dropdown-item" href="<c:url value='/users/pages/index'/>">
+                        <i class="align-middle me-1" data-feather="settings"></i> Dashboard
+                    </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Log out</a>
+                    <!-- 로그아웃 링크 -->
+                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                        <i class="align-middle me-1" data-feather="log-out"></i> Log out
+                    </a>
                 </div>
             </li>
         </ul>
