@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -50,18 +51,14 @@ public class InventoryUserServiceImpl implements InventoryUserService {
     }
 
     @Override
-    public List<String> findMidCategoriesByLevel1(String category1) {
+    public List<String> findMidCategoriesByLevel1(String clientId,String category1) {
         System.out.println("📢 Service 들어옴, category1 = " + category1);
 
-        List<String> result = inventoryUserMapper.findMidCategoriesByLevel1(category1);
-
-        System.out.println("📢 Service result = " + result);
-
-        return result;
+        return inventoryUserMapper.findMidCategoriesByLevel1(clientId,category1);
     }
 
     @Override
-    public List<String> findSmallCategoriesByLevel2(String category2) {
-        return inventoryUserMapper.findSmallCategoriesByLevel2(category2);
+    public List<String> findSmallCategoriesByLevel2(String clientId, String category2) {
+        return inventoryUserMapper.findSmallCategoriesByLevel2(clientId,category2);
     }
 }

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
     body {
         font-family: 'Noto Sans KR', sans-serif;
@@ -120,34 +121,41 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <!-- 검색 영역 -->
-        <form method="GET" action="/users/pages/inventory/inventory-1/search">
+        <form method="get" id="inventorySearchForm" action="/users/pages/inventory/inventory-1/search">
             <div class="search-bar">
-
                 <!-- 대분류 선택 -->
                 <select id="category1" name="category1">
-                    <option value="">대분류 선택</option>
-                    <option value="PC">PC</option>
-                    <option value="주변기기">주변기기</option>
+                    <option value="" <c:if test="${param.category1 == ''}">selected</c:if>>대분류 선택</option>
+                    <option value="PC"        <c:if test="${param.category1 == 'PC'}">selected</c:if>>PC</option>
+                    <option value="주변기기"  <c:if test="${param.category1 == '주변기기'}">selected</c:if>>주변기기</option>
                 </select>
 
                 <!-- 중분류 선택 -->
                 <select id="category2" name="category2">
-                    <option value="">중분류 선택</option>
+                    <option value="" <c:if test="${param.category2 == ''}">selected</c:if>>중분류 선택</option>
+                    <c:forEach var="mid" items="${midCategories}">
+                        <option value="${mid}" <c:if test="${param.category2 == mid}">selected</c:if>>${mid}</option>
+                    </c:forEach>
                 </select>
 
                 <!-- 소분류 선택 -->
                 <select id="category3" name="category3">
-                    <option value="">소분류 선택</option>
+                    <option value="" <c:if test="${param.category3 == ''}">selected</c:if>>소분류 선택</option>
+                    <c:forEach var="small" items="${smallCategories}">
+                        <option value="${small}" <c:if test="${param.category3 == small}">selected</c:if>>${small}</option>
+                    </c:forEach>
                 </select>
 
-
+                <!-- 검색 유형 -->
                 <select name="searchType">
-                    <option value="prodName">상품명</option>
-                    <option value="brand">브랜드</option>
-                    <option value="wareName">창고명</option>
-
+                    <option value="prodId"   <c:if test="${param.searchType == 'prodId'}">selected</c:if>>상품ID</option>
+                    <option value="clientId" <c:if test="${param.searchType == 'clientId'}">selected</c:if>>고객ID</option>
+                    <option value="wareId"   <c:if test="${param.searchType == 'wareId'}">selected</c:if>>창고ID</option>
                 </select>
-                <input type="text" name="keyword" placeholder="검색" />
+
+                <!-- 키워드 -->
+                <input type="text" name="keyword" value="${fn:escapeXml(param.keyword)}" placeholder="검색" />
+
                 <button type="submit">🔍</button>
             </div>
         </form>
@@ -168,8 +176,9 @@
 
 
     <!-- 표 -->
-    <div class="table-wrapper">
 
+    <div id="tableContainer">
+    <div class="table-wrapper">
             <table id="contractTable">
                 <thead>
                 <tr>
@@ -221,6 +230,7 @@
                 </c:if>
                 </tbody>
             </table>
+    </div>
 
 
         <!-- Pagination Block -->
@@ -250,7 +260,8 @@
             </div>
         </c:if>
     </div>
-</div>
+
+
 
 
 <script>
@@ -287,66 +298,77 @@
     }
 </script>
 
+<!-- 진짜 비동기 AJAX 드랍다운 JS -->
 <script>
-    const selectedCategory1 = "${param.category1}";
-    const selectedCategory2 = "${param.category2}";
-    const selectedCategory3 = "${param.category3}";
-</script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const form      = document.getElementById('inventorySearchForm');
+        const c1        = document.getElementById('category1');
+        const c2        = document.getElementById('category2');
+        const c3        = document.getElementById('category3');
 
-<script>
-    window.onload = function() {
-        document.getElementById("category1").addEventListener("change", function(e) {
-            e.preventDefault();
-            console.log("test");
-            const category1 = this.value;
-            const category2 = document.getElementById("category2");
-            const category3 = document.getElementById("category3");
+        // --- 이 함수 하나만 추가 ---
+        async function refreshTable() {
+            const url  = form.action + '?' + new URLSearchParams(new FormData(form));
+            const res  = await fetch(url);
+            const html = await res.text();
+            const doc  = new DOMParser().parseFromString(html, 'text/html');
 
-            // 중분류, 소분류 초기화
-            category2.innerHTML = '<option value="">중분류 선택</option>';
-            category3.innerHTML = '<option value="">소분류 선택</option>';
+            // 1) #tableContainer 전체를 새로 교체
+            const newContainer = doc.querySelector('#tableContainer');
+            document.querySelector('#tableContainer').innerHTML = newContainer.innerHTML;
 
-            if (category1) {
-                fetch(`/users/pages/inventory/inventory-1/getMidCategories?category1=`+ encodeURIComponent(category1))
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(midCategory => {
-                            const option = document.createElement("option");
-                            option.value = midCategory;
-                            option.textContent = midCategory;
-                            category2.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('중분류 불러오기 실패:', error));
+            // 2) (선택) 주소창에 쿼리 반영
+            if (history.replaceState) {
+                history.replaceState(null, '', url);
+            }
+            // 3) URL 업데이트 (브라우저 주소 줄에 파라미터 반영)
+            history.replaceState(null, '', url);
+        }
+
+        // 대분류 변경 → 중/소 초기화 → 중분류 fetch → 테이블 리프레시
+        c1.addEventListener('change', function() {
+            c2.innerHTML = '<option value="">중분류 선택</option>';
+            c3.innerHTML = '<option value="">소분류 선택</option>';
+
+            if (this.value) {
+                fetch('/users/pages/inventory/inventory-1/getMidCategories?category1=' + encodeURIComponent(this.value))
+                    .then(r => r.json())
+                    .then(list => list.forEach(mid => {
+                        const opt = document.createElement('option');
+                        opt.value = mid; opt.textContent = mid;
+                        c2.appendChild(opt);
+                    }))
+                    .catch(console.error)
+                    .finally(refreshTable);
+            } else {
+                refreshTable();
             }
         });
 
-        document.getElementById("category2").addEventListener("change", function(e) {
-            e.preventDefault();
-            const category2 = this.value;
-            const category3 = document.getElementById("category3");
+        // 중분류 변경 → 소 초기화 → 소분류 fetch → 테이블 리프레시
+        c2.addEventListener('change', function() {
+            c3.innerHTML = '<option value="">소분류 선택</option>';
 
-            // 소분류 초기화
-            category3.innerHTML = '<option value="">소분류 선택</option>';
-
-            if (category2) {
-                fetch(`/users/pages/inventory/inventory-1/getSmallCategories?category2=`+encodeURIComponent(category2))
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(subCategory => {
-                            const option = document.createElement("option");
-                            option.value = subCategory;
-                            option.textContent = subCategory;
-                            category3.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('소분류 불러오기 실패:', error));
+            if (this.value) {
+                fetch('/users/pages/inventory/inventory-1/getSmallCategories?category2=' + encodeURIComponent(this.value))
+                    .then(r => r.json())
+                    .then(list => list.forEach(sub => {
+                        const opt = document.createElement('option');
+                        opt.value = sub; opt.textContent = sub;
+                        c3.appendChild(opt);
+                    }))
+                    .catch(console.error)
+                    .finally(refreshTable);
+            } else {
+                refreshTable();
             }
         });
-    };
 
-
+        // 소분류 변경 → 바로 테이블 리프레시
+        c3.addEventListener('change', refreshTable);
+    });
 </script>
+
 
 <script>
     function showAlert() {
@@ -357,4 +379,5 @@
 </script>
 
 
+</div>
 </body>

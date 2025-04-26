@@ -5,52 +5,56 @@
 
 <mapper namespace="com.wareflow.buildify.domain.user.inventory.mapper.InventoryUserMapper">
 
+
+    <!-- 내 재고 전체 조회 (변경 없음) -->
     <select id="getUserInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
         SELECT
-        p.prod_id AS prodId,
-        p.prod_name AS prodName,
-        p.brand,
-        p.client_id AS clientId,
-        p.prod_price AS prodPrice,
-        i.inventory_id AS inventoryId,
-        i.ware_id AS wareId,
-        i.quantity,
-        i.last_inbound_date as lastInboundDate,
-        i.last_outbound_date as lastOutboundDate,
-        wa.ware_name AS wareName,
-        wa.ware_address AS wareAddress
+            p.prod_id           AS prodId,
+            p.prod_name         AS prodName,
+            p.brand,
+            p.client_id         AS clientId,
+            p.prod_price        AS prodPrice,
+            i.inventory_id      AS inventoryId,
+            i.ware_id           AS wareId,
+            i.quantity,
+            i.last_inbound_date AS lastInboundDate,
+            i.last_outbound_date AS lastOutboundDate,
+            wa.ware_name        AS wareName,
+            wa.ware_address     AS wareAddress
         FROM inventory i
-        JOIN product p ON i.prod_id = p.prod_id
-        JOIN category c ON p.prod_categoryid = c.prod_categoryid
-        JOIN warehouse_area wa on i.ware_id = wa.ware_id
+                 JOIN product p   ON i.prod_id = p.prod_id
+                 JOIN category c  ON p.prod_categoryid = c.prod_categoryid
+                 JOIN warehouse_area wa ON i.ware_id = wa.ware_id
         WHERE i.client_id = #{clientId}
-
-
     </select>
 
-
-    <!-- 🔍 필터 검색 조회 -->
-    <select id="searchUserInventory" resultType="com.wareflow.buildify.dto.InventoryDTO">
+    <!-- 로그인한 회원 + 카테고리·검색어·정렬 필터링 -->
+    <select id="searchUserInventory"
+            parameterType="com.wareflow.buildify.dto.InventoryFilterDTO"
+            resultType="com.wareflow.buildify.dto.InventoryDTO">
         SELECT
-        p.prod_id AS prodId,
-        p.prod_name AS prodName,
+        p.prod_id           AS prodId,
+        p.prod_name         AS prodName,
         p.brand,
-        p.client_id AS clientId,
-        p.prod_price AS prodPrice,
-        i.inventory_id AS inventoryId,
-        i.ware_id AS wareId,
+        p.client_id         AS clientId,
+        p.prod_price        AS prodPrice,
+        i.inventory_id      AS inventoryId,
+        i.ware_id           AS wareId,
         i.quantity,
-        i.last_inbound_date as lastInboundDate,
-        i.last_outbound_date as lastOutboundDate,
-        wa.ware_name AS wareName,
-        wa.ware_address AS wareAddress
+        i.last_inbound_date AS lastInboundDate,
+        i.last_outbound_date AS lastOutboundDate,
+        wa.ware_name        AS wareName,
+        wa.ware_address     AS wareAddress
         FROM inventory i
-        JOIN product p ON i.prod_id = p.prod_id
-        JOIN category c ON p.prod_categoryid = c.prod_categoryid
-        JOIN warehouse_area wa on i.ware_id = wa.ware_id
+        JOIN product p   ON i.prod_id = p.prod_id
+        JOIN category c  ON p.prod_categoryid = c.prod_categoryid
+        JOIN warehouse_area wa ON i.ware_id = wa.ware_id
 
         <where>
-            <!-- 🔵 카테고리 필터 조건 -->
+            <!-- 회원 필터링 -->
+            AND i.client_id = #{clientId}
+
+            <!-- 카테고리 필터 -->
             <if test="category1 != null and category1 != ''">
                 AND c.category_level1 = #{category1}
             </if>
@@ -61,8 +65,9 @@
                 AND c.category_level3 = #{category3}
             </if>
 
-            <!-- 🔵 검색어 필터 조건 -->
-            <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+            <!-- 검색어 필터 -->
+            <if test="searchType != null and searchType != ''
+                   and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'prodName'">
                         AND p.prod_name LIKE CONCAT('%', #{keyword}, '%')
@@ -77,12 +82,12 @@
             </if>
         </where>
 
-        <!-- 🔵 정렬 조건 -->
+        <!-- 정렬 -->
         <choose>
-            <when test="sortBy != null and sortBy == 'asc'">
+            <when test="sortBy == 'asc'">
                 ORDER BY i.quantity ASC
             </when>
-            <when test="sortBy != null and sortBy == 'desc'">
+            <when test="sortBy == 'desc'">
                 ORDER BY i.quantity DESC
             </when>
             <otherwise>
@@ -91,18 +96,28 @@
         </choose>
     </select>
 
-    <!-- 대분류(category1)로 중분류(category2) 가져오기 -->
-    <select id="findMidCategoriesByLevel1" resultType="String">
-        SELECT DISTINCT category_level2
-        FROM category
-        WHERE category_level1 = #{category1}
+    <!-- 대분류 → 로그인한 회원 기준의 중분류 목록 -->
+    <select id="findMidCategoriesByLevel1"
+            resultType="String"
+           >
+        SELECT DISTINCT c.category_level2
+        FROM inventory i
+                 JOIN product p  ON i.prod_id = p.prod_id
+                 JOIN category c ON p.prod_categoryid = c.prod_categoryid
+        WHERE c.category_level1 = #{category1}
+          AND i.client_id        = #{clientId}
     </select>
 
-    <!-- 중분류(category2)로 소분류(category3) 가져오기 -->
-    <select id="findSmallCategoriesByLevel2" resultType="String">
-        SELECT DISTINCT category_level3
-        FROM category
-        WHERE category_level2 = #{category2}
+    <!-- 중분류 → 로그인한 회원 기준의 소분류 목록 -->
+    <select id="findSmallCategoriesByLevel2"
+            resultType="String"
+          >
+        SELECT DISTINCT c.category_level3
+        FROM inventory i
+                 JOIN product p  ON i.prod_id = p.prod_id
+                 JOIN category c ON p.prod_categoryid = c.prod_categoryid
+        WHERE c.category_level2 = #{category2}
+          AND i.client_id        = #{clientId}
     </select>
 
 

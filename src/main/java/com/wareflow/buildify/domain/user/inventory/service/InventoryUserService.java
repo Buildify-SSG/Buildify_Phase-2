@@ -10,9 +10,9 @@ public interface InventoryUserService {
     List<InventoryDTO> getUserInventory();
     List<InventoryDTO>searchUserInventory(InventoryFilterDTO filter);
 
-    List<String> findMidCategoriesByLevel1(String category1);
+    List<String> findMidCategoriesByLevel1(String clientId,String category1);
 
-    List<String> findSmallCategoriesByLevel2(String category2);
+    List<String> findSmallCategoriesByLevel2(String clientId,String category2);
 
 
 }
