@@ -68,7 +68,7 @@ public class InventoryAdminController {
 
 //    @GetMapping("/inventory-1/search")
     @RequestMapping(value = "/inventory-1/search", method = {RequestMethod.GET, RequestMethod.POST})
-    public String searchUserInventory(InventoryFilterDTO filter, Model model, @RequestParam(defaultValue = "1") int page) {
+    public String searchAdminInventory(InventoryFilterDTO filter, Model model, @RequestParam(defaultValue = "1") int page) {
         List<InventoryAdminDTO> inventoryList = inventoryAdminService.searchAdminInventory(filter);
         log.info(inventoryList.size());
 

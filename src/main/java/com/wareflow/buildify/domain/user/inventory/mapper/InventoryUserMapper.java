@@ -19,9 +19,11 @@ public interface InventoryUserMapper {
 
     public List<InventoryDTO> searchUserInventory(InventoryFilterDTO filter);
 
-    List<String> findMidCategoriesByLevel1(String category1);
+    List<String> findMidCategoriesByLevel1(  @Param("clientId") String clientId,
+                                             @Param("category1") String category1);
 
-    List<String> findSmallCategoriesByLevel2(String category2);
+    List<String> findSmallCategoriesByLevel2(@Param("clientId") String clientId,
+                                             @Param("category2") String category2);
 
 
 

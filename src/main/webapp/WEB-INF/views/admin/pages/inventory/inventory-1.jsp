@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
     body {
         font-family: 'Noto Sans KR', sans-serif;
@@ -167,36 +168,45 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <!-- 검색 영역 -->
-        <form method="get" action="/admin/pages/inventory/inventory-1/search">
+        <form method="get" id="inventorySearchForm" action="/admin/pages/inventory/inventory-1/search">
             <div class="search-bar">
-
                 <!-- 대분류 선택 -->
                 <select id="category1" name="category1">
-                    <option value="">대분류 선택</option>
-                    <option value="PC">PC</option>
-                    <option value="주변기기">주변기기</option>
+                    <option value="" <c:if test="${param.category1 == ''}">selected</c:if>>대분류 선택</option>
+                    <option value="PC"        <c:if test="${param.category1 == 'PC'}">selected</c:if>>PC</option>
+                    <option value="주변기기"  <c:if test="${param.category1 == '주변기기'}">selected</c:if>>주변기기</option>
                 </select>
 
                 <!-- 중분류 선택 -->
                 <select id="category2" name="category2">
-                    <option value="">중분류 선택</option>
+                    <option value="" <c:if test="${param.category2 == ''}">selected</c:if>>중분류 선택</option>
+                    <c:forEach var="mid" items="${midCategories}">
+                        <option value="${mid}" <c:if test="${param.category2 == mid}">selected</c:if>>${mid}</option>
+                    </c:forEach>
                 </select>
 
                 <!-- 소분류 선택 -->
                 <select id="category3" name="category3">
-                    <option value="">소분류 선택</option>
+                    <option value="" <c:if test="${param.category3 == ''}">selected</c:if>>소분류 선택</option>
+                    <c:forEach var="small" items="${smallCategories}">
+                        <option value="${small}" <c:if test="${param.category3 == small}">selected</c:if>>${small}</option>
+                    </c:forEach>
                 </select>
 
+                <!-- 검색 유형 -->
                 <select name="searchType">
-                    <option value="prodId">상품ID</option>
-                    <option value="clientId">고객ID</option>
-                    <option value="wareId">창고ID</option>
+                    <option value="prodId"   <c:if test="${param.searchType == 'prodId'}">selected</c:if>>상품ID</option>
+                    <option value="clientId" <c:if test="${param.searchType == 'clientId'}">selected</c:if>>고객ID</option>
+                    <option value="wareId"   <c:if test="${param.searchType == 'wareId'}">selected</c:if>>창고ID</option>
                 </select>
 
-                <input type="text" name="keyword" placeholder="검색" />
+                <!-- 키워드 -->
+                <input type="text" name="keyword" value="${fn:escapeXml(param.keyword)}" placeholder="검색" />
+
                 <button type="submit">🔍</button>
             </div>
         </form>
+
 
         <!-- export 버튼 -->
         <div class="export-buttons" style="display: flex; gap: 10px;">
@@ -224,98 +234,91 @@
 
 
 
-    <div class="table-wrapper">
-        <table id="contractTable">
-            <thead>
-            <tr>
-                <th>선택</th>
-                <th>재고ID</th>
-                <th>고객ID</th>
-                <th>상품ID</th>
-                <!-- 수량 정렬링크 -->
-                <c:url var="sortAscUrl"  value="/admin/pages/inventory/inventory-1/search">
-                    <c:param name="page"      value="${currentPage}" />
-                    <c:param name="category1" value="${param.category1}" />
-                    <c:param name="category2" value="${param.category2}" />
-                    <c:param name="category3" value="${param.category3}" />
-                    <c:param name="searchType" value="${param.searchType}" />
-                    <c:param name="keyword"   value="${param.keyword}" />
-                    <c:param name="sortBy"    value="asc" />
-                </c:url>
-                <c:url var="sortDescUrl" value="/admin/pages/inventory/inventory-1/search">
-                    <c:param name="page"      value="${currentPage}" />
-                    <c:param name="category1" value="${param.category1}" />
-                    <c:param name="category2" value="${param.category2}" />
-                    <c:param name="category3" value="${param.category3}" />
-                    <c:param name="searchType" value="${param.searchType}" />
-                    <c:param name="keyword"   value="${param.keyword}" />
-                    <c:param name="sortBy"    value="desc" />
-                </c:url>
-                <th>
-                    수량
-                    <a href="${sortAscUrl}"  title="오름차순">▲</a>
-                    <a href="${sortDescUrl}" title="내림차순">▼</a>
-                </th>
-                <th>창고ID</th>
-                <th>창고명</th>
-                <th>창고구역</th>
-                <th>최종입고일</th>
-                <th>최종출고일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="inventory" items="${List}" varStatus="status">
-                <tr
-                        data-inventory-id="${inventory.inventoryId}"
-                        data-prod-id      ="${inventory.prodId}"
-                        data-ware-id      ="${inventory.wareId}"
-                >
-                    <td>
-                        <input type="checkbox"
-                               name="selectedIndexes"
-                               value="${inventory.inventoryId}" />
-                    </td>
-                    <td>${inventory.inventoryId}</td>
-                    <td>${inventory.clientId}</td>
-                    <td>${inventory.prodId}</td>
-                    <td>${inventory.quantity}</td>
-                    <td>${inventory.wareId}</td>
-                    <td>${inventory.wareName}</td>
-                    <td>${inventory.warePosition}</td>
-                    <td>
-                        <fmt:formatDate
-                                value="${inventory.lastInboundDate}"
-                                pattern="yyyy.MM.dd" />
-                    </td>
-                    <td>
-                        <fmt:formatDate
-                                value="${inventory.lastOutboundDate}"
-                                pattern="yyyy.MM.dd" />
-                    </td>
-                </tr>
-            </c:forEach>
-            <c:if test="${empty List}">
+    <div id="tableContainer">
+        <div class="table-wrapper">
+            <table id="contractTable">
+                <thead>
                 <tr>
-                    <td colspan="10">검색 결과가 없습니다.</td>
+                    <th>선택</th>
+                    <th>재고ID</th>
+                    <th>고객ID</th>
+                    <th>상품ID</th>
+                    <!-- 수량 정렬링크 -->
+                    <c:url var="sortAscUrl"  value="/admin/pages/inventory/inventory-1/search">
+                        <c:param name="page"      value="${currentPage}" />
+                        <c:param name="category1" value="${param.category1}" />
+                        <c:param name="category2" value="${param.category2}" />
+                        <c:param name="category3" value="${param.category3}" />
+                        <c:param name="searchType" value="${param.searchType}" />
+                        <c:param name="keyword"   value="${param.keyword}" />
+                        <c:param name="sortBy"    value="asc" />
+                    </c:url>
+                    <c:url var="sortDescUrl" value="/admin/pages/inventory/inventory-1/search">
+                        <c:param name="page"      value="${currentPage}" />
+                        <c:param name="category1" value="${param.category1}" />
+                        <c:param name="category2" value="${param.category2}" />
+                        <c:param name="category3" value="${param.category3}" />
+                        <c:param name="searchType" value="${param.searchType}" />
+                        <c:param name="keyword"   value="${param.keyword}" />
+                        <c:param name="sortBy"    value="desc" />
+                    </c:url>
+                    <th>
+                        수량
+                        <a href="${sortAscUrl}"  title="오름차순">▲</a>
+                        <a href="${sortDescUrl}" title="내림차순">▼</a>
+                    </th>
+                    <th>창고ID</th>
+                    <th>창고명</th>
+                    <th>창고구역</th>
+                    <th>최종입고일</th>
+                    <th>최종출고일</th>
                 </tr>
-            </c:if>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <c:forEach var="inventory" items="${List}" varStatus="status">
+                    <tr
+                            data-inventory-id="${inventory.inventoryId}"
+                            data-prod-id      ="${inventory.prodId}"
+                            data-ware-id      ="${inventory.wareId}"
+                    >
+                        <td>
+                            <input type="checkbox"
+                                   name="selectedIndexes"
+                                   value="${inventory.inventoryId}" />
+                        </td>
+                        <td>${inventory.inventoryId}</td>
+                        <td>${inventory.clientId}</td>
+                        <td>${inventory.prodId}</td>
+                        <td>${inventory.quantity}</td>
+                        <td>${inventory.wareId}</td>
+                        <td>${inventory.wareName}</td>
+                        <td>${inventory.warePosition}</td>
+                        <td><fmt:formatDate value="${inventory.lastInboundDate}"  pattern="yyyy.MM.dd" /></td>
+                        <td><fmt:formatDate value="${inventory.lastOutboundDate}" pattern="yyyy.MM.dd" /></td>
+                    </tr>
+                </c:forEach>
+                <c:if test="${empty List}">
+                    <tr>
+                        <td colspan="10">검색 결과가 없습니다.</td>
+                    </tr>
+                </c:if>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Pagination Block -->
         <c:if test="${totalPages > 1}">
             <div class="pagination" style="margin-top: 20px; text-align: center;">
                 <ul style="display: inline-flex; list-style: none; padding: 0;">
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <li style="margin: 0 5px;">
                             <c:url var="pageUrl" value="/admin/pages/inventory/inventory-1/search">
-                                <c:param name="page" value="${i}" />
+                                <c:param name="page"       value="${i}" />
                                 <c:param name="searchType" value="${param.searchType}" />
-                                <c:param name="keyword" value="${param.keyword}" />
-                                <c:param name="category1" value="${param.category1}" />
-                                <c:param name="category2" value="${param.category2}" />
-                                <c:param name="category3" value="${param.category3}" />
-                                <c:param name="sortBy" value="${param.sortBy}" />
+                                <c:param name="keyword"    value="${param.keyword}" />
+                                <c:param name="category1"  value="${param.category1}" />
+                                <c:param name="category2"  value="${param.category2}" />
+                                <c:param name="category3"  value="${param.category3}" />
+                                <c:param name="sortBy"     value="${param.sortBy}" />
                             </c:url>
                             <a href="${pageUrl}"
                                style="padding: 6px 12px; text-decoration: none; border: 1px solid #ccc; border-radius: 4px;
@@ -329,11 +332,12 @@
             </div>
         </c:if>
     </div>
-</div>
 
 
 
-<%--모달--%><!-- 백드롭 -->
+
+
+    <%--모달--%><!-- 백드롭 -->
 <div id="modalBackdrop"></div>
 
 <!-- 수정용 모달 -->
@@ -476,59 +480,75 @@
 
 <!-- 진짜 비동기 AJAX 드랍다운 JS -->
 <script>
-    window.onload = function() {
-        document.getElementById("category1").addEventListener("change", function(e) {
-            e.preventDefault();
-            console.log("test");
-            const category1 = this.value;
-            const category2 = document.getElementById("category2");
-            const category3 = document.getElementById("category3");
+    window.addEventListener('DOMContentLoaded', () => {
+        const form      = document.getElementById('inventorySearchForm');
+        const c1        = document.getElementById('category1');
+        const c2        = document.getElementById('category2');
+        const c3        = document.getElementById('category3');
 
-            // 중분류, 소분류 초기화
-            category2.innerHTML = '<option value="">중분류 선택</option>';
-            category3.innerHTML = '<option value="">소분류 선택</option>';
+        // --- 이 함수 하나만 추가 ---
+        async function refreshTable() {
+            const url  = form.action + '?' + new URLSearchParams(new FormData(form));
+            const res  = await fetch(url);
+            const html = await res.text();
+            const doc  = new DOMParser().parseFromString(html, 'text/html');
 
-            if (category1) {
-                fetch(`/admin/pages/inventory/inventory-1/getMidCategories?category1=`+ encodeURIComponent(category1))
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(midCategory => {
-                            const option = document.createElement("option");
-                            option.value = midCategory;
-                            option.textContent = midCategory;
-                            category2.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('중분류 불러오기 실패:', error));
+            // 1) #tableContainer 전체를 새로 교체
+            const newContainer = doc.querySelector('#tableContainer');
+            document.querySelector('#tableContainer').innerHTML = newContainer.innerHTML;
+
+            // 2) (선택) 주소창에 쿼리 반영
+            if (history.replaceState) {
+                history.replaceState(null, '', url);
+            }
+            // 3) URL 업데이트 (브라우저 주소 줄에 파라미터 반영)
+            history.replaceState(null, '', url);
+        }
+
+        // 대분류 변경 → 중/소 초기화 → 중분류 fetch → 테이블 리프레시
+        c1.addEventListener('change', function() {
+            c2.innerHTML = '<option value="">중분류 선택</option>';
+            c3.innerHTML = '<option value="">소분류 선택</option>';
+
+            if (this.value) {
+                fetch('/admin/pages/inventory/inventory-1/getMidCategories?category1=' + encodeURIComponent(this.value))
+                    .then(r => r.json())
+                    .then(list => list.forEach(mid => {
+                        const opt = document.createElement('option');
+                        opt.value = mid; opt.textContent = mid;
+                        c2.appendChild(opt);
+                    }))
+                    .catch(console.error)
+                    .finally(refreshTable);
+            } else {
+                refreshTable();
             }
         });
 
-        document.getElementById("category2").addEventListener("change", function(e) {
-            e.preventDefault();
-            const category2 = this.value;
-            const category3 = document.getElementById("category3");
+        // 중분류 변경 → 소 초기화 → 소분류 fetch → 테이블 리프레시
+        c2.addEventListener('change', function() {
+            c3.innerHTML = '<option value="">소분류 선택</option>';
 
-            // 소분류 초기화
-            category3.innerHTML = '<option value="">소분류 선택</option>';
-
-            if (category2) {
-                fetch(`/admin/pages/inventory/inventory-1/getSmallCategories?category2=`+encodeURIComponent(category2))
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(subCategory => {
-                            const option = document.createElement("option");
-                            option.value = subCategory;
-                            option.textContent = subCategory;
-                            category3.appendChild(option);
-                        });
-                    })
-                    .catch(error => console.error('소분류 불러오기 실패:', error));
+            if (this.value) {
+                fetch('/admin/pages/inventory/inventory-1/getSmallCategories?category2=' + encodeURIComponent(this.value))
+                    .then(r => r.json())
+                    .then(list => list.forEach(sub => {
+                        const opt = document.createElement('option');
+                        opt.value = sub; opt.textContent = sub;
+                        c3.appendChild(opt);
+                    }))
+                    .catch(console.error)
+                    .finally(refreshTable);
+            } else {
+                refreshTable();
             }
         });
-    };
 
-
+        // 소분류 변경 → 바로 테이블 리프레시
+        c3.addEventListener('change', refreshTable);
+    });
 </script>
+
 
 <script>
     function showAlert(){
@@ -541,5 +561,5 @@
 </script>
 
 
-
+</div>
 </body>
