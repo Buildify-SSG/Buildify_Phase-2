@@ -22,10 +22,10 @@
                 <input type="number" class="form-control" name="prodPrice" required>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">상품 코드</label>
-                <input type="number" class="form-control" name="prodCode" required>
-            </div>
+<%--            <div class="mb-3">--%>
+<%--                <label class="form-label">상품 코드</label>--%>
+<%--                <input type="number" class="form-control" name="prodCode" required>--%>
+<%--            </div>--%>
 
             <div class="mb-3">
                 <label class="form-label">상품 크기 (cm³)</label>
