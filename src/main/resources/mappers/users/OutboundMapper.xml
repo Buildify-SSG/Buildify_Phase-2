@@ -3,18 +3,59 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.OutboundMapper">
+<mapper namespace="com.wareflow.buildify.domain.user.outbound.mapper.UserOutboundMapper">
+
+    <select id="outboundInsertList" resultType="com.wareflow.buildify.vo.OutboundInventoryVO">
+        select
+            i.inventory_id as inventoryId,
+            i.prod_id as prodId,
+            i.client_id as clientId,
+            i.quantity as quantity,
+            i.ware_id as wareId,
+            i.last_inbound_date as lastInboundDate,
+            i.last_outbound_date as lastOutboundDate,
+            i.warehouse_pos_x as warehousePosX,
+            i.warehouse_pos_y as warehousePosY,
+            p.prod_name as prodName,
+            p.prod_size as prodSize,
+            p.prod_price as prodPrice
+        from inventory i
+        join product p on i.prod_id = p.prod_id
+        where i.client_id = #{clientId}
+    </select>
 
     <select id="outboundlist" resultType="com.wareflow.buildify.vo.OutboundVO">
         select o.client_id as clientId,
                p.prod_name as prodName,
-               o.quantity as quantitiy
+               o.quantity as quantity,
                o.req_outbound_date as reqOutboundDate,
                o.outbound_process_date as outboundProcessDate,
                o.ware_id as wareId,
                o.status as status
-        form outbound o join product p ON o.pred_id = p.prod_id
+        from outbound o join product p ON o.prod_id = p.prod_id
+        where o.client_id = #{clientId}
 
     </select>
+
+    <select id="outboundInsertInfo" parameterType="list" resultType="com.wareflow.buildify.dto.OutboundInventoryDTO">
+        SELECT i.prod_id, p.prod_name, p.prod_price, p.prod_size, i.quantity, i.inventory_id
+        FROM inventory i JOIN product p on i.prod_id = p.prod_id
+        WHERE i.inventory_id IN
+        <foreach item="id" collection="inventoryId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertOutnboundRequest" statementType="CALLABLE" parameterType="com.wareflow.buildify.dto.InventoryDTO">
+        {CALL outbound_request(
+            #{inventoryId},
+            #{quantity}
+        )}
+    </insert>
+
+
+
+
+
     <!-- 여기에 SQL 정의 들어감 -->
 </mapper>

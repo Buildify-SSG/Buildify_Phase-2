@@ -1,9 +1,14 @@
-package com.wareflow.buildify.domain.user.outbound.service;
+package com.wareflow.buildify.domain.admin.outbound.service;
 
+import com.wareflow.buildify.domain.admin.inbound.mapper.AdminInboundMapper;
+import com.wareflow.buildify.domain.admin.outbound.mapper.AdminOutboundMapper;
 import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
-import com.wareflow.buildify.domain.user.outbound.mapper.UserOutboundMapper;
-import com.wareflow.buildify.dto.*;
-import com.wareflow.buildify.vo.*;
+import com.wareflow.buildify.dto.AdminOutboundRequestDTO;
+import com.wareflow.buildify.dto.InventoryDTO;
+import com.wareflow.buildify.dto.OutboundDTO;
+import com.wareflow.buildify.dto.OutboundInventoryDTO;
+import com.wareflow.buildify.vo.OutboundInventoryVO;
+import com.wareflow.buildify.vo.OutboundVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -11,68 +16,47 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
 @Transactional
-public class UserOutboundServiceImpl implements UserOutboundService{
-    private final UserOutboundMapper userOutboundMapper;
-
-
+public class AdminOutboundServiceImpl implements AdminOutboundService{
+    private final AdminOutboundMapper adminOutboundMapper;
     @Override
-    public List<OutboundInventoryDTO> outboundInsertList() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
-
-        OutboundInventoryVO VO = new OutboundInventoryVO();
-        VO.setClientId(userDetails.getClientId());
-
-        log.info("아웃바운드인서트리스트1111");
-        List<OutboundInventoryVO> voList = userOutboundMapper.outboundInsertList(VO);
+    public List<OutboundInventoryDTO> outboundCheckList() {
+        List<OutboundInventoryVO> voList = adminOutboundMapper.outboundCheckList();
         log.info("아웃바운드인서트리스트2222");
         log.info("아웃바운드인서트리스트 사이즈: {}", voList.size());
 
         List<OutboundInventoryDTO> dtoList = new ArrayList<>();
         for (OutboundInventoryVO outboundInventoryVO : voList) {
             OutboundInventoryDTO outboundInventoryDTO = OutboundInventoryDTO.builder()
-                    .inventoryId(outboundInventoryVO.getInventoryId())
+                    .outboundId(outboundInventoryVO.getOutboundId())
                     .prodId(outboundInventoryVO.getProdId())
                     .clientId(outboundInventoryVO.getClientId())
                     .quantity(outboundInventoryVO.getQuantity())
                     .wareId(outboundInventoryVO.getWareId())
-                    .lastInboundDate(outboundInventoryVO.getLastInboundDate())
-                    .lastOutboundDate(outboundInventoryVO.getLastOutboundDate())
                     .warehousePosX(outboundInventoryVO.getWarehousePosX())
                     .warehousePosY(outboundInventoryVO.getWarehousePosY())
                     .prodName(outboundInventoryVO.getProdName())
                     .prodPrice(outboundInventoryVO.getProdPrice())
                     .prodSize(outboundInventoryVO.getProdSize())
+                    .inventoryId(outboundInventoryVO.getInventoryId())
                     .build();
             dtoList.add(outboundInventoryDTO);
         }
         return dtoList;
+
     }
 
     @Override
-    public List<OutboundDTO> outboundList() {
+    public List<OutboundDTO> adminOutboundList() {
         log.info("아웃바운드리스트 서비스");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
 
-        String a = userDetails.getClientId();
-
-
-
-        List<OutboundVO> vo = userOutboundMapper.outboundlist(a);
+        List<OutboundVO> vo = adminOutboundMapper.adminOutboundList();
 
         List<OutboundDTO> dtoList = new ArrayList<>();
         for (OutboundVO outboundVOVO : vo) {
@@ -91,24 +75,22 @@ public class UserOutboundServiceImpl implements UserOutboundService{
     }
 
     @Override
-    public List<OutboundInventoryDTO> outboundInsertInfo(List<String> inventoryIds) {
+    public List<OutboundInventoryDTO> adminOutboundCheckInfo(List<String> outboundIds) {
         log.info("유저 아웃바운드 모달인포 서비스");
-        return userOutboundMapper.outboundInsertInfo(inventoryIds);
+        return adminOutboundMapper.adminOutboundCheckInfo(outboundIds);
 
     }
 
     @Override
-    public void insertOutnboundRequests(List<InventoryDTO> list) {
+    public void adminOutnboundRequests(List<AdminOutboundRequestDTO> list) {
         log.info("유저 아웃바운드 리퀘스트 서비스 진입");
 
-
-            for (InventoryDTO dto : list) {
-                userOutboundMapper.insertOutnboundRequest(dto);
-            }
+        for (AdminOutboundRequestDTO dto : list) {
+            adminOutboundMapper.updateInventory(dto);
+            adminOutboundMapper.updateOutbound(dto);
+            adminOutboundMapper.updateUserWarehouse(dto);
         }
-
-            }
-
+    }
 
 
-
+}

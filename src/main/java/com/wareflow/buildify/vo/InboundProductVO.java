@@ -2,6 +2,7 @@ package com.wareflow.buildify.vo;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -22,4 +23,5 @@ public class InboundProductVO {
     private String inboundProcessDate;
     private String prodName;
     private int prodPrice;
+    private BigDecimal prodSize;
 }

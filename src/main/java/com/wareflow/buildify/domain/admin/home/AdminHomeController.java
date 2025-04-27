@@ -89,18 +89,18 @@ public class AdminHomeController {
         return "admin/layouts/adminlayout";
     }
 
-    // outbound
-    @GetMapping("/pages/outbound/outbound-1")
-    public String outbound1(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-1.jsp");
-        return "admin/layouts/adminlayout";
-    }
 
-    @GetMapping("/pages/outbound/outbound-2")
-    public String outbound2(Model model) {
-        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-2.jsp");
-        return "admin/layouts/adminlayout";
-    }
+//    @GetMapping("/pages/outbound/outbound-1")
+//    public String outbound1(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-1.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
+//
+//    @GetMapping("/pages/outbound/outbound-2")
+//    public String outbound2(Model model) {
+//        model.addAttribute("body", "/WEB-INF/views/admin/pages/outbound/outbound-2.jsp");
+//        return "admin/layouts/adminlayout";
+//    }
 
     @GetMapping("/pages/outbound/outbound-3")
     public String outbound3(Model model) {

@@ -3,6 +3,116 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wareflow.buildify.mapper.OutboundMapper">
+<mapper namespace="com.wareflow.buildify.domain.admin.outbound.mapper.AdminOutboundMapper">
     <!-- 여기에 SQL 정의 들어감 -->
+
+    <select id="outboundCheckList" resultType="com.wareflow.buildify.vo.OutboundInventoryVO">
+        select
+            o.outbound_id as outboundId,
+            o.prod_id as prodId,
+            o.client_id as clientId,
+            o.quantity as quantity,
+            o.ware_id as wareId,
+            o.warehouse_pos_x as warehousePosX,
+            o.warehouse_pos_y as warehousePosY,
+            o.status as status,
+            p.prod_name as prodName,
+            p.prod_size as prodSize,
+            p.prod_price as prodPrice
+        from outbound o
+
+                 join product p on o.prod_id = p.prod_id
+        where o.status = 0
+    </select>
+
+    <select id="adminOutboundList" resultType="com.wareflow.buildify.vo.OutboundVO">
+        select o.client_id as clientId,
+               p.prod_name as prodName,
+               o.quantity as quantity,
+               o.req_outbound_date as reqOutboundDate,
+               o.outbound_process_date as outboundProcessDate,
+               o.ware_id as wareId,
+               o.status as status
+        from outbound o join product p ON o.prod_id = p.prod_id
+
+
+    </select>
+
+    <select id="adminOutboundCheckInfo" parameterType="list" resultType="com.wareflow.buildify.dto.OutboundInventoryDTO">
+        SELECT o.prod_id, p.prod_name, p.prod_price, p.prod_size, o.quantity, o.outbound_id
+        FROM outbound o JOIN product p on o.prod_id = p.prod_id
+        WHERE o.outbound_id IN
+        <foreach item="id" collection="outboundIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+<!--    <update id="adminOutnboundRequests">-->
+<!--        <foreach collection="list" item="item" separator=";">-->
+<!--            UPDATE inventory-->
+<!--            SET quantity = quantity - #{item.quantity}-->
+<!--            WHERE prod_id = #{item.prodId}-->
+<!--              AND client_id = (SELECT client_id FROM outbound WHERE outbound_id = #{item.outboundId})-->
+<!--              AND warehouse_pos_x = (SELECT warehouse_pos_x FROM outbound WHERE outbound_id = #{item.outboundId})-->
+<!--              AND warehouse_pos_y = (SELECT warehouse_pos_y FROM outbound WHERE outbound_id = #{item.outboundId});-->
+
+<!--            UPDATE outbound-->
+<!--            SET status = 1,-->
+<!--                outbound_process_date = NOW()-->
+<!--            WHERE outbound_id = #{item.outboundId};-->
+
+<!--            UPDATE userWarehouse-->
+<!--            SET warehouse_usage = warehouse_usage - (-->
+<!--                #{item.quantity} *-->
+<!--                (SELECT p.prod_size-->
+<!--                 FROM product p-->
+<!--                 JOIN inventory i ON p.prod_id = i.prod_id AND p.client_id = i.client_id-->
+<!--                 WHERE i.prod_id = #{item.prodId}-->
+<!--                 LIMIT 1)-->
+<!--            )-->
+<!--            WHERE client_id = (SELECT client_id FROM outbound WHERE outbound_id = #{item.outboundId})-->
+<!--              AND ware_id = (SELECT ware_id FROM outbound WHERE outbound_id = #{item.outboundId})-->
+<!--              AND warehouse_pos_x = (SELECT warehouse_pos_x FROM outbound WHERE outbound_id = #{item.outboundId})-->
+<!--              AND warehouse_pos_y = (SELECT warehouse_pos_y FROM outbound WHERE outbound_id = #{item.outboundId});-->
+<!--        </foreach>-->
+<!--    </update>-->
+
+    <update id="updateInventory">
+
+        UPDATE inventory i
+            JOIN outbound o ON i.prod_id = o.prod_id
+            AND i.client_id = o.client_id
+            AND i.warehouse_pos_x = o.warehouse_pos_x
+            AND i.warehouse_pos_y = o.warehouse_pos_y
+            SET i.quantity = i.quantity - o.quantity
+        WHERE o.outbound_id = #{outboundId}
+    </update>
+
+    <update id="updateOutbound">
+
+            UPDATE outbound
+            SET status = 1,
+            outbound_process_date = NOW()
+            WHERE outbound_id = #{outboundId}
+
+    </update>
+
+    <update id="updateUserWarehouse">
+
+
+            UPDATE userWareHouse uw
+                JOIN outbound o ON uw.client_id = o.client_id
+                AND uw.ware_id = o.ware_id
+                AND uw.warehouse_pos_x = o.warehouse_pos_x
+                AND uw.warehouse_pos_y = o.warehouse_pos_y
+                JOIN product p ON o.prod_id = p.prod_id
+                SET uw.warehouse_usage = uw.warehouse_usage - (o.quantity * p.prod_size)
+            WHERE o.outbound_id = #{outboundId}
+
+    </update>
+
+
+
+
 </mapper>
