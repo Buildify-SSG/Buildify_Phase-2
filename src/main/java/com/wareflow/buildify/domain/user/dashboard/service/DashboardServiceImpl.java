@@ -2,6 +2,7 @@ package com.wareflow.buildify.domain.user.dashboard.service;
 
 import com.wareflow.buildify.domain.auth.login.security.CustomUserDetails;
 import com.wareflow.buildify.domain.user.dashboard.mapper.DashboardMapper;
+import com.wareflow.buildify.domain.user.warehouse.mapper.UserWarehouseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
