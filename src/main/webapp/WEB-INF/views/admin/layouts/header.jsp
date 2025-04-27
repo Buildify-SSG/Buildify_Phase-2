@@ -1,6 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%-- debug --%>
 <% System.out.println("💬 JSP에서 loginAdmin: " + request.getAttribute("loginAdmin")); %>
+
+<!-- 로그아웃 URL 미리 생성 -->
+<c:url var="logoutUrl" value="/logout"/>
+
 <nav class="navbar navbar-expand navbar-light navbar-bg">
     <a class="sidebar-toggle js-sidebar-toggle">
         <i class="hamburger align-self-center"></i>
@@ -167,6 +171,9 @@
                     </div>
                 </div>
             </li>
+
+            <form id="logoutForm" action="${logoutUrl}" method="post" style="display:none;"></form>
+
             <li class="nav-item dropdown">
                 <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                     <i class="align-middle" data-feather="settings"></i>
@@ -191,7 +198,9 @@
                     <a class="dropdown-item" href="<c:url value='admin/pages/index' />"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
                     <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Log out</a>
+                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                        <i class="align-middle me-1" data-feather="log-out"></i> Log out
+                    </a>
                 </div>
             </li>
         </ul>

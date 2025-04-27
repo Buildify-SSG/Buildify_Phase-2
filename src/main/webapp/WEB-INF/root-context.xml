@@ -23,6 +23,7 @@ com.wareflow.buildify.domain.user.outbound.mapper,
 com.wareflow.buildify.domain.user.inbound.mapper,
 com.wareflow.buildify.domain.user.inventory.mapper,
 com.wareflow.buildify.domain.user.warehouse.mapper,
+com.wareflow.buildify.domain.user.dashboard.mapper,
 com.wareflow.buildify.common.mapper" />
 
 

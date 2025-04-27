@@ -20,4 +20,6 @@ public class InventoryFilterDTO {
     private String keyword;      // 검색어
 
     private String sortBy;
+
+    private String clientId;
 }

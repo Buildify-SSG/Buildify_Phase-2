@@ -39,7 +39,13 @@ public class AdminWarehouseLeaseController{
         log.info("계약 조회 시작");
         List<WarehouseLeaseDTO> warehouseLeaseDTOList = adminWarehouseLeaseService.getUserLeaseInfo();
         log.info("컨트롤러 DTO Size : {}",warehouseLeaseDTOList.size());
-
+        String msg;
+        if (warehouseLeaseDTOList.isEmpty()){
+            msg = "현재 계약된 창고가 없습니다.";
+        } else {
+            msg = "Export Excel Success";
+        }
+        model.addAttribute("msg", msg);
         Pagination.paginate(model, warehouseLeaseDTOList, page, "/WEB-INF/views/admin/pages/systemOperation/systemOperation-2.jsp");
         return "admin/layouts/adminlayout";
     }
@@ -86,9 +92,15 @@ public class AdminWarehouseLeaseController{
     }
 
     @GetMapping("/systemOperation-2/api/excel")
-    public void adminWarehouseLeaseInfoExportExcel(HttpServletResponse response) {
+    public String  adminWarehouseLeaseInfoExportExcel(HttpServletResponse response,Model model) {
 
         List<WarehouseLeaseDTO> data = adminWarehouseLeaseService.getUserLeaseInfo();
-        exportExcel.exportExcel(data, response, "adminUserWareLeaseInfo");
+        if (!data.isEmpty()) {
+            exportExcel.exportExcel(data, response, "adminUserWareLeaseInfo");
+        }else {
+            model.addAttribute("body","/WEB-INF/views/admin/pages/systemOperation/systemOperation-2.jsp");
+            return "admin/layouts/adminlayout";
+        }
+        return null;
     }
 }

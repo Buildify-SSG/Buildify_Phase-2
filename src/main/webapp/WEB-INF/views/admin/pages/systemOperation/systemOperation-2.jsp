@@ -230,11 +230,11 @@
 
         <div class="export-buttons" style="display: flex; gap: 10px;">
             <form method="get" action="/admin/pages/systemOperation/systemOperation-2/api/excel" style="margin: 0;">
-                <button>exportExcel</button>
+                <button onclick="showAlert()">exportExcel</button>
             </form>
-            <form method="get" action="/admin/pages/systemOperation/systemOperation-2/api/pdf" style="margin: 0;">
-                <button>exportPDF</button>
-            </form>
+<%--            <form method="get" action="/admin/pages/systemOperation/systemOperation-2/api/pdf" style="margin: 0;">--%>
+<%--                <button>exportPDF</button>--%>
+<%--            </form>--%>
         </div>
     </div>
 
@@ -498,5 +498,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </div>
+
+<script>
+    function showAlert() {
+        <c:if test="${not empty msg}">
+        alert("${msg}");
+        </c:if>
+    }
+</script>
 
 </body>
