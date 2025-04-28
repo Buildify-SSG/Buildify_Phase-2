@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+
     <meta charset="UTF-8">
     <title>유저 대시보드</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,7 +80,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
+            color: white;
+            background-color: cadetblue;   /* 연한 하늘색 예시 */
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             font-style: italic;
         }
 
@@ -131,6 +135,19 @@
             margin-bottom: 12px;
             font-size: 16px;
         }
+
+        .scrollable-warehouse-cards {
+            max-height: 400px; /* 적절히 조절 가능 */
+            overflow-y: auto;
+            padding-right: 8px; /* 스크롤 여백 */
+        }
+        .scrollable-warehouse-cards::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-warehouse-cards::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -161,13 +178,28 @@
 
             <!-- 플레이스홀더: 창고 섹션 -->
             <div class="warehouse-section">
-                <h3>창고 현황 (추후 데이터 주입)</h3>
-                <div class="warehouse-cards">
-                    <div class="warehouse-card">Warehouse A</div>
-                    <div class="warehouse-card">Warehouse B</div>
-                    <div class="warehouse-card">Warehouse C</div>
+                <h3>📦 내 창고 현황</h3>
+                <div class="warehouse-cards scrollable-warehouse-cards">
+                    <c:forEach var="w" items="${myWarehouses}">
+                        <div class="warehouse-card">
+                            <div>
+                                <strong>위치:</strong> ${w.warehousePosX}${w.warehousePosY}<br/>
+                                <strong>지역:</strong>
+                                <c:choose>
+                                    <c:when test="${w.wareId == 'W001'}">서울 창고</c:when>
+                                    <c:when test="${w.wareId == 'W002'}">판교 창고</c:when>
+                                    <c:when test="${w.wareId == 'W003'}">부산 창고</c:when>
+                                    <c:when test="${w.wareId == 'W004'}">대구 창고</c:when>
+                                    <c:when test="${w.wareId == 'W005'}">인천 창고</c:when>
+                                </c:choose><br/>
+                                <strong>사용률:</strong> ${w.warehouseUsage}%<br/>
+                                <strong>남은 계약일:</strong> ${w.remainingDays}일
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
+
 
             <!-- 오늘의 날씨 -->
             <div class="notice-card">
@@ -242,67 +274,81 @@
     }
 
     function drawCharts() {
-        // 입고 차트
-        new Chart(document.getElementById('inboundChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['오늘 요청', '오늘 승인', '주간 요청', '주간 승인'],
-                datasets: [{
-                    label: '입고',
-                    data: [
-                        ${countDayInboundRequest},
-                        ${countDayInboundApproval},
-                        ${countWeekInboundRequest},
-                        ${countWeekInboundApproval}
-                    ]
-                }]
+        var inboundData = [ ${countDayInboundRequest}, ${countDayInboundApproval},
+            ${countWeekInboundRequest}, ${countWeekInboundApproval} ];
+        var outboundData = [ ${countDayOutboundRequest}, ${countDayOutboundApproval},
+            ${countWeekOutboundRequest}, ${countWeekOutboundApproval} ];
+
+        var commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,  // → 높이를 고정해서 컨테이너에 꽉 차게
+            legend: { display: false },  // → 데이터셋이 하나면 범례는 숨김
+            layout: {
+                padding: { top: 8, right: 8, bottom: 8, left: 8 }
             },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                            precision: 0
-                        }
+            scales: {
+                xAxes: [{
+                    gridLines: { display: false },  // → X축 그리드 없앰
+                    ticks: {
+                        fontSize: 12,
+                        fontColor: '#666'
                     }
-                }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: 'rgba(0,0,0,0.05)',     // → 연한 그리드
+                        zeroLineColor: 'rgba(0,0,0,0.1)'
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        min: 0,
+                        stepSize: 1,
+                        fontSize: 12,
+                        fontColor: '#666',
+                        callback: function(v) { return v; }
+                    }
+                }]
             }
-        });
+        };
+
+        // 입고 차트
+        new Chart(
+            document.getElementById('inboundChart').getContext('2d'),
+            {
+                type: 'bar',
+                data: {
+                    labels: ['오늘 요청','오늘 승인','주간 요청','주간 승인'],
+                    datasets: [{
+                        label: '입고',
+                        data: inboundData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',  // → 은은한 바 색
+                        barPercentage: 0.6
+                    }]
+                },
+                options: commonOptions
+            }
+        );
 
         // 출고 차트
-        new Chart(document.getElementById('outboundChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['오늘 요청', '오늘 승인', '주간 요청', '주간 승인'],
-                datasets: [{
-                    label: '출고',
-                    data: [
-                        ${countDayOutboundRequest},
-                        ${countDayOutboundApproval},
-                        ${countWeekOutboundRequest},
-                        ${countWeekOutboundApproval}
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                            precision: 0
-                        }
-                    }
-                }
+        new Chart(
+            document.getElementById('outboundChart').getContext('2d'),
+            {
+                type: 'bar',
+                data: {
+                    labels: ['오늘 요청','오늘 승인','주간 요청','주간 승인'],
+                    datasets: [{
+                        label: '출고',
+                        data: outboundData,
+                        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                        barPercentage: 0.6
+                    }]
+                },
+                options: commonOptions
             }
-        });
+        );
     }
 
-
-    window.addEventListener('load', () => {
+    window.addEventListener('load', function() {
         loadNews();
         setInterval(rotateNews, 15000);
         drawCharts();

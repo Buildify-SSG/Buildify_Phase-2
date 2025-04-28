@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
                 .brand(productDTO.getBrand())
                 .prodName(productDTO.getProdName())
                 .prodPrice(productDTO.getProdPrice())
-                .prodCode(productDTO.getProdCode())
+                .prodCode(generateRandom8DigitString())
                 .prodSize(productDTO.getProdSize())
                 .prodCategoryid(productDTO.getProdCategoryid())
                 .clientId(productDTO.getClientId())
@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductVO> productVOList = productMapper.selectProductList(clientId);
 
         return productVOList.stream().map(vo -> ProductDTO.builder()
-                .prodId(vo.getProdId())
+                        .prodId(vo.getProdId())
                         .brand(vo.getBrand())
                         .prodName(vo.getProdName())
                         .prodPrice(vo.getProdPrice())
@@ -91,6 +91,18 @@ public class ProductServiceImpl implements ProductService {
                         .clientId(clientId)
                         .build())
                 .collect(Collectors.toList());
+    }
+
+
+    public Integer generateRandom8DigitString() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < 8; i++) {
+            sb.append(random.nextInt(10));
+        }
+
+        return Integer.parseInt(sb.toString());
     }
 
 }

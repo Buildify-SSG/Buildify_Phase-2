@@ -206,6 +206,7 @@
     const map = new kakao.maps.Map(document.getElementById('map'), { center: new kakao.maps.LatLng(lat, lng), level: 5 });
     const marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng), map });
     let infowindow = new kakao.maps.InfoWindow({ content: '<div style="padding:5px;">'+ dropdown.selectedOptions[0].dataset.name +'</div>' });
+    const name = dropdown.selectedOptions[0].dataset.name;
     infowindow.open(map, marker);
 
     dropdown.addEventListener('change', e => updateGridAndMap(e.target.value));
@@ -223,7 +224,15 @@
         lat = parseFloat(dropdown.selectedOptions[0].dataset.lat);
         lng = parseFloat(dropdown.selectedOptions[0].dataset.lng);
         marker.setPosition(new kakao.maps.LatLng(lat, lng)); map.setCenter(marker.getPosition());
-        infowindow.setContent('<div style="padding:5px;">'+dropdown.selectedOptions[0].dataset.name+'</div>');
+        // infowindow.setContent('<div style="padding:5px;">'+dropdown.selectedOptions[0].dataset.name+'</div>');
+        const newName = dropdown.selectedOptions[0].dataset.name;
+        infowindow.setContent(
+            '<div style="padding:2px;">' +
+            newName +
+            '</div>'
+        );
+        //infowindow.setContent(`<div style="padding:5px;">${newName}</div>`);
+        infowindow.open(map, marker);
     }
 
     function toggleCell() {
