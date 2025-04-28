@@ -358,7 +358,7 @@ document.addEventListener('submit', async function (e) {
         const formData = new FormData(form);
         const inboundIds = formData.getAll('inboundIds');
         const clientIds = formData.getAll('clientIds');
-        const quantitis = formData.getAll('quantitis');
+        const quantity = formData.getAll('quantity');
         const wareIds = formData.getAll('wareIds'); // <-- Fix ReferenceError by retrieving wareIds
         const warehousePosXs = formData.getAll('warehousePosXs');
         const warehousePosYs = formData.getAll('warehousePosYs');
@@ -366,7 +366,7 @@ document.addEventListener('submit', async function (e) {
 
         console.log("📦 전송할 인바운드 ID:", inboundIds);
         console.log("📦 전송할 고객 ID:", clientIds);
-        console.log("📦 전송할 상품 수량:", quantitis);
+        console.log("📦 전송할 상품 수량:", quantity);
         console.log("📦 전송할 창고:", wareIds);
         console.log("📦 전송할 x축:", warehousePosXs);
         console.log("📦 전송할 y축:", warehousePosYs);
@@ -376,8 +376,10 @@ document.addEventListener('submit', async function (e) {
             const res = await fetch('/admin/pages/inbound/inbound-1/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ inboundIds, clientIds, quantitis, wareIds, warehousePosXs, warehousePosYs, prodSizes })
+                body: JSON.stringify({ inboundIds, clientIds, quantity, wareIds, warehousePosXs, warehousePosYs, prodSizes })
             });
+
+            console.log(res);
 
             if (res.ok) {
                 alert("입고 요청이 성공적으로 등록되었습니다.");
