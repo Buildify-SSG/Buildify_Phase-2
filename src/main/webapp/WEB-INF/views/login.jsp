@@ -225,10 +225,10 @@
             </div>
             <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
 
-            <div style="margin: 10px 0;">
-                <input type="checkbox" id="remember-me" name="remember-me" />
-                <label for="remember-me">로그인 유지</label>
-            </div>
+<%--            <div style="margin: 10px 0;">--%>
+<%--                <input type="checkbox" id="remember-me" name="remember-me" />--%>
+<%--                <label for="remember-me">로그인 유지</label>--%>
+<%--            </div>--%>
 
             <button type="submit">로그인</button>
 
@@ -240,10 +240,10 @@
                 <p style="color: green;">성공적으로 로그아웃 되었습니다.</p>
             </c:if>
 
-            <div class="footer-links">
-                <a href="<c:url value='/find-id' />">아이디찾기</a>
-                <a href="<c:url value='/find-password' />">비밀번호 찾기</a>
-            </div>
+<%--            <div class="footer-links">--%>
+<%--                <a href="<c:url value='/find-id' />">아이디찾기</a>--%>
+<%--                <a href="<c:url value='/find-password' />">비밀번호 찾기</a>--%>
+<%--            </div>--%>
             <div class="register">
                 계정이 없으신가요? <a href="<c:url value='/signup' />">회원가입</a>
             </div>

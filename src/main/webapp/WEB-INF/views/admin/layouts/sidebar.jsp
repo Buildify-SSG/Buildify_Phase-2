@@ -53,12 +53,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/admin/pages/inbound/inbound-2' />">입고 현황 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/inbound/inbound-3' />">입고 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/inbound/inbound-4' />">입고  추가 메뉴 2</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/inbound/inbound-3' />">입고 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/inbound/inbound-4' />">입고  추가 메뉴 2</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -76,12 +76,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/admin/pages/outbound/outbound-2' />">출고 현황 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/outbound/outbound-3' />">출고 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/outbound/outbound-4' />">출고 추가 메뉴 2</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/outbound/outbound-3' />">출고 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/outbound/outbound-4' />">출고 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -96,15 +96,15 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link"  href="<c:url value='/admin/pages/inventory/inventory-1' />">재고 현황 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/inventory/inventory-2' />">재고 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/inventory/inventory-3' />">재고 추가 메뉴 2</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/inventory/inventory-4' />">재고 추가 메뉴 3</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/inventory/inventory-2' />">재고 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/inventory/inventory-3' />">재고 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/inventory/inventory-4' />">재고 추가 메뉴 3</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -145,12 +145,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/admin/pages/systemOperation/systemOperation-2' />">창고 계약 관리</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/systemOperation/systemOperation-3' />">작업 관리</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/admin/pages/systemOperation/systemOperation-4' />">인력 관리</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/systemOperation/systemOperation-3' />">작업 관리</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/admin/pages/systemOperation/systemOperation-4' />">인력 관리</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
