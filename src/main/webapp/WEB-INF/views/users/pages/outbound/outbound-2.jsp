@@ -134,11 +134,11 @@
         </form>
 
         <!-- export 버튼 -->
-        <div class="export-buttons">
+<%--        <div class="export-buttons">--%>
 
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
-        </div>
+<%--            <button style="margin-right: 5px;">exportExcel</button>--%>
+<%--            <button>exportPDF</button>--%>
+<%--        </div>--%>
     </div>
 
 
@@ -167,10 +167,15 @@
                         <td>${outbound.clientId}</td>
                         <td>${outbound.prodName}</td>
                         <td>${outbound.quantity}</td>
-                        <td>${outbound.reqOutboundDate}</td>
-                        <td>${outbound.outboundProcessDate}</td>
+                        <td><fmt:formatDate value="${outbound.reqOutboundDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <td><fmt:formatDate value="${outbound.outboundProcessDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td>${outbound.wareId}</td>
-                        <td>${outbound.status}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${outbound.status == 0}">대기</c:when>
+                                <c:when test="${outbound.status == 1}">승인</c:when>
+                            </c:choose>
+                        </td>
 
                     </tr>
                 </c:forEach>

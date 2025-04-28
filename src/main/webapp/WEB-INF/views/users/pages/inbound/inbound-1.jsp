@@ -134,11 +134,11 @@
         </form>
 
         <!-- export 버튼 -->
-        <div class="export-buttons">
+<%--        <div class="export-buttons">--%>
 
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
-        </div>
+<%--            <button style="margin-right: 5px;">exportExcel</button>--%>
+<%--            <button>exportPDF</button>--%>
+<%--        </div>--%>
     </div>
 
 
@@ -382,17 +382,18 @@
                  products.forEach(function (product) {
                      modalInputs.innerHTML +=
                          '<tr>' +
-                         '<td><input type="hidden" name="prodIds" value="' + product.prodId + '">' + product.prodId + '</td>' +
-                         '<td>' + product.prodName + '</td>' +
-                         '<td>' + product.prodPrice + '</td>' +
-                         '<td>' + product.prodSize + '</td>' +
-                         '<td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>' +
-                         // 창고 관련 데이터 hidden input 추가
-                         '<td><input type="hidden" name="wareIds" value="' + product.wareId + '">' + product.wareId + '</td>' +
-                         '<td><input type="hidden" name="warehousePosXs" value="' + product.warehousePosX + '">' + product.warehousePosX + '</td>' +
-                         '<td><input type="hidden" name="warehousePosYs" value="' + product.warehousePosY + '">' + product.warehousePosY + '</td>' +
+                             '<td>' +
+                                 product.prodId +
+                                 '<input type="hidden" name="prodIds" value="' + product.prodId + '">' +
+                                 '<input type="hidden" name="wareIds" value="' + product.wareId + '">' +
+                                 '<input type="hidden" name="warehousePosXs" value="' + product.warehousePosX + '">' +
+                                 '<input type="hidden" name="warehousePosYs" value="' + product.warehousePosY + '">' +
+                             '</td>' +
+                             '<td>' + product.prodName + '</td>' +
+                             '<td>' + product.prodPrice + '</td>' +
+                             '<td>' + product.prodSize + '</td>' +
+                             '<td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>' +
                          '</tr>';
-                     console.log("22222222");
                  });
 
                  document.getElementById('inboundModal').style.display = 'block';

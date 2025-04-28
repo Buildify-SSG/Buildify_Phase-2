@@ -167,10 +167,16 @@
                         <td>${inbound.clientId}</td>
                         <td>${inbound.prodName}</td>
                         <td>${inbound.quantity}</td>
-                        <td>${inbound.reqInboundDate}</td>
-                        <td>${inbound.inboundProcessDate}</td>
+                        <td><fmt:formatDate value="${inbound.reqInboundDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <td><fmt:formatDate value="${inbound.inboundProcessDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td>${inbound.wareId}</td>
-                        <td>${inbound.inboundStatus}</td>
+                        <td>
+                            <c:choose>
+                            <c:when test="${inbound.inboundStatus == 0}">대기</c:when>
+                            <c:when test="${inbound.inboundStatus == 1}">승인</c:when>
+                            <c:otherwise>오류</c:otherwise>
+                            </c:choose>
+                        </td>
 
                     </tr>
                 </c:forEach>

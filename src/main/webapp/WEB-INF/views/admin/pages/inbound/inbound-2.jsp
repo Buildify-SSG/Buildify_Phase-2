@@ -134,11 +134,11 @@
         </form>
 
         <!-- export 버튼 -->
-        <div class="export-buttons">
+<%--        <div class="export-buttons">--%>
 
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
-        </div>
+<%--            <button style="margin-right: 5px;">exportExcel</button>--%>
+<%--            <button>exportPDF</button>--%>
+<%--        </div>--%>
     </div>
 
 
@@ -158,7 +158,7 @@
                     <th>요청일</th>
                     <th>처리일</th>
                     <th>창고</th>
-                    <th>현황</th>
+                    <th>상태</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -167,10 +167,16 @@
                         <td>${Admininbound.clientId}</td>
                         <td>${Admininbound.prodName}</td>
                         <td>${Admininbound.quantity}</td>
-                        <td>${Admininbound.reqInboundDate}</td>
-                        <td>${Admininbound.inboundProcessDate}</td>
+        <td><fmt:formatDate value="${Admininbound.reqInboundDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+        <td><fmt:formatDate value="${Admininbound.inboundProcessDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td>${Admininbound.wareId}</td>
-                        <td>${Admininbound.inboundStatus}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${Admininbound.inboundStatus == 0}">대기</c:when>
+                                <c:when test="${Admininbound.inboundStatus == 1}">승인</c:when>
+
+                            </c:choose>
+                        </td>
 
                     </tr>
                 </c:forEach>
