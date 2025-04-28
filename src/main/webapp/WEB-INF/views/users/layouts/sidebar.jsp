@@ -30,12 +30,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-2' />">창고 현황</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-3' />">계약 내역</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-4' />">유저 창고 추가 메뉴 2</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-3' />">계약 내역</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/userWarehouse/userWarehouse-4' />">유저 창고 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -53,12 +53,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/product/product-2' />">상품 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/product/product-3' />">상품 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/product/product-4' />">상품 추가 메뉴 2</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/product/product-3' />">상품 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/product/product-4' />">상품 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -76,12 +76,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/inbound/inbound-2' />">입고 현황 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/inbound/inbound-3' />">입고 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/inbound/inbound-4' />">입고 추가 메뉴 2</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/inbound/inbound-3' />">입고 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/inbound/inbound-4' />">입고 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -99,12 +99,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/outbound/outbound-2' />">출고 현황 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/outbound/outbound-3' />">출고 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/outbound/outbound-4' />">출고 추가 메뉴 2</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/outbound/outbound-3' />">출고 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/outbound/outbound-4' />">출고 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 
@@ -119,15 +119,15 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-1' />">재고 조회</a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-2' />">재고 추가 메뉴 1</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-3' />">재고 추가 메뉴 2</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-4' />">재고 추가 메뉴 3</a>
-                        </li>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-2' />">재고 추가 메뉴 1</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-3' />">재고 추가 메뉴 2</a>--%>
+<%--                        </li>--%>
+<%--                        <li class="sidebar-item">--%>
+<%--                            <a class="sidebar-link" href="<c:url value='/users/pages/inventory/inventory-4' />">재고 추가 메뉴 3</a>--%>
+<%--                        </li>--%>
                     </ul>
                 </li>
 

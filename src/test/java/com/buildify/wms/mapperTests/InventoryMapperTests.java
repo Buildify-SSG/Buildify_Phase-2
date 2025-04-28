@@ -84,7 +84,9 @@ public class InventoryMapperTests {
 
 
         // when
+
         List<String>midCategories = inventoryUserMapper.findMidCategoriesByLevel1(clientId, category1);
+
 
         // then
         Assertions.assertNotNull(midCategories);
@@ -103,7 +105,9 @@ public class InventoryMapperTests {
 
 
         // when
-        List<String>smallCategories = inventoryUserMapper.findSmallCategoriesByLevel2(clientId, category2);
+
+        List<String>smallCategories = inventoryUserMapper.findSmallCategoriesByLevel2(clientId,category2);
+
 
         // then
         Assertions.assertNotNull(smallCategories);
