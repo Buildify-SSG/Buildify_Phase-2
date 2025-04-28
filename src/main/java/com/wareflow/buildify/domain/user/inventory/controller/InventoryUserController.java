@@ -22,17 +22,26 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 
+
+/**
+ * 사용자용 재고 관리 컨트롤러.
+ * 재고 조회, 검색, 엑셀 내보내기, 카테고리 분류 조회 기능을 제공합니다.
+ */
 public class InventoryUserController {
 
 
     private final InventoryUserService inventoryUserService;
 
-    private Pagination pagination;
+//    private Pagination pagination;
 
     private final ExportExcel exportExcel;
 
 
 //    @GetMapping("/inventory-1/api/excel")
+    /**
+     * 엑셀 파일로 재고 목록을 다운로드합니다.
+     * 데이터가 없으면 사용자 페이지로 리다이렉트합니다.
+     */
     @RequestMapping(value = "/inventory-1/api/excel", method = {RequestMethod.GET, RequestMethod.POST})
     public String inventoryExportExcel(HttpServletResponse response, Model model) {
 
@@ -51,10 +60,14 @@ public class InventoryUserController {
         return null;
     }
 
-
+    /**
+     * 재고 목록 페이지를 렌더링합니다. (페이징 적용)
+     * @param page 보여줄 페이지 번호 (기본값 1)
+     */
     @GetMapping("/inventory-1")
     public String getUserInventoryList(Model model, @RequestParam(defaultValue = "1") int page) {
         log.info("컨트롤러 진입 성공");
+        // 재고 데이터 조회
         List<InventoryDTO> inventoryList = inventoryUserService.getUserInventory();
         String msg;
         if(inventoryList.isEmpty()){
@@ -64,12 +77,18 @@ public class InventoryUserController {
         }
         log.info(inventoryList.size());
         model.addAttribute("msg",msg);
+        // 페이징 처리 후 모델에 추가
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
 
         return "users/layouts/userlayout";
     }
 
 //    @GetMapping("/inventory-1/search")
+    /**
+     * 필터 조건에 따라 재고를 검색하고 페이지를 렌더링합니다.
+     * @param filter 검색 조건 DTO
+     * @param page   페이지 번호
+     */
     @RequestMapping(value = "/inventory-1/search", method = {RequestMethod.GET, RequestMethod.POST})
     public String searchUserInventory(InventoryFilterDTO filter,Model model, @RequestParam(defaultValue = "1") int page) {
 
@@ -79,21 +98,28 @@ public class InventoryUserController {
                 .getAuthentication().getPrincipal())
                 .getClientId();
         filter.setClientId(clientId);
+
+        // 필터링된 재고 조회
         List<InventoryDTO> inventoryList = inventoryUserService.searchUserInventory(filter);
         log.info(inventoryList.size());
 
 //        model.addAttribute("List", inventoryList);
 
+        // 페이징 처리 후 뷰로 전달
         Pagination.paginate(model,inventoryList,page,"/WEB-INF/views/users/pages/inventory/inventory-1.jsp");
         return "users/layouts/userlayout";
 
     }
 
 //    @GetMapping("/inventory-1/getMidCategories")
+    /**
+     * AJAX 요청: 대분류에 해당하는 중분류 목록을 JSON으로 반환합니다.
+     */
     @RequestMapping(value = "/inventory-1/getMidCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getMidCategories(@RequestParam("category1") String category1) {
         System.out.println("📢 Controller 들어옴, category1 = " + category1);
+        // 로그인한 사용자 clientId 조회
         String clientId = ((CustomUserDetails)SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal())
                 .getClientId();
@@ -107,6 +133,9 @@ public class InventoryUserController {
     }
 
 //    @GetMapping("/inventory-1/getSmallCategories")
+    /**
+     * AJAX 요청: 중분류에 해당하는 소분류 목록을 JSON으로 반환합니다.
+     */
     @RequestMapping(value = "/inventory-1/getSmallCategories", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public List<String> getSmallCategories(@RequestParam("category2") String category2) {

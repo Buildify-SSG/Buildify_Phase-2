@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
+/**
+ * 재고 조회 시 필터링 조건을 전달하기 위한 DTO 클래스입니다.
+ * 대/중/소 분류, 검색 유형, 키워드, 정렬 기준, 클라이언트 ID 정보를 포함합니다.
+ */
 public class InventoryFilterDTO {
 
     private String category1;    // 대분류 카테고리명

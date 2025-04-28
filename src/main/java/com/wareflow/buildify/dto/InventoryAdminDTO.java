@@ -13,6 +13,11 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
+/**
+ * 관리자용 재고 조회 결과를 전달하기 위한 DTO 클래스입니다.
+ * 재고 ID, 클라이언트 ID, 상품 ID, 수량, 창고 정보, 최종 입/출고 일자를 포함합니다.
+ */
 public class InventoryAdminDTO {
     @ExcelHeader(headerName = "재고ID", priority = 0)
     private String inventoryId;

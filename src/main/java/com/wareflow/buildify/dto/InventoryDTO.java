@@ -14,6 +14,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 
+/**
+ * 재고 조회 결과를 전달하기 위한 DTO 클래스입니다.
+ * 상품 정보, 브랜드, 수량, 창고 정보, 최종 입/출고 일자 등을 포함합니다.
+ */
 public class InventoryDTO {
     private String prodId;
     @ExcelHeader(headerName = "상품명", priority = 1)
