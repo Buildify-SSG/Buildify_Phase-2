@@ -167,8 +167,8 @@
                         <td>${Admininbound.clientId}</td>
                         <td>${Admininbound.prodName}</td>
                         <td>${Admininbound.quantity}</td>
-        <td><fmt:formatDate value="${Admininbound.reqInboundDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-        <td><fmt:formatDate value="${Admininbound.inboundProcessDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+        <td><fmt:formatDate value="${Admininbound.reqInboundDate}" pattern="yyyy-MM-dd" /></td>
+        <td><fmt:formatDate value="${Admininbound.inboundProcessDate}" pattern="yyyy-MM-dd" /></td>
                         <td>${Admininbound.wareId}</td>
                         <td>
                             <c:choose>

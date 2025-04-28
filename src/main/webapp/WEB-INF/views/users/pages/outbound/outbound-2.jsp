@@ -167,8 +167,8 @@
                         <td>${outbound.clientId}</td>
                         <td>${outbound.prodName}</td>
                         <td>${outbound.quantity}</td>
-                        <td><fmt:formatDate value="${outbound.reqOutboundDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td><fmt:formatDate value="${outbound.outboundProcessDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <td><fmt:formatDate value="${outbound.reqOutboundDate}" pattern="yyyy-MM-dd"/></td>
+                        <td><fmt:formatDate value="${outbound.outboundProcessDate}" pattern="yyyy-MM-dd"/></td>
                         <td>${outbound.wareId}</td>
                         <td>
                             <c:choose>
