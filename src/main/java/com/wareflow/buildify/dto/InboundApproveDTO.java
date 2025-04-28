@@ -20,4 +20,7 @@ public class InboundApproveDTO {
     private int quantity;
     private BigDecimal prodSize;
     private BigDecimal newUsage;
+
 }
+
+

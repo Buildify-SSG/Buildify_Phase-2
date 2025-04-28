@@ -332,7 +332,7 @@
                     '<td><input type="hidden" name="prodIds" value="' + product.prodId + '">' + product.prodId + '</td>' +
                     '<td>' + product.prodName + '</td>' +
                     '<td><input type="hidden" name="quantitis" value="' + product.quantity + '">' + product.quantity + '</td>' +
-                    '<td><input type="hidden" name="wareIds" value="' + product.wareId + '">' + product.wareId + '</td>' +
+                    '<td><input type="hidden" name="wareIds" value="' + product.wareId + '"></td>' +
                     '</tr>';
             });
 
