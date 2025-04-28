@@ -237,8 +237,8 @@
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
             <tr style="background: #f1f5f9;">
+                <th style="padding: 6px;">입고 ID</th>
                 <th style="padding: 6px;">고객 ID</th>
-                <th style="padding: 6px;">상품 ID</th>
                 <th style="padding: 6px;">상품명</th>
 <%--                <th style="padding: 6px;">가격</th>--%>
 <%--                <th style="padding: 6px;">사이즈</th>--%>
@@ -327,7 +327,7 @@
             products.forEach(function (product) {
                 modalInputs.innerHTML +=
                     '<tr>' +
-                    '<td><input type="hidden" name="inboundIds" value="' + product.inboundId + '">' + product.clientId + '</td>' +
+                    '<td><input type="hidden" name="inboundIds" value="' + product.inboundId + '">' + product.inboundId + '</td>' +
                     '<td><input type="hidden" name="clientIds" value="' + product.clientId + '">' + product.clientId + '</td>' +
                     '<td><input type="hidden" name="prodIds" value="' + product.prodId + '">' + product.prodId + '</td>' +
                     '<td>' + product.prodName + '</td>' +

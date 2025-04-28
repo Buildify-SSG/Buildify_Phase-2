@@ -7,10 +7,7 @@
         background-color: #f8fafc;
         color: #333;
     }
-    .filter-box {
-        margin-bottom: 16px;
-        font-size: 15px;
-    }
+
     .filter-box strong {
         margin-right: 10px;
     }
@@ -69,14 +66,7 @@
         font-size: 14px;
         border-top: 1px solid #e2e8f0;
     }
-    .status-active {
-        color: #10b981;
-        font-weight: bold;
-    }
-    .status-cancelled {
-        color: #ef4444;
-        font-weight: bold;
-    }
+
 
     .search-bar input:hover,
     .search-bar select:hover,
@@ -115,7 +105,7 @@
 
 <div style="padding: 20px;">
 
-    <h1>상품 조회</h1>
+    <h1>입고 요청</h1>
     <h4><br></h4>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
