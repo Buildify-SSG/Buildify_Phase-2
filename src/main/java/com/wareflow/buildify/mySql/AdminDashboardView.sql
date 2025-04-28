@@ -39,7 +39,7 @@ ORDER BY d.date;
 
 # 창고별 계약률/가용률 view
 CREATE OR REPLACE VIEW v_ware_dashboard AS
-select area.ware_id,(count(user.ware_id)/25) as 계약률,(area.available_space/area.ware_total_size) as 가용률
+select area.ware_id,(count(user.ware_id)/25) as 계약률,(1-(area.available_space/area.ware_total_size)) as 가용률
 from warehouse_area area
          left join userWareHouse user
               on user.ware_id = area.ware_id

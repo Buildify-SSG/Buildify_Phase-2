@@ -73,9 +73,11 @@ public class AdminWarehouseServiceImpl implements AdminWarehouseService{
 
         for (WareHouseDTO wareHouseDTO : dtoList){
 
-            // 사용률 계산 = 가용 공간 / 전체 공간 (소수점 4자리 반올림)
-            BigDecimal usageRate = wareHouseDTO.getWareAvailSpace()
-                    .divide(wareHouseDTO.getWareTotalSize(), 4, RoundingMode.HALF_UP);
+            // 사용률 계산 = 1 - (가용 공간 / 전체 공간) (소수점 4자리 반올림)
+            BigDecimal usageRate = BigDecimal.ONE.subtract(
+                    wareHouseDTO.getWareAvailSpace()
+                            .divide(wareHouseDTO.getWareTotalSize(), 4, RoundingMode.HALF_UP)
+            );
 
             // 주소를 위도/경도로 변환
             double[] doubles = GeoUtil.getLatLngFromAddress(wareHouseDTO.getWareAddress());
