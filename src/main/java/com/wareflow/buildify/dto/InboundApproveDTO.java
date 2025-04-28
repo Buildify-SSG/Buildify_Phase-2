@@ -3,6 +3,7 @@ package com.wareflow.buildify.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @ToString
@@ -20,4 +21,7 @@ public class InboundApproveDTO {
     private int quantity;
     private BigDecimal prodSize;
     private BigDecimal newUsage;
+
 }
+
+
