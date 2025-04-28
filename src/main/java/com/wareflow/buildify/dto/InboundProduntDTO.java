@@ -21,7 +21,7 @@ public class InboundProduntDTO {
     private String wareId;
     private String warehousePosX;
     private String warehousePosY;
-    private String inboundProcessDate;
+    private Date inboundProcessDate;
     private String prodName;
     private int prodPrice;
     private BigDecimal prodSize;

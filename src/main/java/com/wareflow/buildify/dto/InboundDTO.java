@@ -20,6 +20,6 @@ public class InboundDTO {
     private String wareId;
     private String warehousePosX;
     private int warehousePosY;
-    private String inboundProcessDate;
+    private Date inboundProcessDate;
 //    private List<String> prodIds;
 }

@@ -115,7 +115,7 @@
 
 <div style="padding: 20px;">
 
-    <h1>상품 조회</h1>
+    <h1>입고 요청 조회</h1>
     <h4><br></h4>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -134,11 +134,11 @@
         </form>
 
         <!-- export 버튼 -->
-        <div class="export-buttons">
+<%--        <div class="export-buttons">--%>
 
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
-        </div>
+<%--            <button style="margin-right: 5px;">exportExcel</button>--%>
+<%--            <button>exportPDF</button>--%>
+<%--        </div>--%>
     </div>
 
 

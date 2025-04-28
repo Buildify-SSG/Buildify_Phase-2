@@ -134,11 +134,11 @@
         </form>
 
         <!-- export 버튼 -->
-        <div class="export-buttons">
+<%--        <div class="export-buttons">--%>
 
-            <button style="margin-right: 5px;">exportExcel</button>
-            <button>exportPDF</button>
-        </div>
+<%--            <button style="margin-right: 5px;">exportExcel</button>--%>
+<%--            <button>exportPDF</button>--%>
+<%--        </div>--%>
     </div>
 
 
@@ -226,6 +226,7 @@
                 <th style="padding: 6px;">사이즈</th>
                 <th style="padding: 6px;">창고수량</th>
                 <th style="padding: 6px;">출고수량</th>
+                <th style="padding: 6px;">상태</th>
             </tr>
             </thead>
             <tbody id="Inputs"></tbody>
@@ -298,7 +299,7 @@
             alert("출고 요청할 상품을 선택해주세요.");
             return;
         }
-       
+
         const prodIds = Array.from(checked).map(cb => cb.value);
         const query = prodIds.map(function (id) {
             return 'inventoryIds=' + encodeURIComponent(id);
@@ -323,10 +324,11 @@
                             '<td>' + inventory.quantity + '</td>' +
                             '<td>' +
                                 '<input type="number" name="quantities" min="1" max="' + inventory.quantity + '" step="1" required style="width: 60px;" oninput="if(this.value > ' + inventory.quantity + ') this.value=' + inventory.quantity + ';" />' +
-                                '<input type="hidden" name="wareIds" value="' + inventory.wareId + '">' +
-                                '<input type="hidden" name="warehousePosXs" value="' + inventory.warehousePosX + '">' +
-                                '<input type="hidden" name="warehousePosYs" value="' + inventory.warehousePosY + '">' +
+                                '<input style="display: none;" type="hidden" name="wareIds" value="' + inventory.wareId + '">' +
+                                '<input style="display: none;" type="hidden" name="warehousePosXs" value="' + inventory.warehousePosX + '">' +
+                                '<input style="display: none;" type="hidden" name="warehousePosYs" value="' + inventory.warehousePosY + '">' +
                             '</td>' +
+                            '<td>' + (inventory.status === 0 ? '대기' : '승인') + '</td>' +
                         '</tr>';
                 });
 
@@ -373,10 +375,10 @@
                 });
 
                 if (res.ok) {
-                    alert("입고 요청이 성공적으로 등록되었습니다.");
+                    alert("출고 요청이 성공적으로 등록되었습니다.");
                     location.reload();
                 } else {
-                    alert("입고 요청에 실패했습니다.");
+                    alert("출고 요청에 실패했습니다.");
                 }
             } catch (err) {
                 console.error("❌ 서버 요청 중 에러:", err);

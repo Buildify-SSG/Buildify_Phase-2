@@ -86,6 +86,7 @@
             AND i.warehouse_pos_x = o.warehouse_pos_x
             AND i.warehouse_pos_y = o.warehouse_pos_y
             SET i.quantity = i.quantity - o.quantity
+                ,i.last_outbound_date = now()
         WHERE o.outbound_id = #{outboundId}
     </update>
 
