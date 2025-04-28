@@ -168,6 +168,7 @@
                     data-prodname="${product.prodName}"
                     data-prodprice="${product.prodPrice}"
                     data-prodsize="${product.prodSize}">
+
                     <td><input type="checkbox" class="prod-check" value="${product.prodId}" /></td>
                     <td>${product.prodId}</td>
                     <td>${product.prodName}</td>
@@ -386,6 +387,10 @@
                          '<td>' + product.prodPrice + '</td>' +
                          '<td>' + product.prodSize + '</td>' +
                          '<td><input type="number" name="quantities" min="1" required style="width: 60px;" /></td>' +
+                         // 창고 관련 데이터 hidden input 추가
+                         '<td><input type="hidden" name="wareIds" value="' + product.wareId + '">' + product.wareId + '</td>' +
+                         '<td><input type="hidden" name="warehousePosXs" value="' + product.warehousePosX + '">' + product.warehousePosX + '</td>' +
+                         '<td><input type="hidden" name="warehousePosYs" value="' + product.warehousePosY + '">' + product.warehousePosY + '</td>' +
                          '</tr>';
                      console.log("22222222");
                  });
@@ -413,15 +418,21 @@
             const formData = new FormData(form);
             const prodIds = formData.getAll('prodIds');
             const quantities = formData.getAll('quantities').map(q => parseInt(q));
+            const wareIds = formData.getAll('wareIds');
+            const warehousePosXs = formData.getAll('warehousePosXs');
+            const warehousePosYs = formData.getAll('warehousePosYs');
 
             console.log("📦 전송할 상품 ID:", prodIds);
             console.log("📦 전송할 수량:", quantities);
+            console.log("📦 전송할 창고 ID:", wareIds);
+            console.log("📦 전송할 창고 X좌표:", warehousePosXs);
+            console.log("📦 전송할 창고 Y좌표:", warehousePosYs);
 
             try {
                 const res = await fetch('/users/pages/inbound/inbound-1/request', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prodIds, quantities })
+                    body: JSON.stringify({ prodIds, quantities, wareIds, warehousePosXs, warehousePosYs })
                 });
 
                 if (res.ok) {

@@ -1,3 +1,4 @@
+
 package com.buildify.wms.serviceTests;
 
 
@@ -141,3 +142,4 @@ public class InventoryServiceTests {
     }
 
 }
+

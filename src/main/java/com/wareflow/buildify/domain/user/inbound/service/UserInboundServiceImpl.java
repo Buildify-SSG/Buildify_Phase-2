@@ -184,6 +184,8 @@ public class UserInboundServiceImpl implements UserInboundService {
                 vo.setClientId(clientId);
                 vo.setQuantity(insertQty);
                 vo.setWareId(warehouse.getWareId());
+                vo.setWarehousePosX(warehouse.getWarehousePosX());
+                vo.setWarehousePosY(warehouse.getWarehousePosY());
                 vo.setInboundStatus(0);
                 vo.setReqInboundDate(Date.valueOf(LocalDate.now()));
 

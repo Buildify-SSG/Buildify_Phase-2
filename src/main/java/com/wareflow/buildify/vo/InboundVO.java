@@ -18,7 +18,7 @@ public class InboundVO {
     private Date reqInboundDate;
     private String wareId;
     private String warehousePosX;
-    private String warehousePosY;
+    private int warehousePosY;
     private String  inboundProcessDate;
 
     private String prodName;

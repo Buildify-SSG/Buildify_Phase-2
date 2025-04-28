@@ -162,7 +162,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="inbound" items="${List}" varStatus="status">
+                <c:forEach var="outbound" items="${List}" varStatus="status">
                     <tr>
                         <td>${outbound.clientId}</td>
                         <td>${outbound.prodName}</td>
@@ -170,7 +170,7 @@
                         <td>${outbound.reqOutboundDate}</td>
                         <td>${outbound.outboundProcessDate}</td>
                         <td>${outbound.wareId}</td>
-                        <td>${outbound.outboundStatus}</td>
+                        <td>${outbound.status}</td>
 
                     </tr>
                 </c:forEach>

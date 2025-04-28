@@ -1,5 +1,6 @@
 package com.wareflow.buildify.domain.admin.inbound.service;
 
+import com.wareflow.buildify.dto.InboundApproveDTO;
 import com.wareflow.buildify.dto.InboundProduntDTO;
 import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.dto.ProductDTO;
@@ -18,8 +19,9 @@ public interface AdminInboundService {
 
     List<InboundProduntDTO> adminSearchInboundCheckList(String searchType, String keyword);
 
-    List<InboundProduntDTO> getAdminInboundCheck(List<String > prodId);
+    List<InboundProduntDTO> getAdminInboundCheck(List<String > inboundIds);
 
-    void updateInboundStatus(List<String> prodIds, List<String > clientIds );
-    void admininsertInboundRequests(List<String> prodIds, List<String > clientIds, List<Integer > quantitis, List<String> wareIds);
+//    void updateInboundStatus(List<String> prodIds, List<String > clientIds );
+    void admininsertInboundRequests(List<InboundApproveDTO> inboundIds);
+
 }

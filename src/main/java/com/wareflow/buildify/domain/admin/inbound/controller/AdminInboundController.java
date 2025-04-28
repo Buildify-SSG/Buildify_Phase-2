@@ -1,6 +1,7 @@
 package com.wareflow.buildify.domain.admin.inbound.controller;
 
 import com.wareflow.buildify.domain.admin.inbound.service.AdminInboundService;
+import com.wareflow.buildify.dto.InboundApproveDTO;
 import com.wareflow.buildify.dto.InboundProduntDTO;
 import com.wareflow.buildify.dto.InventoryDTO;
 import com.wareflow.buildify.util.Pagination;
@@ -71,33 +72,38 @@ public class AdminInboundController {
 
     @GetMapping(value = "/admin/pages/inbound/inbound-1/modal-info")
     @ResponseBody
-    public List<InboundProduntDTO> getAdminInboundCheck(@RequestParam List<String> prodIds) {
-        log.info("🔍 모달용 상품 ID 리스트: {}", prodIds);
-        return adminInboundService.getAdminInboundCheck(prodIds);  // productDTO 리스트 반환
+    public List<InboundProduntDTO> getAdminInboundCheck(@RequestParam List<String> inboundIds) {
+        log.info("🔍 모달용 상품 ID 리스트: {}", inboundIds);
+        return adminInboundService.getAdminInboundCheck(inboundIds);  // productDTO 리스트 반환
     }
 
-    @PostMapping("/admin/pages/inbound/inbound-1/request")
+
+//    public void adminrequestInbound(List<String> inboundIds) {
+//        log.info("🔥 requestInbound() 진입");
+//        for (int i = 0; i < inboundIds.size(); i++) {
+//            log.info("📦 받은 데이터: {}", inboundIds);
+//        }
+//            adminInboundService.admininsertInboundRequests(inboundIds);
+//    }
+
+    @RequestMapping(value = "/admin/pages/inbound/inbound-1/request", method = {RequestMethod.GET , RequestMethod.POST})
     public ResponseEntity<String> adminrequestInbound(@RequestBody Map<String, Object> request) {
         log.info("🔥 requestInbound() 진입");
-        log.info("📦 받은 데이터: {}", request);
-
-        List<String> prodIds = (List<String>) request.get("prodIds");
-        List<String> clientIds = (List<String>) request.get("clientIds");
-        List<String> quantityStrList = (List<String>) request.get("quantitis");
-        List<String> wareIds = (List<String>) request.get("wareIds");
-
-        if (prodIds == null || clientIds == null || quantityStrList == null || wareIds == null
-                || prodIds.size() != quantityStrList.size()) {
-            log.warn("❌ 유효하지 않은 데이터 형식");
-            return ResponseEntity.badRequest().body("Invalid request format");
+        for (int i = 0; i < request.size(); i++) {
+            log.info("📦 받은 데이터: {}", request);
         }
 
-        try {
-            List<Integer> quantities = quantityStrList.stream()
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
+        List<String> inboundIds =  (List<String>) request.get("inboundIds");
 
-            adminInboundService.admininsertInboundRequests(prodIds, clientIds, quantities, wareIds);
+        List<InboundApproveDTO> requestList = new ArrayList<>();
+
+        for (int i = 0; i < inboundIds.size(); i++) {
+            InboundApproveDTO dto = new InboundApproveDTO();
+            dto.setInboundId(inboundIds.get(i));
+            requestList.add(dto);
+        }
+        try {
+            adminInboundService.admininsertInboundRequests(requestList);
             return ResponseEntity.ok("입고 요청 성공");
         } catch (Exception e) {
             log.error("❌ 서버 처리 중 에러 발생", e);

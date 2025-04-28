@@ -1,3 +1,4 @@
+
 package com.buildify.wms.mapperTests;
 
 import com.wareflow.buildify.domain.admin.inventory.mapper.InventoryAdminMapper;
@@ -187,6 +188,7 @@ public class InventoryMapperTests {
     }
 
     }
+
 
 
 

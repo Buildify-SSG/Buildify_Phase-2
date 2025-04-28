@@ -174,14 +174,19 @@
                     data-prodprice="${item.prodPrice}"
                     data-prodsize="${item.prodSize}"
                     data-reqinbounddate="${item.reqInboundDate}"
-                    data-wareid="${item.wareId}">
+                    data-wareid="${item.wareId}"
+                    data-warehouseposx="${item.warehousePosX}"
+                    data-warehouseposy="${item.warehousePosY}"
+                    data-inboundId="${item.inboundId}">
                     <script>console.log("가격 확인: ${item.prodPrice}, 사이즈 확인: ${item.prodSize}");</script>
                     <td>
                       <input type="checkbox"
                              class="prod-check"
                              value="${item.prodId}"
                              data-clientid="${item.clientId}"
-                             data-quantity="${item.quantity}" />
+                             data-quantity="${item.quantity}"
+                             data-inboundid="${item.inboundId}" />
+
                     </td>
                     <td>${item.clientId}</td>
                     <td>${item.prodId}</td>
@@ -228,7 +233,7 @@
     <h3 style="margin-bottom: 16px;">입고 승인</h3>
 
     <!-- ✅ form 시작 -->
-    <form id="inboundModalFF">
+    <form id="inboundModalFF" method="post" action="/admin/pages/inbound/inbound-1/request">
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
             <tr style="background: #f1f5f9;">
@@ -297,7 +302,7 @@
 
 
 
-    document.getElementById('requestInboundBtn').addEventListener('click', function () {
+    document.getElementById('requestInboundBtn').addEventListener('click', async function () {
         const checked = document.querySelectorAll('.prod-check:checked');
         const modalInputs = document.getElementById('modalInputs');
         modalInputs.innerHTML = '';
@@ -307,37 +312,35 @@
             return;
         }
 
+        const inboundIds = Array.from(checked).map(cb => cb.dataset.inboundid).filter(id => id);
 
-        console.log("1111111");
-        const prodIds = Array.from(checked).map(cb => cb.value).filter(id => id); // 필터 추가
-        if (prodIds.length === 0) {
-            alert("선택된 상품의 ID가 비어 있습니다.");
+        if (inboundIds.length === 0) {
+            alert("선택된 상품의 인바운드 ID가 비어 있습니다.");
             return;
         }
 
-        checked.forEach(function (checkbox) {
-            const tr = checkbox.closest('tr');
-            const prodId = checkbox.value;
-            const clientId = tr.dataset.clientid;
-            const prodName = tr.dataset.prodname;
-            const quantity = tr.dataset.quantity;
-            const wareId = tr.dataset.wareid;
-            const prodPrice = tr.dataset.prodprice || '';
-            const prodSize = tr.dataset.prodsize || '';
+        try {
+            const query = inboundIds.map(id => 'inboundIds=' + encodeURIComponent(id)).join('&');
+            const res = await fetch('/admin/pages/inbound/inbound-1/modal-info?' + query);
+            const products = await res.json();
 
-            modalInputs.innerHTML +=
-                '<tr>' +
-                '<td><input type="hidden" name="clientIds" value="' + clientId + '">' + clientId + '</td>' +
-                '<td><input type="hidden" name="prodIds" value="' + prodId + '">' + prodId + '</td>' +
-                '<td>' + prodName + '</td>' +
-                // '<td>' + prodPrice + '</td>' +
-                // '<td>' + prodSize + '</td>' +
-                '<td><input type="hidden" name="quantitis" value="' + quantity + '">' + quantity + '</td>' +
-                '<td><input type="hidden" name="wareIds" value="' + wareId + '">' + wareId + '</td>' +
-                '</tr>';
-        });
+            products.forEach(function (product) {
+                modalInputs.innerHTML +=
+                    '<tr>' +
+                    '<td><input type="hidden" name="inboundIds" value="' + product.inboundId + '">' + product.clientId + '</td>' +
+                    '<td><input type="hidden" name="clientIds" value="' + product.clientId + '">' + product.clientId + '</td>' +
+                    '<td><input type="hidden" name="prodIds" value="' + product.prodId + '">' + product.prodId + '</td>' +
+                    '<td>' + product.prodName + '</td>' +
+                    '<td><input type="hidden" name="quantitis" value="' + product.quantity + '">' + product.quantity + '</td>' +
+                    '<td><input type="hidden" name="wareIds" value="' + product.wareId + '">' + product.wareId + '</td>' +
+                    '</tr>';
+            });
 
-        document.getElementById('inboundModal').style.display = 'block';
+            document.getElementById('inboundModal').style.display = 'block';
+        } catch (error) {
+            console.error('❌ 상품 정보를 불러오는 중 에러:', error);
+            alert('상품 정보를 불러올 수 없습니다.');
+        }
     });
 
     // 모달 닫기 함수
@@ -353,45 +356,41 @@ document.addEventListener('submit', async function (e) {
 
         const form = e.target;
         const formData = new FormData(form);
-        const prodIds = formData.getAll('prodIds');
+        const inboundIds = formData.getAll('inboundIds');
         const clientIds = formData.getAll('clientIds');
         const quantitis = formData.getAll('quantitis');
-        const wareIds = formData.getAll('wareIds');
+        const wareIds = formData.getAll('wareIds'); // <-- Fix ReferenceError by retrieving wareIds
+        const warehousePosXs = formData.getAll('warehousePosXs');
+        const warehousePosYs = formData.getAll('warehousePosYs');
+        const prodSizes = formData.getAll('prodSizes');
 
-
-        prodIds.forEach((_, index) => {
-            const quantityInput = form.querySelector(`input[name="quantities"][data-index="${index}"]`);
-            const clientIdCell = form.querySelectorAll('tbody tr')[index].children[0]; // 첫 번째 <td>는 clientId
-            if (quantityInput && clientIdCell) {
-                quantities.push(parseInt(quantityInput.value));
-                clientIds.push(clientIdCell.textContent.trim());
-            }
-        });
-
-        console.log("📦 전송할 상품 ID:", prodIds);
+        console.log("📦 전송할 인바운드 ID:", inboundIds);
         console.log("📦 전송할 고객 ID:", clientIds);
         console.log("📦 전송할 상품 수량:", quantitis);
-        console.log("📦 전송할 창고 ID:", quantitis);
+        console.log("📦 전송할 창고:", wareIds);
+        console.log("📦 전송할 x축:", warehousePosXs);
+        console.log("📦 전송할 y축:", warehousePosYs);
+        console.log("📦 전송할 사이즈:", prodSizes);
 
         try {
             const res = await fetch('/admin/pages/inbound/inbound-1/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prodIds, clientIds, quantitis, wareIds })
+                body: JSON.stringify({ inboundIds, clientIds, quantitis, wareIds, warehousePosXs, warehousePosYs, prodSizes })
             });
 
-                if (res.ok) {
-                    alert("입고 요청이 성공적으로 등록되었습니다.");
-                    location.reload();
-                } else {
-                    alert("입고 요청에 실패했습니다.");
-                }
-            } catch (err) {
-                console.error("❌ 서버 요청 중 에러:", err);
-                alert("요청 중 오류가 발생했습니다.");
+            if (res.ok) {
+                alert("입고 요청이 성공적으로 등록되었습니다.");
+                location.reload();
+            } else {
+                alert("입고 요청에 실패했습니다.");
             }
+        } catch (err) {
+            console.error("❌ 서버 요청 중 에러:", err);
+            alert("요청 중 오류가 발생했습니다.");
         }
-    });
+    }
+});
 
 
 

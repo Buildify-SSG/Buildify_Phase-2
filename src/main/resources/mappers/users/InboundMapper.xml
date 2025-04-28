@@ -108,6 +108,8 @@
             quantity,
             ware_id,
             inbound_status,
+                             warehouse_pos_x,
+                             warehouse_pos_y,
             req_inbound_date
         )
         VALUES (
@@ -117,6 +119,8 @@
                    #{quantity},
                    #{wareId},
                    #{inboundStatus},
+                #{warehousePosX},
+                #{warehousePosY},
                    #{reqInboundDate}
                )
     </insert>
