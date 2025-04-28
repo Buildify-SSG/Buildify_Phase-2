@@ -47,7 +47,7 @@
             ON ware.ware_id = i.ware_id
         JOIN admin
             ON ware.ware_admin_number = admin.admin_number
-        group by i.ware_id;
+        group by ware.ware_id;
     </select>
 
 

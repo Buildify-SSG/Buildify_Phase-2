@@ -2,6 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>🛒 상품 등록</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 공통 CSS -->
+    <link href="/static/css/app.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+</head>
+<body>
 <div class="container mt-5">
     <div class="card mx-auto p-5 shadow rounded" style="max-width: 700px;">
         <h2 class="text-center mb-4 fw-bold">🛒 상품 등록</h2>
@@ -21,11 +33,6 @@
                 <label class="form-label">가격</label>
                 <input type="number" class="form-control" name="prodPrice" required>
             </div>
-
-<%--            <div class="mb-3">--%>
-<%--                <label class="form-label">상품 코드</label>--%>
-<%--                <input type="number" class="form-control" name="prodCode" required>--%>
-<%--            </div>--%>
 
             <div class="mb-3">
                 <label class="form-label">상품 크기 (cm³)</label>
@@ -53,8 +60,6 @@
         </form>
     </div>
 </div>
-
-
 
 <script>
     const categoryMap = JSON.parse('<c:out value="${categoryJson}" escapeXml="false"/>');
@@ -90,7 +95,7 @@
             const selectedLevel1 = level1Select.value;
             const level2List = Object.keys(categoryMap[selectedLevel1]);
             fillSelect(level2Select, level2List);
-            clearSelect(level3Select); // 중분류 변경되면 소분류 초기화
+            clearSelect(level3Select);
         });
 
         level2Select.addEventListener("change", () => {
@@ -105,3 +110,11 @@
     });
 </script>
 
+<c:if test="${not empty msg}">
+    <script>
+        alert("${msg}");
+    </script>
+</c:if>
+
+</body>
+</html>

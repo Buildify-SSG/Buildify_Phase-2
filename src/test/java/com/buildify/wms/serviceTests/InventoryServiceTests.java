@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/root-context.xml")
@@ -54,9 +55,18 @@ public class InventoryServiceTests {
     @Test
     @DisplayName("회원 본인 재고 조회 서비스 테스트 코드")
     public void testInventoryUserService() {
-        List<InventoryDTO> result = inventoryUserService.getUserInventory();
-        Assertions.assertNotNull(result);
-        result.forEach(System.out::println);
+        // when
+        List<InventoryDTO> list = inventoryUserService.getUserInventory();
+
+        // then
+        assertNotNull(list, "결과 리스트가 null이 아니어야 합니다");
+        assertFalse(list.isEmpty(), "로그인한 회원의 재고가 하나 이상 있어야 합니다");
+
+        // 반환된 모든 DTO의 clientId가 'CLT-001-AAA' 인지 검사
+        list.forEach(dto ->
+                assertEquals("CLT-001-AAA", dto.getClientId(),
+                        "반환된 DTO의 clientId가 로그인한 회원과 일치해야 합니다")
+        );
     }
 
     @Test
@@ -64,6 +74,19 @@ public class InventoryServiceTests {
     public void testInventoryServiceUserSearch(){
         // given
         InventoryFilterDTO filter = new InventoryFilterDTO();
+
+        // 테스트 SQL 스크립트에 맞춰 값을 세팅
+        filter.setClientId("CLT-001-AAA");
+        filter.setCategory1("PC");
+        filter.setCategory2("CPU");
+        filter.setCategory3("intel");
+
+        // when
+        List<InventoryDTO> results = inventoryUserService.searchUserInventory(filter);
+
+        // then
+        assertNotNull(results,    "결과 리스트가 null이면 안 됩니다");
+        assertFalse(results.isEmpty(), "적어도 한 건 이상의 결과가 있어야 합니다");
 
     }
 
@@ -75,6 +98,7 @@ public class InventoryServiceTests {
     }
 
     @Test
+    @DisplayName("관리자 재고 수량 수정 테스트 코드")
     public void testInventoryUpdate(){
         String inventoryId = "INV001";
 
@@ -107,6 +131,7 @@ public class InventoryServiceTests {
     }
 
     @Test
+    @DisplayName("관리자 재고 삭제 테스트 코드")
     public void testDeleteInventories() {
         // 1) 삭제 전: 전체 리스트 조회
         List<InventoryAdminDTO> before = inventoryAdminService.getAdminInventory();

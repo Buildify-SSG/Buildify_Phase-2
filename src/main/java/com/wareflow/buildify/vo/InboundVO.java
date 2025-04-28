@@ -19,7 +19,7 @@ public class InboundVO {
     private String wareId;
     private String warehousePosX;
     private int warehousePosY;
-    private String  inboundProcessDate;
+    private Date  inboundProcessDate;
 
     private String prodName;
     private int prodPrice;

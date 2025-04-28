@@ -82,8 +82,11 @@ public class InventoryMapperTests {
         String clientId = "CLT-001-AAA";
         String category1 = "PC";
 
+
         // when
-        List<String>midCategories = inventoryUserMapper.findMidCategoriesByLevel1(clientId,category1);
+
+        List<String>midCategories = inventoryUserMapper.findMidCategoriesByLevel1(clientId, category1);
+
 
         // then
         Assertions.assertNotNull(midCategories);
@@ -100,8 +103,11 @@ public class InventoryMapperTests {
         String clientId = "CLT-001-AAA";
         String category2 = "CPU";
 
+
         // when
+
         List<String>smallCategories = inventoryUserMapper.findSmallCategoriesByLevel2(clientId,category2);
+
 
         // then
         Assertions.assertNotNull(smallCategories);
