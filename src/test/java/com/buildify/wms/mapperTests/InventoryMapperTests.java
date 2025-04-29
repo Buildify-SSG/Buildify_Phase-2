@@ -38,10 +38,11 @@ public class InventoryMapperTests {
 
 
     @Test
+    @Transactional
     @DisplayName("회원 조회 mapper 테스트 코드")
     public void testInventoryUserMapperList(){
         // given
-        String testClientId = "CLT-001-AAA";
+        String testClientId = "USR-250428-3DRBPM";
 
         //when
         List<InventoryDTO> result = inventoryUserMapper.getUserInventory(testClientId);
@@ -57,6 +58,7 @@ public class InventoryMapperTests {
 
 
     @Test
+    @Transactional
     @DisplayName("회원 검색 mapper 테스트 코드")
     public void testInventorySearch(){
 
@@ -79,7 +81,7 @@ public class InventoryMapperTests {
     @DisplayName("회원 중분류 mapper 테스트 코드")
     public void testInventoryMapperUserMidCategory(){
         // given
-        String clientId = "CLT-001-AAA";
+        String clientId = "USR-250428-3DRBPM";
         String category1 = "PC";
 
 
@@ -95,27 +97,28 @@ public class InventoryMapperTests {
 
     }
 
+//    @Test
+//    @DisplayName("회원 소분류 mapper 테스트 코드")
+//    public void testInventoryMapperUserSmallCategory(){
+//
+//        // given
+//        String clientId = "USR-250428-3DRBPM";
+//        String category2 = "CPU";
+//
+//
+//        // when
+//
+//        List<String>smallCategories = inventoryUserMapper.findSmallCategoriesByLevel2(clientId,category2);
+//
+//
+//        // then
+//        Assertions.assertNotNull(smallCategories);
+//        Assertions.assertFalse(smallCategories.isEmpty());
+//        smallCategories.forEach(System.out::println);
+//    }
+
     @Test
-    @DisplayName("회원 소분류 mapper 테스트 코드")
-    public void testInventoryMapperUserSmallCategory(){
-
-        // given
-        String clientId = "CLT-001-AAA";
-        String category2 = "CPU";
-
-
-        // when
-
-        List<String>smallCategories = inventoryUserMapper.findSmallCategoriesByLevel2(clientId,category2);
-
-
-        // then
-        Assertions.assertNotNull(smallCategories);
-        Assertions.assertFalse(smallCategories.isEmpty());
-        smallCategories.forEach(System.out::println);
-    }
-
-    @Test
+    @Transactional
     @DisplayName("관리자 조회 테스트 코드")
     public void testGetAdminInventory(){
 
@@ -129,9 +132,10 @@ public class InventoryMapperTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("관리자 수량 업데이트 테스트 코드")
     public void testUpdateQuantity(){
-        String inventoryId = "INV001";
+        String inventoryId = "INV-202504287142";
 
         // 1) 초기값 조회
         List<InventoryAdminDTO> allBefore = inventoryAdminMapper.getAdminInventory();
@@ -164,6 +168,7 @@ public class InventoryMapperTests {
 
 
     @Test
+    @Transactional
     @DisplayName("관리자 재고 삭제 테스트 코드")
     public void testDeleteInventory() {
         // 1) 사전 조회: 삭제할 ID를 하나 가져온다

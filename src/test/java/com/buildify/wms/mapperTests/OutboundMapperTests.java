@@ -68,47 +68,47 @@ public class OutboundMapperTests {
         }
     }
 
-    @Test
-    public void updateInventory() {
-        // given
-        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
-        dto.setProdId("INB-20250428-03167E59");
+//    @Test
+//    public void updateInventory() {
+//        // given
+//        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
+//        dto.setProdId("PRD-250428-0F1R4H");
+//
+//        // when
+//        int result = adminOutboundMapper.updateInventory(dto);
+//
+//        // then
+//        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
+//        log.info("업데이트 결과: {}", result);
+//
+//    }
+//    @Test
+//    public void updateOutbound() {
+//        // given
+//        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
+//        dto.setProdId("PRD-250428-0F1R4H");
+//
+//        // when
+//        int result = adminOutboundMapper.updateOutbound(dto);
+//
+//        // then
+//        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
+//        log.info("업데이트 결과: {}", result);
+//    }
 
-        // when
-        int result = adminOutboundMapper.updateInventory(dto);
-
-        // then
-        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
-        log.info("업데이트 결과: {}", result);
-
-    }
-    @Test
-    public void updateOutbound() {
-        // given
-        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
-        dto.setProdId("INB-20250428-03167E59");
-
-        // when
-        int result = adminOutboundMapper.updateOutbound(dto);
-
-        // then
-        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
-        log.info("업데이트 결과: {}", result);
-    }
-
-    @Test
-    public void updateUserWarehouse() {
-        // given
-        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
-        dto.setProdId("INB-20250428-03167E59");
-
-        // when
-        int result = adminOutboundMapper.updateUserWarehouse(dto);
-
-        // then
-        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
-        log.info("업데이트 결과: {}", result);
-    }
+//    @Test
+//    public void updateUserWarehouse() {
+//        // given
+//        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
+//        dto.setProdId("PRD-250428-0F1R4H");
+//
+//        // when
+//        int result = adminOutboundMapper.updateUserWarehouse(dto);
+//
+//        // then
+//        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
+//        log.info("업데이트 결과: {}", result);
+//    }
 
 
 

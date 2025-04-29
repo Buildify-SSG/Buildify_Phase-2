@@ -28,6 +28,7 @@ public class ProductTests {
     AdminProductService adminProductService;
 
     @Test
+    @Transactional
     @DisplayName("상품 조회 테스트")
     public void adminProductView(){
         List<ProductVO> productVOList = adminProductMapper.adminProductView();
@@ -39,6 +40,7 @@ public class ProductTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("키워드 검색 정상 동작 테스트")
     public void search(){
 

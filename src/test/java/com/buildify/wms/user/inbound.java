@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,9 +29,10 @@ public class inbound {
     UserInboundService userInboundService;
 
     @Test
+    @Transactional
     public void testFindProductsByIds() {
         // given
-        List<String> prodId = Arrays.asList("PROD-063-DDD");
+        List<String> prodId = Arrays.asList("PRD-250428-U0D1R2");
 
         // when
         List<ProductDTO> products = userInboundMapper.getInboundInsert(prodId);
@@ -45,9 +47,10 @@ public class inbound {
     }
 
     @Test
+    @Transactional
     public void test2(){
         // given
-        List<String> prodIds = Arrays.asList("PROD-001-AAA", "PROD-004-DDD"); // 실제 존재하는 prod_id로 테스트할 것
+        List<String> prodIds = Arrays.asList("PRD-250428-U0D1R2", "PRD-250428-160QW4"); // 실제 존재하는 prod_id로 테스트할 것
 
         // when
         List<ProductDTO> result = userInboundService.getInboundInsert(prodIds);

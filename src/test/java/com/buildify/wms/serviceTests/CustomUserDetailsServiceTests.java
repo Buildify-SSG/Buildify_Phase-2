@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
@@ -22,6 +23,7 @@ public class CustomUserDetailsServiceTests {
     private CustomUserDetailsService userDetailsService;
 
     @Test
+    @Transactional
     public void testLoadUserByUsername() {
         String testId = "admin001"; // 실제 존재하는 auth id
         UserDetails userDetails = userDetailsService.loadUserByUsername(testId);

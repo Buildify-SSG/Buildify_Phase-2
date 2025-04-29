@@ -34,6 +34,7 @@ public class InboundMapperTests {
     private UserInboundMapper userInboundMapper;
 
     @Test
+    @Transactional
     public void testInboundList() {
         // given
         ProductVO clientId = new ProductVO();
@@ -49,6 +50,7 @@ public class InboundMapperTests {
     }
 
     @Test
+    @Transactional
     public void testinboundInsertlist() {
         ProductVO clientId = new ProductVO();
         clientId.setClientId("USR-250428-UEWLVR"); // 여기에 실제 존재하는 clientId 넣기
@@ -61,6 +63,7 @@ public class InboundMapperTests {
     }
 
     @Test
+    @Transactional
     public void testgetInboundInsert() {
         // given
         String prodId = "PRD-250428-1FPSKR"; // 실제 존재하는 prodId 넣기
@@ -76,6 +79,7 @@ public class InboundMapperTests {
     }
 
         @Test
+        @Transactional
         public void testinsertware () {
             // given
             String prodId = "USR-250428-UEWLVR"; // 실제 존재하는 prodId 넣기
@@ -93,6 +97,7 @@ public class InboundMapperTests {
         }
 
     @Test
+    @Transactional
     public void updateInboundStatus () {
         // given
         String prodId = "INB-20250428-03167E59"; // 실제 존재하는 prodId 넣기
@@ -108,6 +113,7 @@ public class InboundMapperTests {
     }
 
     @Test
+    @Transactional
     public void updateInventoryQuantity () {
         // given
         String prodId = "INB-20250428-03167E59"; // 실제 존재하는 prodId 넣기
@@ -123,6 +129,7 @@ public class InboundMapperTests {
     }
 
     @Test
+    @Transactional
     public void insertInventoryIfNotExists () {
         // given
         String prodId = "INB-20250428-03167E59"; // 실제 존재하는 prodId 넣기
@@ -138,6 +145,7 @@ public class InboundMapperTests {
     }
 
     @Test
+    @Transactional
     public void updateUserWarehouseUsage () {
         // given
         String prodId = "INB-20250428-03167E59"; // 실제 존재하는 prodId 넣기

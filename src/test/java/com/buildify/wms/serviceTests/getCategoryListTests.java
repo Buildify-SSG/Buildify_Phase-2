@@ -13,6 +13,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class getCategoryListTests {
     private ProductService productService;
 
     @Test
+    @Transactional
     public void testSelectCategoryList() throws JsonProcessingException {
         Map<String, Map<String, List<String>>> result = productService.getCategoryList();
 

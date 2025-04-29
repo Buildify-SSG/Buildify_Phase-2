@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class UserManagementServiceTests {
     AdminUserManagementService adminUserManagementService;
 
     @Test
+    @Transactional
     @DisplayName("관리자 회원 정보 조회")
     public void userView(){
         log.info("회원 정보 조회 테스트 시작");
@@ -37,6 +39,7 @@ public class UserManagementServiceTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("회원 검색 기능")
     public void userSearch(){
         log.info("회원 검색 테스트 시작");

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/root-context.xml")
@@ -18,6 +19,7 @@ public class authServiceTests {
     SignupService signupService;
 
     @Test
+    @Transactional
     public void testAddAuth() {
         signupService.addAuth("1", 0);
     }

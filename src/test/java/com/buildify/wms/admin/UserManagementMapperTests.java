@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class UserManagementMapperTests {
     AdminUserManagementMapper adminUserManagementMapper;
 
     @Test
+    @Transactional
     @DisplayName("관리자 회원 정보 조회")
     public void userView(){
         log.info("회원 정보 조회 테스트 시작");
@@ -34,6 +36,7 @@ public class UserManagementMapperTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("회원 검색 기능")
     public void userSearch(){
         log.info("회원 검색 테스트 시작");

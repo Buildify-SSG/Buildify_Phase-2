@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class WarehouseViewServiceTests {
     AdminWarehouseMapper adminWarehouseMapper;
     
     @Test
+    @Transactional
     @DisplayName("창고 조회 서비스 테스트")
     public void viewTest(){
         Map<String,Map<String, List<WarehouseViewDTO>>> layoutmap = adminWarehouseService.getWarehouseList();
@@ -41,6 +43,7 @@ public class WarehouseViewServiceTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("창고 정보 불러오기 테스트")
     public void wareInfo(){
         List<WareHouseDTO> wareHouseDTO = adminWarehouseService.getWarehouseInfo();
