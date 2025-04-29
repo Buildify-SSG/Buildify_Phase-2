@@ -259,19 +259,31 @@
 
     </insert>
 
-
     <update id="updateUserWarehouseUsage" parameterType="com.wareflow.buildify.dto.InboundApproveDTO">
-
-            UPDATE userWareHouse uw
-                JOIN inbound i ON uw.client_id = i.client_id
-                AND uw.ware_id = i.ware_id
-                AND uw.warehouse_pos_x = i.warehouse_pos_x
-                AND uw.warehouse_pos_y = i.warehouse_pos_y
-                JOIN product p ON i.prod_id = p.prod_id
-                SET uw.warehouse_usage = IFNULL(uw.warehouse_usage, 0) + (i.quantity * p.prod_size)
-            WHERE i.inbound_id = #{inboundId}
-
+        UPDATE userWareHouse uw
+            JOIN inbound i ON uw.client_id = i.client_id
+            AND uw.ware_id = i.ware_id
+            AND uw.warehouse_pos_x = i.warehouse_pos_x
+            AND uw.warehouse_pos_y = i.warehouse_pos_y
+            JOIN product p ON i.prod_id = p.prod_id
+            SET uw.warehouse_usage = IFNULL(uw.warehouse_usage, 0) + (i.quantity * p.prod_size)
+        WHERE i.inbound_id = #{inboundId}
     </update>
+
+
+
+<!--    <update id="updateUserWarehouseUsage" parameterType="com.wareflow.buildify.dto.InboundApproveDTO">-->
+
+<!--            UPDATE userWareHouse uw-->
+<!--                JOIN inbound i ON uw.client_id = i.client_id-->
+<!--                AND uw.ware_id = i.ware_id-->
+<!--                AND uw.warehouse_pos_x = i.warehouse_pos_x-->
+<!--                AND uw.warehouse_pos_y = i.warehouse_pos_y-->
+<!--                JOIN product p ON i.prod_id = p.prod_id-->
+<!--                SET uw.warehouse_usage = IFNULL(uw.warehouse_usage, 0) + (i.quantity * p.prod_size)-->
+<!--            WHERE i.inbound_id = #{inboundId}-->
+
+<!--    </update>-->
 
 
 
