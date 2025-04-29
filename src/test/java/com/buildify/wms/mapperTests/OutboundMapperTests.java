@@ -1,7 +1,12 @@
 package com.buildify.wms.mapperTests;
 
 import com.wareflow.buildify.domain.admin.inbound.mapper.AdminInboundMapper;
+import com.wareflow.buildify.domain.admin.outbound.mapper.AdminOutboundMapper;
 import com.wareflow.buildify.domain.user.outbound.mapper.UserOutboundMapper;
+import com.wareflow.buildify.dto.AdminOutboundRequestDTO;
+import com.wareflow.buildify.dto.InventoryDTO;
+import com.wareflow.buildify.dto.OutboundDTO;
+import com.wareflow.buildify.dto.ProductDTO;
 import com.wareflow.buildify.vo.InboundVO;
 import com.wareflow.buildify.vo.InventoryVO;
 import com.wareflow.buildify.vo.OutboundVO;
@@ -14,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static java.awt.AWTEventMulticaster.add;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -30,7 +37,7 @@ public class OutboundMapperTests {
     private UserOutboundMapper userOutboundMapper;
 
     @Autowired
-    private AdminInboundMapper adminInboundMapper;
+    private AdminOutboundMapper adminOutboundMapper;
 
     @Test
     public void userountboundList(){
@@ -42,25 +49,70 @@ public class OutboundMapperTests {
         }
     }
 
-//    @Test
-//    @DisplayName("outboundInsertList: 클라이언트 ID로 재고·상품 조회")
-//    void testOutboundInsertList() {
-//        // given
-//        String clientId = "USR-TEST-0001";
-//
-//        // when
-//        List<InventoryVO> list = userOutboundMapper.outboundInsertList(clientId);
-//
-//        // then
-//        assertThat(list).isNotNull()
-//                .isNotEmpty()
-//                .allSatisfy(vo -> {
-//                    assertThat(vo.getClientId()).isEqualTo(clientId);
-//                    assertThat(vo.getProdId()).isNotBlank();
-//                    assertThat(vo.getQuantity()).isPositive();
-//                    assertThat(vo.getProdName()).isNotBlank();
-//                });
+    @Test
+    @DisplayName("UserOutboundMapper - 다건 상품 조회 테스트")
+    public void testOutboundList() {
+        // given
+
+        String prodIds = "USR-250428-B4KEUU"; // 실제 존재하는 상품 ID 넣기
+
+        // when
+        List<OutboundVO> productList = userOutboundMapper.outboundlist(prodIds);
+
+        // then
+        assertThat(productList).isNotNull();
+        assertThat(productList.size()).isGreaterThan(0);
+
+        for (OutboundVO product : productList) {
+            log.info("조회된 상품: {}", product);
+        }
+    }
+
+    @Test
+    public void updateInventory() {
+        // given
+        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
+        dto.setProdId("INB-20250428-03167E59");
+
+        // when
+        int result = adminOutboundMapper.updateInventory(dto);
+
+        // then
+        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
+        log.info("업데이트 결과: {}", result);
+
+    }
+    @Test
+    public void updateOutbound() {
+        // given
+        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
+        dto.setProdId("INB-20250428-03167E59");
+
+        // when
+        int result = adminOutboundMapper.updateOutbound(dto);
+
+        // then
+        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
+        log.info("업데이트 결과: {}", result);
+    }
+
+    @Test
+    public void updateUserWarehouse() {
+        // given
+        AdminOutboundRequestDTO dto = new AdminOutboundRequestDTO();
+        dto.setProdId("INB-20250428-03167E59");
+
+        // when
+        int result = adminOutboundMapper.updateUserWarehouse(dto);
+
+        // then
+        assertThat(result).isGreaterThan(0); // 업데이트가 1개 이상 됐는지 확인
+        log.info("업데이트 결과: {}", result);
+    }
+
+
 
 
 
 }
+

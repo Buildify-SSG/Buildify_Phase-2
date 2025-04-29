@@ -26,7 +26,7 @@ public class UserOutboundController {
     private final UserOutboundService userOutboundService;
 
     @GetMapping("/users/pages/outbound/outbound-1")
-    public String inboundlist(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String outboundInsertList(@RequestParam(defaultValue = "1") int page, Model model) {
         List<OutboundInventoryDTO> dtoList = userOutboundService.outboundInsertList();
         log.info("아웃바운드인서트 컨트롤러");
         log.info(":흰색_확인_표시: body: {}", model.getAttribute("body"));
