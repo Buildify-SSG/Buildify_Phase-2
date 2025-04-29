@@ -2,6 +2,19 @@
 
 <br>
 
+## 목차  
+1.	[프로젝트 개요](#프로젝트-개요)  
+2.	[기술 스택](#기술-스택) 
+3.	[프로젝트 구조](#프로젝트-구조)
+4.	[ERD](#ERD)
+5.	[프로젝트 실행 가이드](#프로젝트-실행-가이드)
+6.	[주요 기능](#주요-기능)
+7.	[Trouble-Shooting](#Trouble-Shooting)
+8.	[팀원](#팀원)
+9.	[커밋·PR·이슈 컨벤션](#커밋-PR-이슈-컨벤션)
+10.	[메서드 네이밍 규칙](#메서드명-네이밍-규칙)
+
+
 
 ## 프로젝트 개요
  BuildiFy WMS(창고 관리 시스템)는 물류센터의 **입·출고 요청부터 재고 현황 모니터링, 계약 관리, 보고서 생성**까지   
@@ -11,9 +24,13 @@
 - 입·출고 처리 효율화  
 - 실시간 재고 정확도 확보  
 - 관리자용 대시보드를 통한 의사결정 지원  
-- Excel·PDF 기반 출력물 자동 생성
+- Excel 출력물 자동 생성
     
 등을 통해 물류 운영 비용을 절감하고, 사용자 편의성을 극대화하는 것입니다.
+
+
+---
+
 
 ## 💡 기술 스택
 
@@ -28,14 +45,25 @@
 | 기타 | Lombok , Spring Security |
 <br>
 
+
+---
+
+## 🚀 배포 환경
+- 개발환경: Local (MacOS / Windows)
+- 서버: Tomcat 9.X
+- DB: MySQL 8.x
+
+
+---
+
 ## 📦 프로젝트 구조
 
 ```
 src/main/java/com.wareflow.buildify
-├── cache              # Redis 등 캐시 관련
-├── common             # 공통 기능 (공통 Response, 공통 Exception 등)
-├── config             # 설정 관련 (WebMvc, Swagger, Security 설정 등)
-├── constant           # 공통 상수 (에러 메시지, Redis 키, URL path 등)
+├── cache              # 캐시
+├── common             # 공통 기능 
+├── config             # 설정 관련
+├── constant           # 공통 상수
 ├── domain             # 도메인 계층 (Controller,Service,Mapper 등)
 │   └── admin
 │       └── inbound
@@ -47,7 +75,7 @@ src/main/java/com.wareflow.buildify
 │       └── ....
 ├── dto                # 요청/응답 DTO
 ├── exception          # 예외 처리
-├── mysql              # DB 쿼리 직접 사용하는 경우 (선택)
+├── mysql              
 ├── temp               # 임시 작업용
 ├── util               # 공통 유틸 클래스
 └── vo                 # DB 통신 VO
@@ -57,7 +85,7 @@ src/main/resources
 ├── application-secret.properties   # 민감한 설정 (DB 비밀번호, 보안 키 등)
 ├── log4j2.xml                      # log4j2 설정 파일
 ├── config                          # 설정 파일
-│   ├── mybatis-config.xml          # mabatis 설정 파일
+│   ├── mybatis-config.xml          # mybatis 설정 파일
 ├── mappers                        # Mapper 
 │   ├── admin/                     # 관리자용 mapper
 │   ├── users/                     # 고객용 mapper
@@ -87,16 +115,19 @@ src/main/webapp
 │   │   │      │      ├── outbound/
 │   │   │      │      ├── ...           
 └───└───└── common/
-│   │   │      ├── pages/             # 관리자 구현 페이지 모음
+│   │   │      ├── pages/             
 └───└───└──────└──────└── errorpage/  # 커스텀 에러페이지 구현
 
 ```
 ---
 
+## ERD
+![image](https://github.com/user-attachments/assets/c6ecb13e-6103-49db-9477-9505dd9f8fe9)
+
+---
+
 ## 프로젝트 실행 가이드
  1. **환경 준비**  
-   - JDK 17 설치  
-   - MySQL 8.x 이상 설치 및 실행  
    - Gradle 설치 (wrapper 사용 시 별도 설치 불필요)  
 
 2. **DB 설정**  
@@ -109,11 +140,6 @@ src/main/webapp
      application-secret.password=YOUR_DB_PASSWORD
 
      ```
-   - 초기 스키마 및 더미 데이터 로딩  
-     ```bash
-     mysql -u YOUR_DB_USER -p buildify_wms < db/schema.sql
-     mysql -u YOUR_DB_USER -p buildify_wms < db/data/init_data.sql
-     ```
 
 3. **앱 실행**  
      ```bash
@@ -124,7 +150,7 @@ src/main/webapp
     
 4. **캐시/뷰 리소스 적용**  
      ```
-     cache 패키드의 Singleton 빈이 정상 등록되었는지 확인
+     cache 패키지의 Singleton 빈이 정상 등록되었는지 확인
 	    src/main/webapp/static 내 CSS/JS 파일 변경 시 브라우저 캐시 비우기
 
 5. **테스트 실행**  
@@ -175,11 +201,19 @@ src/main/webapp
 
 ---
 
+## Trouble-Shooting
+
+![image](https://github.com/user-attachments/assets/ce766504-1f4f-4b5d-894e-063662846631)
+- Spring Security 인증 객체 문제 -> 객체 생성 통해 해결
+- AJAX 비동기 처리 -> AJAX기반 카테고리 조회 실패, @ResponseBody 사용해 JSON 데이터를 반환하여 해결
+
+---
+
 ## 👥 팀원
-- **김선민**
-- **김성준**
-- **이동휘**
-- **신민혁**
+- [**김선민**](https://github.com/seonmin12)
+- [**김성준**](https://github.com/kimsj18)
+- [**이동휘**](https://github.com/DH-CaseStudy)
+- [**신민혁**](https://github.com/minhyeokshin)
 
 ---
 
@@ -241,7 +275,7 @@ src/main/webapp
 예상되는 영향이나 고민
 ```
 
-📌 메서드명 네이밍 규칙 (Spring Project)
+## 📌 메서드명 네이밍 규칙 (Spring Project)
 - 조회: get / find / fetch
 - 등록: create / save / register / add
 - 수정: update / modify
@@ -256,3 +290,17 @@ src/main/webapp
   - createUser(UserDTO dto)
   - updateUser(UserDTO dto)
   - deleteUser(Long id)
+
+ ---
+
+## 🏁 프로젝트 요약
+BuildiFy WMS는 단순한 CRUD를 넘어  
+**재고 관리, 계약 관리, 대시보드 시각화까지 통합**한  
+**실전형 창고 관리 시스템**입니다.
+
+Spring MVC 구조 기반으로 **트랜잭션 통제, 비동기 처리, 성능 최적화**를 반영했으며,  
+Git 협업 규칙과 코드 컨벤션을 준수하여 **팀 단위 개발 경험**을 강화했습니다.
+
+본 프로젝트를 통해  
+**"백엔드 개발자로서 구조적 설계와 협업 능력"**  
+모두를 성장시킬 수 있었습니다.
