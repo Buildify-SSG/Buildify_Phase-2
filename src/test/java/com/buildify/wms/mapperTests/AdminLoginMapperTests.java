@@ -9,6 +9,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
@@ -21,6 +22,7 @@ public class AdminLoginMapperTests {
     private AdminLoginMapper adminLoginMapper;
 
     @Test
+    @Transactional
     public void testFindByUsername() {
         AdminVO adminVO = adminLoginMapper.findById("admin001");
         log.info("admin : " + adminVO.toString());

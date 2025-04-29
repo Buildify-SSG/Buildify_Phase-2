@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class AdminDashboardMapperTests {
     AdminDashboardMapper adminDashboardMapper;
 
     @Test
+    @Transactional
     @DisplayName("관리자 대시보드 입고 현황 매퍼 테스트")
     public void inboundStatsTest(){
         List<InboundStatsDTO> inboundStatsDTOList = adminDashboardMapper.getInboundStats();
@@ -35,6 +37,7 @@ public class AdminDashboardMapperTests {
 
 
     @Test
+    @Transactional
     @DisplayName("관리자 대시보드 출고 현황 매퍼 테스트")
     public void outboundStatsTest(){
         List<OutboundStatsDTO> outboundStatsDTOList = adminDashboardMapper.getOutboundStats();
@@ -45,6 +48,7 @@ public class AdminDashboardMapperTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("대시보드 창고 현황조회 테스트")
     public void warehouseDashboardTest(){
         List<WareHouseDashBoardDTO> wareHouseDashBoardDTOList = adminDashboardMapper.getWarehouseDashboardInfo();

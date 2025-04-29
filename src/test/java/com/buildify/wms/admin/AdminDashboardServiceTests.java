@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,6 +31,7 @@ public class AdminDashboardServiceTests {
     AdminDashboardService adminDashboardService;
 
     @Test
+    @Transactional
     @DisplayName("관리자 입고현황 서비스 테스트")
     public void inboundStatsServiceTest(){
         InboundStatsDTO adminDashboardServiceInboundStats = adminDashboardService.getTodayInboundStats();
@@ -38,6 +40,7 @@ public class AdminDashboardServiceTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("관리자 출고현황 서비스 테스트")
     public void OutboundStatsServiceTest(){
         OutboundStatsDTO adminDashboardServiceOutboundStats = adminDashboardService.getTodayOutboundStats();
@@ -46,6 +49,7 @@ public class AdminDashboardServiceTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("관리자 대시보드 날씨정보 서비스 테스트")
     public void weatherServiceTest(){
         List<WeatherInfoDTO> weatherInfoDTOList = adminDashboardService.getWeatherInfo();
@@ -56,6 +60,7 @@ public class AdminDashboardServiceTests {
     }
 
     @Test
+    @Transactional
     @DisplayName("관리지 대시보드 창고정보 서비스 테스트")
     public void warehouseInfoTest(){
         List<WareHouseDashBoardDTO> wareHouseDashBoardDTOList = adminDashboardService.getWarehouseDashboardInfo();

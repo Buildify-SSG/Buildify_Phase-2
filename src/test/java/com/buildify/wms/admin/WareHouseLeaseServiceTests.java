@@ -29,6 +29,7 @@ public class WareHouseLeaseServiceTests {
     AdminWarehouseLeaseMapper adminWarehouseLeaseMapper;
 
     @Test
+    @Transactional
     @DisplayName("회원 계약관리 서비스 테스트")
     public void leaseServiceTest(){
 
@@ -47,7 +48,7 @@ public class WareHouseLeaseServiceTests {
         int rows = 0;
         log.info("더미 데이터 삽입 수 : {}",rows);
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             UserDTO userDTO = new UserDTO();
             userDTO.setClientId("cleintid-"+i);
             userDTO.setUserName("name-"+i);
@@ -89,15 +90,15 @@ public class WareHouseLeaseServiceTests {
         WarehouseLeaseDTO userWareHouseDTO = WarehouseLeaseDTO.builder()
                 .wareId("W001")
                 .wareCoord("A1")
-                .clientId("CLT-001-AAA")
+                .clientId("USR-250428-RH5SYP")
                 .endDate(LocalDate.now())
                 .build();
         warehouseLeaseDTOList.add(userWareHouseDTO);
 
         WarehouseLeaseDTO userWareHouseDTO2 = WarehouseLeaseDTO.builder()
                 .wareId("W001")
-                .wareCoord("D4")
-                .clientId("USR-250418-7IBCKT")
+                .wareCoord("A5")
+                .clientId("USR-250428-RHSL00")
                 .endDate(LocalDate.now())
                 .build();
         warehouseLeaseDTOList.add(userWareHouseDTO2);

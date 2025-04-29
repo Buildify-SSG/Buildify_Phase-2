@@ -27,6 +27,7 @@ public class WareHouseLeaseMapperTests {
     AdminWarehouseLeaseMapper adminWarehouseLeaseMapper;
 
     @Test
+    @Transactional
     @DisplayName("계약 정보 불러오기")
     public void wareLeaseTest(){
         log.info("테스트 시작");

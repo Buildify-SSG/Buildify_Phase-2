@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
@@ -24,6 +25,7 @@ public class UserDashboardMapperTests {
     private DashboardMapper dashboardMapper;
 
     @Test
+    @Transactional
     public void testFindByClientId() {
 
         int count1 = dashboardMapper.selectDayOutbound("USR-250424-XXCCVV", 0);

@@ -9,6 +9,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
@@ -22,6 +23,7 @@ public class AuthMapperTests {
     private AuthMapper authMapper;
 
     @Test
+    @Transactional
     public void testFindById() {
         AuthVO authVO = authMapper.findById("ehdzl3451");
         log.info("---------------" + authVO);

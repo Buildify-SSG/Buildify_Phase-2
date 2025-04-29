@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class GetProductListTests {
     private ProductService productService;
 
     @Test
+    @Transactional
     public void getProductList() {
        List<ProductDTO> productDTOList = productService.getProductList();
         log.info("productDTOList: {}", productDTOList);
