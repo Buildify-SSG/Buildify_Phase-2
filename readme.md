@@ -52,8 +52,9 @@
 
 ## 🚀 배포환경
 - 개발환경: Local (MacOS / Windows)
-- 서버: Tomcat 9.X
+- 서버: Tomcat 9.X (`javax.servlet` 기반 — Tomcat 10 이상 미지원)
 - DB: MySQL 8.x
+- 컨테이너: Docker / Docker Compose (앱 + MySQL, `docker compose up -d --build`)
 
 
 ---
@@ -129,36 +130,101 @@ src/main/webapp
 ---
 
 ## 프로젝트 실행 가이드
- 1. **환경 준비**  
-   - Gradle 설치 (wrapper 사용 시 별도 설치 불필요)  
 
-2. **DB 설정**  
-   - `src/main/resources/application-secret.properties` 에서 DB 접속 정보 설정
-     
-     ```properties
-     application-secret.driver=com.mysql.cj.jdbc.Driver
-     application-secret.url=jdbc:mysql://localhost:3306//buildifydb?serverTimezone=Asia/Seoul
-     application-secret.username=YOUR_DB_USER
-     application-secret.password=YOUR_DB_PASSWORD
+### 방법 A. Docker 로 실행 (권장)
 
-     ```
+MySQL 설치 없이 앱 + DB 를 한 번에 띄웁니다. **필요한 것은 Docker 뿐입니다.**
 
-3. **앱 실행**  
-     ```bash
-     cd 프로젝트_루트_디렉터리
-     ./gradlew clean build
-     ./gradlew bootRun
-     정상 구동 시 http://localhost:8080 에 접속 가능
-    
-4. **캐시/뷰 리소스 적용**  
-     ```
-     cache 패키지의 Singleton 빈이 정상 등록되었는지 확인
-	    src/main/webapp/static 내 CSS/JS 파일 변경 시 브라우저 캐시 비우기
+```bash
+git clone <repo-url>
+cd Buildify_Phase-2
 
-5. **테스트 실행**  
-     ```
-     bash
-     ./gradlew test
+cp .env.example .env      # DB 비밀번호 등을 채워 넣습니다
+docker compose up -d --build
+```
+
+기동 후 <http://localhost:8080> 접속.
+
+| 구분 | 계정 | 비밀번호 |
+|------|------|----------|
+| 관리자 | `admin01` (그 외 `admin02`, `admin03`) | `admin1234!` |
+| 사용자 | `user01` ~ `user20` | `user1234!` |
+
+> 데모 데이터(상품 100 / 재고 100 / 입고 120 / 출고 100 / 회원 20)가 자동으로 적재됩니다.
+> 날짜는 실행 시점 기준 상대값이라 언제 띄워도 대시보드 통계가 채워집니다.
+
+**구성**
+
+| 파일 | 역할 |
+|------|------|
+| `Dockerfile` | Gradle 빌드 → Tomcat 9 이미지에 `ROOT.war` 배치 (Boot 가 아니라 WAR 방식) |
+| `docker-compose.yml` | 앱 + MySQL 8.0, DB healthcheck 후 앱 기동 |
+| `docker/entrypoint.sh` | 환경변수 → `application-secret.properties` 생성 |
+| `docker/mysql/init/01-schema.sql` | 테이블 DDL |
+| `docker/mysql/init/02-seed.sql` | 데모 시드 데이터 |
+| `docker/mysql/init/03-objects.sql` | 뷰 / 프로시저 / 트리거 |
+
+**자주 쓰는 명령**
+
+```bash
+docker compose logs -f app      # 앱 로그
+docker compose down             # 중지 (데이터 유지)
+docker compose down -v          # 중지 + DB 초기화 (시드 다시 적재)
+```
+
+> DB 초기화 스크립트는 **볼륨이 비어 있을 때 최초 1회만** 실행됩니다.
+> 시드를 다시 넣으려면 `docker compose down -v` 후 다시 올리세요.
+
+### 방법 B. 로컬 Tomcat 으로 실행
+
+1. **환경 준비** — JDK 17, MySQL 8.x, **Tomcat 9.x**
+   (`javax.servlet` 기반이라 Tomcat 10 이상에서는 동작하지 않습니다)
+
+2. **DB 준비**
+
+   ```bash
+   mysql -u root -p -e "CREATE DATABASE buildifydb DEFAULT CHARACTER SET utf8mb4;"
+   mysql -u root -p buildifydb < docker/mysql/init/01-schema.sql
+   mysql -u root -p buildifydb < docker/mysql/init/02-seed.sql
+   mysql -u root -p buildifydb < docker/mysql/init/03-objects.sql
+   ```
+
+3. **설정 파일 작성** — `src/main/resources/application-secret.properties`
+   (이 파일은 `.gitignore` 대상이며 **절대 커밋하지 않습니다**)
+
+   ```properties
+   application-secret.driver=com.mysql.cj.jdbc.Driver
+   application-secret.url=jdbc:mysql://localhost:3306/buildifydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+   application-secret.username=YOUR_DB_USER
+   application-secret.password=YOUR_DB_PASSWORD
+
+   # 외부 API 키 (비워 두면 해당 기능만 비활성화되고 기동은 정상)
+   kakao.rest.key=
+   kakao.javascript.key=
+   openweather.api.key=
+   news.api.key=
+   ```
+
+4. **빌드 및 배포**
+
+   ```bash
+   ./gradlew clean war
+   # build/libs/buildify-wms-0.0.1-SNAPSHOT.war 를
+   # Tomcat 의 ROOT 컨텍스트(/)로 배포합니다.
+   ```
+
+   > 로그인 성공 후 `/admin/pages/index` 처럼 루트 기준 절대경로로 리다이렉트하므로
+   > **반드시 ROOT 컨텍스트(`/`)로 배포**해야 합니다.
+
+5. **테스트 실행**
+
+   ```bash
+   ./gradlew test
+   ```
+
+   > 테스트는 `root-context.xml` 을 직접 로드하므로 **실행 중인 MySQL 이 필요합니다.**
+   > DB 없이 빌드하려면 `./gradlew war -x test` 를 사용하세요.
+
 ---
 
 ## 🛠 주요 기능
