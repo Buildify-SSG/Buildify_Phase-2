@@ -1,20 +1,40 @@
 # WareFlow - 📦 BuildiFy - WMS 시스템 (2차 프로젝트)
 
+![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/Spring-5.3.27-6DB33F?logo=spring&logoColor=white)
+![MyBatis](https://img.shields.io/badge/MyBatis-3.5.9-000000)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![Tomcat](https://img.shields.io/badge/Tomcat-9.0-F8DC75?logo=apachetomcat&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+
+창고 운영 전 과정을 웹으로 자동화·시각화하는 WMS(창고 관리 시스템)입니다.
+**Docker 한 줄로 전체 환경이 재현되며, AWS EC2 배포 구성을 포함합니다.**
+
+```bash
+cp .env.example .env && docker compose up -d --build   #  http://localhost:8080
+```
+
+| 구분 | 계정 | 비밀번호 |
+|------|------|----------|
+| 관리자 | `admin01` | `admin1234!` |
+| 사용자 | `user01` ~ `user20` | `user1234!` |
+
 <br>
 
 ## 목차  
 1.	[프로젝트 개요](#프로젝트-개요)  
-2.	[기술 스택](#기술스택)
-3.	[배포 환경](#배포환경)
-4.	[프로젝트 구조](#프로젝트구조)
-5.	[ERD](#ERD)
-6.	[프로젝트 실행 가이드](#프로젝트-실행-가이드)
-7.	[주요 기능](#주요-기능)
-8.	[Trouble-Shooting](#trouble-shooting)
-9.	[팀원](#팀원)
-10.	[커밋·PR·이슈 컨벤션](#커밋pr이슈-컨벤션)
-11.	[메서드 네이밍 규칙](#메서드명-네이밍-규칙-spring-project)
-12.	[프로젝트 요약](#프로젝트요약)
+2.	[화면 미리보기](#-화면-미리보기)
+3.	[기술 스택](#기술스택)
+4.	[배포 환경](#배포환경)
+5.	[프로젝트 구조](#프로젝트구조)
+6.	[ERD](#ERD)
+7.	[프로젝트 실행 가이드](#프로젝트-실행-가이드)
+8.	[주요 기능](#주요-기능)
+9.	[Trouble-Shooting](#trouble-shooting)
+10.	[팀원](#팀원)
+11.	[커밋·PR·이슈 컨벤션](#커밋pr이슈-컨벤션)
+12.	[메서드 네이밍 규칙](#메서드명-네이밍-규칙-spring-project)
+13.	[프로젝트 요약](#프로젝트요약)
 
 
 
@@ -30,6 +50,43 @@
     
 등을 통해 물류 운영 비용을 절감하고, 사용자 편의성을 극대화하는 것입니다.
 
+
+---
+
+## 🖥 화면 미리보기
+
+> 아래 화면은 `docker compose up -d --build` 한 번으로 재현됩니다.
+> 데모 데이터(상품 100 / 재고 100 / 입고 120 / 출고 100 / 회원 20)가 자동 적재됩니다.
+
+### 관리자 대시보드
+당일·주간 입출고 지표, 창고별 계약률/사용률, 물류 뉴스(구글 뉴스 RSS)를 한 화면에 제공합니다.
+
+![관리자 대시보드](docs/images/02-dashboard.png)
+
+### 재고 조회
+카테고리 3단계 필터·검색·정렬·페이징을 지원하며 Excel 내보내기가 가능합니다.
+
+![재고 조회](docs/images/03-inventory.png)
+
+<details>
+<summary>다른 화면 더 보기</summary>
+
+### 입고 현황 조회
+요청/승인/반려 상태와 처리일, 배정 창고를 함께 조회합니다.
+
+![입고 현황](docs/images/04-inbound.png)
+
+### 창고 계약 조회
+회원별 임대 계약 기간과 잔여 일수, 월 이용료를 관리합니다.
+
+![창고 계약](docs/images/05-lease.png)
+
+### 로그인
+Spring Security 기반 인증, 역할(관리자/사용자)에 따라 진입 화면이 분기됩니다.
+
+![로그인](docs/images/01-login.png)
+
+</details>
 
 ---
 
@@ -55,6 +112,7 @@
 - 서버: Tomcat 9.X (`javax.servlet` 기반 — Tomcat 10 이상 미지원)
 - DB: MySQL 8.x
 - 컨테이너: Docker / Docker Compose (앱 + MySQL, `docker compose up -d --build`)
+- 클라우드: AWS EC2 (Amazon Linux 2023) — 배포 절차는 [docs/DEPLOY-AWS.md](docs/DEPLOY-AWS.md) 참고
 
 
 ---
