@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -209,7 +210,14 @@
                         <li class="weather-item">
                             <div class="city">${w.city}</div>
                             <div class="desc">${w.emoji} ${w.description}</div>
-                            <div class="temp">${w.temp}°C</div>
+                            <c:set var="tempStr">${w.temp}</c:set>
+                            <div class="temp">
+                              <%-- API 키 미설정/조회 실패 시 NaN 이 그대로 노출되지 않도록 처리 --%>
+                              <c:choose>
+                                <c:when test="${fn:contains(tempStr, 'NaN')}">–</c:when>
+                                <c:otherwise>${tempStr}°C</c:otherwise>
+                              </c:choose>
+                            </div>
                         </li>
                     </c:forEach>
                 </ul>
