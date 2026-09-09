@@ -2,7 +2,7 @@
 # =====================================================================
 # EC2(Amazon Linux 2023) 최초 1회 세팅 스크립트
 #
-#   curl -fsSL https://raw.githubusercontent.com/<owner>/<repo>/deploy/docker/docker/aws/setup-ec2.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/seonmin12/Buildify_Phase-2/deploy/docker/docker/aws/setup-ec2.sh | bash
 #   또는 저장소를 clone 한 뒤: bash docker/aws/setup-ec2.sh
 #
 # 하는 일

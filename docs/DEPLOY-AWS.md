@@ -68,7 +68,7 @@ ssh -i ~/Downloads/buildify-key.pem ec2-user@<퍼블릭-IPv4-주소>
 접속한 서버에서 실행합니다. 스왑 4GB, git, Docker, Docker Compose 를 한 번에 설치합니다.
 
 ```bash
-git clone https://github.com/<owner>/<repo>.git buildify
+git clone https://github.com/seonmin12/Buildify_Phase-2.git buildify
 cd buildify
 git checkout deploy/docker
 bash docker/aws/setup-ec2.sh
