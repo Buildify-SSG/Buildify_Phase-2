@@ -467,19 +467,14 @@
   }
 
   function loadNews() {
-    console.log("📡 loadNews 실행됨");
-    const newsUrl = "https://newsapi.org/v2/everything?q=logistics&language=ko&sortBy=publishedAt&pageSize=30&apiKey=fb7e4ecc150841c1b78f9909fdad95f6";
-    fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(newsUrl), { mode: 'cors' })
-      .then(res => {
-        console.log("📡 proxy response status:", res.status);
-        return res.json();
-      })
-      .then(proxyData => {
-        const data = JSON.parse(proxyData.contents);
-        if (!data.articles || data.articles.length === 0) {
+    // 서버가 구글 뉴스 RSS 를 대신 조회해 JSON 으로 내려줍니다. (API 키 / 외부 프록시 불필요)
+    fetch("<c:url value='/api/news'/>")
+      .then(res => res.json())
+      .then(articles => {
+        if (!Array.isArray(articles) || articles.length === 0) {
           throw new Error("No articles found");
         }
-        allArticles = data.articles;
+        allArticles = articles;
         currentIndex = 0;
         rotateNews();
       })
