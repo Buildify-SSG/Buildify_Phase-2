@@ -113,6 +113,7 @@ Spring Security 기반 인증, 역할(관리자/사용자)에 따라 진입 화�
 - DB: MySQL 8.x
 - 컨테이너: Docker / Docker Compose (앱 + MySQL, `docker compose up -d --build`)
 - 클라우드: AWS EC2 (Amazon Linux 2023) — 배포 절차는 [docs/DEPLOY-AWS.md](docs/DEPLOY-AWS.md) 참고
+- 도메인/HTTPS: Cloudflare — 설정 절차는 [docs/DOMAIN-HTTPS.md](docs/DOMAIN-HTTPS.md) 참고
 
 
 ---

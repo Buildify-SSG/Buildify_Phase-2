@@ -223,9 +223,10 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d   # --buil
 
 ---
 
-## 다음에 해볼 만한 것
+## 다음 단계
 
-- **탄력적 IP** 연결 → 재시작해도 주소가 바뀌지 않음
-- **도메인 + HTTPS** → Route 53 또는 외부 도메인 + Nginx/Caddy 리버스 프록시 + Let's Encrypt
+- **도메인 + HTTPS** → [docs/DOMAIN-HTTPS.md](DOMAIN-HTTPS.md)
+  탄력적 IP 없이 도메인을 고정하는 방법(부팅 시 Cloudflare DNS 자동 갱신)과
+  HTTPS 적용 절차를 다룹니다.
 - **RDS 분리** → DB 를 관리형으로 옮기고 `.env` 의 `DB_URL` 만 교체 (앱 수정 불필요)
 - **GitHub Actions** → 푸시하면 이미지를 빌드해 서버에서 pull 하도록 자동화
