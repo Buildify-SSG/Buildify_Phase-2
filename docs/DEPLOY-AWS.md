@@ -84,16 +84,15 @@ ssh -i ~/Downloads/buildify-key.pem ec2-user@<퍼블릭-IPv4-주소>
 
 ## 4. 서버 초기 세팅
 
-접속한 서버에서 실행합니다. 스왑 4GB, git, Docker, Docker Compose 를 한 번에 설치합니다.
+접속한 서버에서 실행합니다. 스왑 4GB, Docker, Compose, buildx 를 한 번에 설치합니다.
 
 ```bash
+sudo dnf install -y git          # Amazon Linux 2023 에는 git 이 기본 설치되어 있지 않습니다
 git clone https://github.com/seonmin12/Buildify_Phase-2.git buildify
 cd buildify
 git checkout deploy/docker
 bash docker/aws/setup-ec2.sh
 ```
-
-> `git` 이 아직 없다는 오류가 나면 `sudo dnf install -y git` 후 다시 실행하세요.
 
 **끝나면 반드시 재접속합니다.** docker 그룹 권한은 재로그인해야 적용됩니다.
 
